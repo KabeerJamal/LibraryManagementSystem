@@ -1,0 +1,3 @@
+this is folder where we can keep css, 
+browser js files which we want to be accesible 
+by anyone who uses our web
