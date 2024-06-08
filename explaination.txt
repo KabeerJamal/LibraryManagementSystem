@@ -1,0 +1,44 @@
+Explanation of Project Structure
+1. Router File
+Purpose: Handles all the routes in the application.
+Example Routes:
+app.get('/'): Handles GET requests to the home page.
+app.post('/register'): Handles POST requests to the registration page.
+2. Controller Folder
+File: userController.js
+Purpose: Contains functions that are called when specific routes are accessed.
+When a route is accessed (e.g., /register), the corresponding function in userController.js is executed.
+3. Model Folder
+File: User.js
+Purpose: Contains the User class which interacts with the database.
+When userController needs to interact with the database, it calls methods from the User class.
+Workflow Example: User Registration
+User Action:
+
+A user fills out a registration form on the website.
+Router Handling:
+
+The form submission triggers a POST request to /register.
+The router detects this request and calls the corresponding function in userController.
+Controller Handling:
+
+In userController, the function retrieves user information from req.body.
+The function then passes this information to the User class in the model folder.
+Model Handling:
+
+The User class uses the provided information to interact with the database.
+It performs necessary operations (e.g., inserting the user data into the database).
+Returning Data:
+
+The result from the database interaction is returned to userController.
+userController processes this result and sends an appropriate response back to the user.
+Summary
+Router: Manages all routes and directs requests to appropriate controller functions.
+Controller: Contains functions that handle the logic for each route, including processing data and interacting with models.
+Model: Defines classes (e.g., User) that interact directly with the database to perform CRUD operations.
+This organized structure ensures a clear separation of concerns, making the code easier to manage and maintain.
+
+
+
+
+

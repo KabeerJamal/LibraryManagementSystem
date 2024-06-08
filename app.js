@@ -15,9 +15,10 @@ app.use(express.json());
 app.set('views', 'views');
 app.set('view engine', 'ejs');
 
+//Use the router for handling routes
 app.use('/', router)
 
-
+//Start the server and listen on port defined in .env file
 app.listen(process.env.PORT);
 
 
