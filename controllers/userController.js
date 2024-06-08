@@ -1,5 +1,6 @@
 const User = require('../models/User')
 
 exports.home = function(req, res) {
-    res.render('exampleHTML');
+    let user = new User('John', 25, "john7@gmail.com");
+    user.testing();
 }
