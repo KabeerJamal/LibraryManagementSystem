@@ -8,6 +8,8 @@ class User {
     }
 
     // Add methods and properties here
+
+    //Just to test if running this function actually inserts the user into the database
     async testing() {
         try {
             // Insert user information into the database
