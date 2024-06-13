@@ -22,5 +22,5 @@ app.use('/', router)
 app.listen(process.env.PORT);
 
 
-//Change the database workbench, such that it satisfies the User class
-//run the code and check if database upadated
+//add umer code in database
+//start implementing login and register for user
