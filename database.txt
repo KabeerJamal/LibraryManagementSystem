@@ -1,264 +1,196 @@
-Users Table: This will store information about all users including both admins and customers.
-CREATE TABLE Users (
+-- Create Database
+CREATE DATABASE IF NOT EXISTS library_management_system;
+USE library_management_system;
+
+-- Create Users Table
+CREATE TABLE IF NOT EXISTS users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL,
+    user_type ENUM('admin', 'customer') NOT NULL,
+    -- Add other user attributes as needed
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-Admins Table: Inherits attributes from Users.
-CREATE TABLE Admins (
-    admin_id INT PRIMARY KEY,
-    FOREIGN KEY (admin_id) REFERENCES Users(user_id) ON DELETE CASCADE
-);
-
-
-Customers Table: Inherits attributes from Users.
-CREATE TABLE Customers (
-    customer_id INT PRIMARY KEY,
-    FOREIGN KEY (customer_id) REFERENCES Users(user_id) ON DELETE CASCADE,
-    membership_date DATE NOT NULL
-);
-
-Books Table: Stores information about books.
-CREATE TABLE Books (
+-- Create Books Table
+CREATE TABLE IF NOT EXISTS books (
     book_id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
-    author VARCHAR(255) NOT NULL,
-    isbn VARCHAR(20) UNIQUE NOT NULL,
-    publication_year YEAR NOT NULL,
-    copies_available INT DEFAULT 1 CHECK (copies_available >= 0)
-);
-######MySQL's YEAR data type accepts values between 1901 and 2155, or 0000. 
-
-
-Reservations Table: Stores information about book reservations.
-CREATE TABLE Reservations (
-    reservation_id INT AUTO_INCREMENT PRIMARY KEY,
-    book_id INT NOT NULL,
-    customer_id INT NOT NULL,
-    reservation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    status ENUM('reserved', 'collected', 'cancelled') DEFAULT 'reserved',
-    FOREIGN KEY (book_id) REFERENCES Books(book_id),
-    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)
-);
-
-Overdue Table: Stores information about overdue reservations.
-CREATE TABLE Overdue (
-    overdue_id INT AUTO_INCREMENT PRIMARY KEY,
-    reservation_id INT NOT NULL,
-    overdue_date DATE NOT NULL,
-    fine DECIMAL(5,2) DEFAULT 0.00,
-    FOREIGN KEY (reservation_id) REFERENCES Reservations(reservation_id)
-);
-
-
-Triggers
-Update Copies Available After Reservation: Trigger to decrement book copies when a reservation is made
-CREATE TRIGGER after_reservation_insert
-AFTER INSERT ON Reservations
-FOR EACH ROW
-BEGIN
-    IF NEW.status = 'reserved' THEN
-        UPDATE Books
-        SET copies_available = copies_available - 1
-        WHERE book_id = NEW.book_id;
-    END IF;
-END;
-
-
-Update Copies Available After Reservation Cancellation: Trigger to increment book copies when a reservation is cancelled.
-CREATE TRIGGER after_reservation_update
-AFTER UPDATE ON Reservations
-FOR EACH ROW
-BEGIN
-    IF NEW.status = 'cancelled' AND OLD.status = 'reserved' THEN
-        UPDATE Books
-        SET copies_available = copies_available + 1
-        WHERE book_id = NEW.book_id;
-    END IF;
-END;
-
-
-Handle Overdue Records: Trigger to automatically create an overdue record if a reservation is not collected within a specified period (e.g., 7 days).
-CREATE TRIGGER after_reservation_check
-AFTER UPDATE ON Reservations
-FOR EACH ROW
-BEGIN
-    DECLARE current_date DATE;
-    SET current_date = CURDATE();
-    
-    IF NEW.status = 'collected' THEN
-        DELETE FROM Overdue WHERE reservation_id = NEW.reservation_id;
-    ELSEIF NEW.status = 'reserved' AND DATE_ADD(NEW.reservation_date, INTERVAL 7 DAY) < current_date THEN
-        INSERT INTO Overdue (reservation_id, overdue_date, fine)
-        VALUES (NEW.reservation_id, current_date, 5.00);
-    END IF;
-END;
-
-
-Transactions and Savepoints
-Ensure that transactions are properly managed, allowing rollback to savepoints in case of errors.
--- Start a new transaction
-START TRANSACTION;
-
--- Set a savepoint before making changes
-SAVEPOINT before_inserting_user;
-
--- Insert a new user
-INSERT INTO Users (username, password, email) VALUES ('john_doe', 'securepassword', 'john@example.com');
-
--- Assume we have some logic to check if the operation was successful
--- For demonstration, we will use a condition to rollback or commit
-DECLARE success BOOLEAN DEFAULT TRUE;
-
--- Here you would have some logic to determine the success of the operation
--- For example, checking if the user was actually inserted, etc.
-IF success THEN
-    -- Commit the transaction if everything is successful
-    COMMIT;
-ELSE
-    -- Rollback to the savepoint in case of any error
-    ROLLBACK TO SAVEPOINT before_inserting_user;
-    -- Optionally, you can release the savepoint if no longer needed
-    RELEASE SAVEPOINT before_inserting_user;
-END IF;
-
-
-
-
-
-
-############# FULL SQL CODE ##########################
--- Create the database
-CREATE DATABASE LibraryManagementSystem;
-USE LibraryManagementSystem;
-
--- Create the Users table
-CREATE TABLE Users (
-    user_id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
+    author VARCHAR(100) NOT NULL,
+    total_copies INT NOT NULL DEFAULT 0,
+    available_copies INT NOT NULL DEFAULT 0,
+    -- Add other book attributes as needed
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create the Admins table
-CREATE TABLE Admins (
-    admin_id INT PRIMARY KEY,
-    FOREIGN KEY (admin_id) REFERENCES Users(user_id) ON DELETE CASCADE
-);
-
--- Create the Customers table
-CREATE TABLE Customers (
-    customer_id INT PRIMARY KEY,
-    FOREIGN KEY (customer_id) REFERENCES Users(user_id) ON DELETE CASCADE,
-    membership_date DATE NOT NULL
-);
-
--- Create the Books table
-CREATE TABLE Books (
-    book_id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    author VARCHAR(255) NOT NULL,
-    isbn VARCHAR(20) UNIQUE NOT NULL,
-    publication_year YEAR NOT NULL,
-    copies_available INT DEFAULT 1 CHECK (copies_available >= 0)
-);
-
--- Create the Reservations table
-CREATE TABLE Reservations (
+-- Create Reservations Table
+CREATE TABLE IF NOT EXISTS reservations (
     reservation_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
     book_id INT NOT NULL,
-    customer_id INT NOT NULL,
-    reservation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    status ENUM('reserved', 'collected', 'cancelled') DEFAULT 'reserved',
-    FOREIGN KEY (book_id) REFERENCES Books(book_id),
-    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)
+    status ENUM('reserved', 'completed', 'cancelled') NOT NULL DEFAULT 'reserved',
+    due_date DATE NOT NULL,
+    -- Add other reservation attributes as needed
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (book_id) REFERENCES books(book_id)
 );
 
--- Create the Overdue table
-CREATE TABLE Overdue (
-    overdue_id INT AUTO_INCREMENT PRIMARY KEY,
-    reservation_id INT NOT NULL,
-    overdue_date DATE NOT NULL,
-    fine DECIMAL(5,2) DEFAULT 0.00,
-    FOREIGN KEY (reservation_id) REFERENCES Reservations(reservation_id)
+-- Create Overdue Reservations Table (for fines)
+CREATE TABLE IF NOT EXISTS overdue_reservations (
+    reservation_id INT PRIMARY KEY,
+    overdue_fine DECIMAL(10, 2) DEFAULT 0.00,
+    paid BOOLEAN NOT NULL DEFAULT 0,
+    FOREIGN KEY (reservation_id) REFERENCES reservations(reservation_id)
 );
 
--- Trigger to decrement copies available after a reservation
-CREATE TRIGGER after_reservation_insert
-AFTER INSERT ON Reservations
-FOR EACH ROW
-BEGIN
-    IF NEW.status = 'reserved' THEN
-        UPDATE Books
-        SET copies_available = copies_available - 1
-        WHERE book_id = NEW.book_id;
-    END IF;
-END;
+-- Create Transactions Table
+CREATE TABLE IF NOT EXISTS transactions (
+    transaction_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    transaction_type ENUM('issue', 'return') NOT NULL,
+    book_id INT NOT NULL,
+    transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    -- Add other transaction attributes as needed
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (book_id) REFERENCES books(book_id)
+);
 
--- Trigger to increment copies available after reservation cancellation
-CREATE TRIGGER after_reservation_update
-AFTER UPDATE ON Reservations
-FOR EACH ROW
-BEGIN
-    IF NEW.status = 'cancelled' AND OLD.status = 'reserved' THEN
-        UPDATE Books
-        SET copies_available = copies_available + 1
-        WHERE book_id = NEW.book_id;
-    END IF;
-END;
+-- Example Transactions
 
--- Trigger to handle overdue records
-CREATE TRIGGER after_reservation_check
-AFTER UPDATE ON Reservations
-FOR EACH ROW
+-- Example: Issue Book Transaction
+DELIMITER $$
+
+CREATE PROCEDURE IssueBook(IN p_user_id INT, IN p_book_id INT)
 BEGIN
-    DECLARE current_date DATE;
-    SET current_date = CURDATE();
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+    END;
+
+    START TRANSACTION;
     
-    IF NEW.status = 'collected' THEN
-        DELETE FROM Overdue WHERE reservation_id = NEW.reservation_id;
-    ELSEIF NEW.status = 'reserved' AND DATE_ADD(NEW.reservation_date, INTERVAL 7 DAY) < current_date THEN
-        INSERT INTO Overdue (reservation_id, overdue_date, fine)
-        VALUES (NEW.reservation_id, current_date, 5.00);
-    END IF;
-END;
-
--- Example transaction with savepoints
-START TRANSACTION;
-
--- Savepoint before inserting a user
-SAVEPOINT before_inserting_user;
-
--- Insert a new user
-INSERT INTO Users (username, password, email) VALUES ('john_doe', 'securepassword', 'john@example.com');
-
--- Assume a condition to determine success
-DECLARE success BOOLEAN DEFAULT TRUE;
-
-IF success THEN
+    -- Insert into transactions table
+    INSERT INTO transactions (user_id, transaction_type, book_id)
+    VALUES (p_user_id, 'issue', p_book_id);
+    
+    -- Update reservations table (mark reservation as completed)
+    UPDATE reservations
+    SET status = 'completed'
+    WHERE user_id = p_user_id
+    AND book_id = p_book_id;
+    
     COMMIT;
-ELSE
-    ROLLBACK TO SAVEPOINT before_inserting_user;
-    RELEASE SAVEPOINT before_inserting_user;
-END IF;
+END$$
 
+DELIMITER ;
 
+-- Example: Return Book Transaction
+DELIMITER $$
 
+CREATE PROCEDURE ReturnBook(IN p_user_id INT, IN p_book_id INT)
+BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+    END;
 
+    START TRANSACTION;
+    
+    -- Update transactions table (record return)
+    UPDATE transactions
+    SET transaction_type = 'return'
+    WHERE user_id = p_user_id
+    AND book_id = p_book_id
+    AND transaction_type = 'issue'
+    LIMIT 1;
+    
+    -- Update reservations table (cancel reservation)
+    UPDATE reservations
+    SET status = 'cancelled'
+    WHERE user_id = p_user_id
+    AND book_id = p_book_id
+    AND status = 'reserved'
+    LIMIT 1;
+    
+    -- Optional: Update overdue_reservations table if overdue and mark fines as paid
+    
+    COMMIT;
+END$$
 
-###################### SAMPLE INSERTIONS OF BOOK ##############
-INSERT INTO Books (title, author, isbn, publication_year, copies_available) VALUES 
-('To Kill a Mockingbird', 'Harper Lee', '9780061120084', 2010, 5),
-('1984', 'George Orwell', '9780451524935', 2009, 3),
-('The Great Gatsby', 'F. Scott Fitzgerald', '9780743273565', 2008, 4),
-('The Catcher in the Rye', 'J.D. Salinger', '9780316769488', 2007, 6),
-('Pride and Prejudice', 'Jane Austen', '9781503290563', 2006, 2),
-('The Hobbit', 'J.R.R. Tolkien', '9780345339683', 2005, 8),
-('Fahrenheit 451', 'Ray Bradbury', '9781451673319', 2004, 7),
-('Moby-Dick', 'Herman Melville', '9781503280786', 2003, 1),
-('War and Peace', 'Leo Tolstoy', '9781400079988', 2002, 4),
-('Crime and Punishment', 'Fyodor Dostoevsky', '9780486415871', 2001, 5);
+DELIMITER ;
+
+-- Example: Renew Book Transaction
+DELIMITER $$
+
+CREATE PROCEDURE RenewBook(IN p_user_id INT, IN p_book_id INT, IN p_new_due_date DATE)
+BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+    END;
+
+    START TRANSACTION;
+    
+    -- Update reservations table (renew reservation)
+    UPDATE reservations
+    SET due_date = p_new_due_date
+    WHERE user_id = p_user_id
+    AND book_id = p_book_id
+    AND status = 'reserved'
+    LIMIT 1;
+    
+    COMMIT;
+END$$
+
+DELIMITER ;
+
+-- Example: Pay Overdue Fines Transaction
+DELIMITER $$
+
+CREATE PROCEDURE PayOverdueFines(IN p_user_id INT, IN p_book_id INT)
+BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+    END;
+
+    START TRANSACTION;
+    
+    -- Update overdue_reservations table (mark fines as paid)
+    UPDATE overdue_reservations AS o
+    JOIN reservations AS r ON o.reservation_id = r.reservation_id
+    SET o.paid = 1
+    WHERE r.user_id = p_user_id
+    AND r.book_id = p_book_id
+    AND r.status = 'reserved'
+    AND r.due_date < NOW()
+    AND o.paid = 0;
+    
+    COMMIT;
+END$$
+
+DELIMITER ;
+
+-- Example: Update User Email Transaction (Admin only)
+DELIMITER $$
+
+CREATE PROCEDURE UpdateUserEmail(IN p_admin_id INT, IN p_user_id INT, IN p_new_email VARCHAR(100))
+BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+    END;
+
+    START TRANSACTION;
+    
+    -- Update users table (update user email)
+    UPDATE users
+    SET email = p_new_email
+    WHERE user_id = p_user_id
+    AND (user_type = 'admin' OR user_id = p_admin_id); -- Ensure admin or self-update only
+    
+    COMMIT;
+END$$
+
+DELIMITER ;
