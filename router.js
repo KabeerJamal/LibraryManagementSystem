@@ -6,8 +6,12 @@ const bookController = require('./controllers/bookController');
 
 // when user visits the home page, run the home function in userController file
 router.get('/', userController.home);
+
 router.get('/loginCustomerPage', userController.loginCustomerPage);
+router.post('/loginCustomer', userController.loginCustomer);
+
 router.get('/registerCustomerPage', userController.registerCustomerPage);
+router.post('/registerCustomer', userController.registerCustomer);
 
 router.get('/adminPortal' , userController.adminPortal);
 
