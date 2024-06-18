@@ -3,7 +3,11 @@ const User = require('../models/User')
 
 //this function is called when the user visits the home page(check router file)
 exports.home = function(req, res) {
-    res.render('home.ejs');
+    if (req.session.user) {        
+         res.render('userPortal.ejs', {user: req.session.user});
+     } else {
+        res.render('home.ejs');
+     }
 }
 
 // This function renders the customer login page
@@ -16,9 +20,15 @@ exports.loginCustomerPage = function(req, res) {
 exports.loginCustomer = async function(req, res) {
     let user = new User(req.body, 'customer');
     try {
-        const loggedInUser = await user.login();
-        res.send(loggedInUser);
+        await user.login();
+        
+        //create a session for the user and then redirect to exports.home
+        req.session.user = {username: user.data.username, role: 'customer'};
+        req.session.save(function() {
+            res.redirect('/');
+        });
     } catch (error) {
+        console.log("hi");
         res.send(error);
     }
 }

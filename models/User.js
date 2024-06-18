@@ -49,7 +49,6 @@ class User {
         return new Promise(async (resolve, reject) => {
             this.cleanUp();
             let user = await db.query('SELECT * FROM users WHERE username = ? AND password = ?', [this.data.username, this.data.password]);
-            console.log(user);
             if (user[0].length > 0) {
                 resolve('Successfully logged in');
             } else {
@@ -92,7 +91,6 @@ class User {
             //only if username is valid then check to see if it is already taken
             if (this.data.username.length > 2 && this.data.username.length < 31 && validator.isAlphanumeric(this.data.username)) {
                     let usernameExists = await db.query('SELECT * FROM users WHERE username = ?', [this.data.username]);
-                    console.log(usernameExists);
                     if (usernameExists[0].length > 0) {this.errors.push("That username is already taken.")}
             }
 
