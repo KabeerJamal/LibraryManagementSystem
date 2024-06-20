@@ -3,10 +3,13 @@ const app = express();
 const dotenv = require('dotenv');
 
 
+
+
 dotenv.config();
 
 const session = require('express-session');
 const mysqlStore = require('express-mysql-session')(session);
+const flash = require('connect-flash');
 
 const options ={
     connectionLimit: 10,
@@ -26,7 +29,6 @@ const options ={
     }
 }
 
-
 const TWO_HOURS = 1000 * 60 * 60 * 2;
 const IN_PROD = process.env.NODE_ENV  === 'production';
 const  sessionStore = new mysqlStore(options);
@@ -45,12 +47,17 @@ app.use(session({
 }))
 
 
-
+app.use(flash());
 
 const router = require('./router');
 
 // Set the public folder as static
 app.use(express.static('public'));
+
+app.use(function(req, res, next) {
+    res.locals.errors = req.flash('errors');
+    next();
+})
 
 // Parse URL-encoded bodies (as sent by HTML forms)
 app.use(express.urlencoded({ extended: false }));
@@ -66,5 +73,4 @@ app.use('/', router)
 app.listen(process.env.PORT);
 
 
-//add umer code in database
-//start implementing login and register for user
+

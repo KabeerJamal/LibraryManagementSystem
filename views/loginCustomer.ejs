@@ -5,6 +5,10 @@
 </head>
 <body>
 
+    <% errors.forEach(function(message) { %>
+        <p><%= message %>. This is a flash message,needs to be modified with CSS</p>
+    <%}) %>
+
 <form action="/loginCustomer" method="POST">
     <label for="username">Username:</label>
     <input type="text" id="username" name="username" required><br><br>

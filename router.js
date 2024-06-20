@@ -1,9 +1,9 @@
-//Over here we make all get and post requests
-
 /**
  * Express router for handling different routes.
  * @module router
  */
+
+
 
 const express = require('express');
 const router = express.Router();
@@ -25,11 +25,32 @@ router.get('/', userController.home);
 router.get('/loginCustomerPage', userController.loginCustomerPage);
 
 /**
+ * Route for the login admin page.
+ * @name GET /loginAdminPage
+ * @function
+ */
+router.get('/loginAdminPage', userController.loginAdminPage);
+
+/**
+ * Route for logging in an admin.
+ * @name POST /loginAdmin
+ * @function
+ */
+router.post('/loginAdmin', userController.loginAdmin);
+
+/**
  * Route for logging in a customer.
  * @name POST /loginCustomer
  * @function
  */
 router.post('/loginCustomer', userController.loginCustomer);
+
+/**
+ * Route for logging out a customer and admin.
+ * @name GET /logout
+ * @function
+ */
+router.get('/logout', userController.logout);
 
 /**
  * Route for the register customer page.

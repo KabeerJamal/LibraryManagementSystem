@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Register Customer Page</title>
+    <title>Login Customer Page</title>
 </head>
 <body>
 
@@ -9,20 +9,14 @@
         <p><%= message %>. This is a flash message,needs to be modified with CSS</p>
     <%}) %>
 
-<form action="/registerCustomer" method="POST">
-
+<form action="/loginAdmin" method="POST">
     <label for="username">Username:</label>
     <input type="text" id="username" name="username" required><br><br>
-
-
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required><br><br>
-    
     
     <label for="password">Password:</label>
     <input type="password" id="password" name="password" required><br><br>
     
-    <input type="submit" value="Register">
+    <input type="submit" value="Login">
 </form>
 
 </body>

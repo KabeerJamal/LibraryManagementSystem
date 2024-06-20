@@ -1,5 +1,6 @@
 const db = require('../db.js');
 const validator = require('validator');
+const bcrypt = require('bcryptjs');
 //this is where we interact with the database
 
 
@@ -28,6 +29,9 @@ class User {
             //add information in database
             if (this.errors.length == 0) {
                 try {
+                    //hash user password
+                    let salt = bcrypt.genSaltSync(10);
+                    this.data.password = bcrypt.hashSync(this.data.password, salt);
                     await db.query('INSERT INTO users (username, email, password, role, created_at) VALUES (?, ?, ?, ?, ?)', [this.data.username, this.data.email, this.data.password, this.role, new Date()]);
                     resolve();
                 } catch (error) {
@@ -42,16 +46,66 @@ class User {
     }
 
     /**
-     * Logs in the user.
+     * Logs in the customer user.
      * @returns {Promise<string>} A promise that resolves to a success message if the login is successful, or rejects with an error message if the login fails.
      */
-    login() {
+    loginCustomer() {
         return new Promise(async (resolve, reject) => {
             this.cleanUp();
-            let user = await db.query('SELECT * FROM users WHERE username = ? AND password = ?', [this.data.username, this.data.password]);
-            if (user[0].length > 0) {
+            try {
+                
+                // Step 1: Retrieve the user by username
+                const [rows] = await db.query('SELECT * FROM users WHERE username = ? AND role = ? ', [this.data.username, 'customer']);
+
+                // Step 2: Check if user exists
+                if (rows.length === 0) {
+                    reject('User not found');
+                }
+        
+                const user = rows[0];
+        
+                // Step 3: Compare provided password with the stored hashed password
+                const isPasswordValid = await bcrypt.compare(this.data.password, user.password);
+        
+                if (!isPasswordValid) {
+                    reject('Invalid password');
+                }
+        
                 resolve('Successfully logged in');
-            } else {
+            } catch {
+                reject('Invalid username or password');
+            }
+        });
+    }
+
+    /**
+     * Logs in the admin user.
+     * @returns {Promise<string>} A promise that resolves to a success message if the login is successful, or rejects with an error message if the login fails.
+     */
+    loginAdmin() {
+        return new Promise(async (resolve, reject) => {
+            this.cleanUp();
+            try {
+                
+                // Step 1: Retrieve the user by username
+                const [rows] = await db.query('SELECT * FROM users WHERE username = ? AND role = ? ', [this.data.username, 'admin']);
+        
+                // Step 2: Check if user exists
+                if (rows.length === 0) {
+                    reject('User not found');
+                }
+        
+                const user = rows[0];
+        
+                // Step 3: Compare provided password with the stored hashed password
+                const isPasswordValid = await bcrypt.compare(this.data.password, user.password);
+        
+                if (!isPasswordValid) {
+                    reject('Invalid password');
+                }
+        
+                resolve('Successfully logged in');
+            } catch {
                 reject('Invalid username or password');
             }
         });
