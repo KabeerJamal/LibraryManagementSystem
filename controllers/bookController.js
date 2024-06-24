@@ -5,14 +5,21 @@ exports.addBooks = async function(req, res) {
 }
 
 exports.addBooksToDatabase = async function(req, res) {
-    // Get the book information from the form
-    const title = req.body.title;
-    const author = req.body.author;
-    const isbn = req.body.isbn;
-    const publicationYear = req.body.publicationYear;
-
     // Create a new book object
-    const book = new Books(title, author, isbn, publicationYear);
+    //console.log(req.body);
+    const book = new Books(req.body);
 
-    await book.addBooksToDatabase();
+    try {
+        await book.addBooksToDatabase();
+        req.flash('success', 'Book added successfully');
+        req.session.save(function() {
+            res.redirect('/adminPortal');
+        })
+    } catch (error) {
+        req.flash('errors', 'Book not added, please try again.');
+        req.session.save(function() {
+            res.redirect('/addBooks');
+        })
+    }
+    
 }

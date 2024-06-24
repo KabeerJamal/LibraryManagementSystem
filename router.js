@@ -85,6 +85,6 @@ router.get('/addBooks', bookController.addBooks);
  * @name POST /addBooksToDatabase
  * @function
  */
-router.post('/addBooksToDatabase', bookController.addBooksToDatabase);
+router.post('/addBookToDatabase', bookController.addBooksToDatabase);
 
 module.exports = router;

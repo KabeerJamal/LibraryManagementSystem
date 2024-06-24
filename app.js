@@ -56,6 +56,7 @@ app.use(express.static('public'));
 
 app.use(function(req, res, next) {
     res.locals.errors = req.flash('errors');
+    res.locals.success = req.flash('success');
     next();
 })
 
@@ -71,6 +72,7 @@ app.use('/', router)
 
 //Start the server and listen on port defined in .env file
 app.listen(process.env.PORT);
+
 
 
 
