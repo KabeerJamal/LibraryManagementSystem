@@ -86,5 +86,12 @@ router.get('/addBooks', bookController.addBooks);
  * @function
  */
 router.post('/addBookToDatabase', bookController.addBooksToDatabase);
+router.post('/increaseCopies/:bookId', bookController.increaseCopies);
+
+//receives a post search request with input field, which we then direct to bookController.searchBooks
+router.post('/search', bookController.searchBooks);
+
+
+router.get('/book/:bookId', bookController.bookDetails);
 
 module.exports = router;

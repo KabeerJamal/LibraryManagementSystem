@@ -72,7 +72,7 @@ class Books {
             // Book already exists, update its total and available copies
             const bookId = rows[0].book_id; // 'id' is the primary key of your 'books' table
         
-            // update query to increase total and available copies by 1
+            // update query to increase total and available copies of the book
             const updateQuery = 'UPDATE books SET total_copies = total_copies + ?, available_copies = available_copies + ? WHERE book_id = ?';
             const updateValues = [this.data.copies, this.data.copies, bookId];
         
@@ -81,7 +81,65 @@ class Books {
             return false;
         }
     }
+
+    //create a searchBooks function
+    //this book will send the information it received and call a search query to search from the database the book and return the information of that book
+    static searchBooks(searchTerm) {
+        /*
+        return new Promise(async (resolve, reject) => {
+            console.log(searchTerm);
+            const query = 'SELECT * FROM books WHERE title LIKE ? OR author LIKE ?';
+            const values = [`%${searchTerm}%`, `%${searchTerm}%`];
+            const [rows] = await db.query(query, values);
+            resolve(rows);
+
+
+        })
+        */
+
+        return new Promise(async (resolve, reject) => {
     
+            let query;
+            let values;
+    
+            if (!searchTerm) {
+                // If search term is empty, return no results
+                query = 'SELECT * FROM books WHERE 1 = 0';
+                values = [];
+            } else {
+                // If search term is not empty, proceed with the original query
+                query = 'SELECT * FROM books WHERE title LIKE ? OR author LIKE ?';
+                values = [`%${searchTerm}%`, `%${searchTerm}%`];
+            }
+    
+            try {
+                const [rows] = await db.query(query, values);
+                resolve(rows);
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    //create a bookDetails function, which returns information of the book with associated bookId
+    static receiveBookDetails(bookId) {
+        return new Promise(async (resolve, reject) => {
+            const query = 'SELECT * FROM books WHERE book_id = ?';
+            const values = [bookId];
+            const [rows] = await db.query(query, values);
+            resolve(rows[0]);
+        });
+    }
+
+    static increaseCopies(bookId, copiesToAdd) {
+        return new Promise(async (resolve, reject) => {
+            //We are doing the same thing as we did in line 75, so we need to make it more clean in the future
+            const updateQuery = 'UPDATE books SET total_copies = total_copies + ?, available_copies = available_copies + ? WHERE book_id = ?';
+            const updateValues = [copiesToAdd, copiesToAdd, bookId];
+            await db.query(updateQuery, updateValues);
+            resolve();
+        });
+    }
 }
 
 module.exports = Books;
