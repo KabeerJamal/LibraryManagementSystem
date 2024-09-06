@@ -26,8 +26,6 @@ exports.addBooksToDatabase = async function(req, res) {
 
 exports.increaseCopies = async function(req, res) {
     try {
-        console.log(req.body);
-        console.log(req.body.copiesToAdd);
         await Books.increaseCopies(req.params.bookId, req.body.copiesToAdd);
         req.flash('success', 'Book copies increased successfully');
         req.session.save(function() {
@@ -40,6 +38,38 @@ exports.increaseCopies = async function(req, res) {
         })
     }
 }
+
+
+exports.decreaseCopies = async function(req, res) {
+    try {
+        await Books.decreaseCopies(req.params.bookId, req.body.copiesToSubtract);
+        req.flash('success', 'Book copies decreased successfully');
+        req.session.save(function() {
+            res.redirect('/adminPortal');
+        })
+    } catch (error) {
+        req.flash('errors', error);
+        req.session.save(function() {
+            res.redirect('/adminPortal');
+        })
+    }
+}
+
+exports.removeBook = async function(req, res) {
+    try {
+        await Books.removeBook(req.params.bookId);
+        req.flash('success', 'Book deleted successfully');
+        req.session.save(function() {
+            res.redirect('/adminPortal');
+        })
+    } catch (error) {   
+        req.flash('errors', 'Book not deleted, please try again.');
+        req.session.save(function() {
+            res.redirect('/adminPortal');
+        })
+    }
+}
+
 
 
 //create a searchBooks function

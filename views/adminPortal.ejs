@@ -12,8 +12,11 @@
         <p><%= message %>. This is a flash message,needs to be modified with CSS</p>
     <%}) %>
 
+    <% errors.forEach(function(message) { %>
+        <p><%= message %>. This is a flash message,needs to be modified with CSS</p>
+    <%}) %>
+
     <a href="/addBooks">Add Books</a>
-    <a href="/removeBooks">Remove Books</a>
     <a href="/logout">Logout</a>
     <div class="search-icon">
         <i class="fas fa-search"></i>

@@ -39,7 +39,7 @@ export default class Search{
             this.resultArea.innerHTML = '';
             this.typingWaitTimer = setTimeout(() => {
                 this.sendRequest();
-            }, 3000);
+            }, 500);
         }
 
         this.previousValue = value

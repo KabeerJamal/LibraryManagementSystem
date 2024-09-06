@@ -15,15 +15,21 @@
     </div>
     <div>
         <h2>Total copies: </h2>
+        <p><%= bookInfo.total_copies%></p>
         <!--
         Need to work on decrease copise as well
         -->
+        <form method="POST" action="/decreaseCopies/<%= bookInfo.book_id %>">
+            <h2>Decrease Total Copies by:</h2>
+            <input type="number" name="copiesToSubtract" required>
+            <button type="submit">Submit</button>
+        </form>
         <form method="POST" action="/increaseCopies/<%= bookInfo.book_id %>">
-            <h2>Update Total Copies:</h2>
+            <h2>Increase Total Copies by:</h2>
             <input type="number" name="copiesToAdd" required>
             <button type="submit">Submit</button>
         </form>
-        <p><%= bookInfo.total_copies%></p>
+
     </div>
     <div>
         <h2>Available copies:</h2>
@@ -37,5 +43,6 @@
         <h2>Added to this library at:</h2>
         <p><%= bookInfo.created_at%></p>
     </div>
+    <a href="/removeBook/<%= bookInfo.book_id %>">Remove Book</a>
 </body>
 </html>

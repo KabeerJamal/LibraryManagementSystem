@@ -87,6 +87,8 @@ router.get('/addBooks', bookController.addBooks);
  */
 router.post('/addBookToDatabase', bookController.addBooksToDatabase);
 router.post('/increaseCopies/:bookId', bookController.increaseCopies);
+router.post('/decreaseCopies/:bookId', bookController.decreaseCopies);
+router.get('/removeBook/:bookId', bookController.removeBook);
 
 //receives a post search request with input field, which we then direct to bookController.searchBooks
 router.post('/search', bookController.searchBooks);

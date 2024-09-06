@@ -140,6 +140,39 @@ class Books {
             resolve();
         });
     }
+
+    
+    static decreaseCopies(bookId, copiesToSubtract) {
+        return new Promise(async (resolve, reject) => {
+            //We are doing the same thing as we did in line 75, so we need to make it more clean in the future
+
+            const book = await Books.receiveBookDetails(bookId);
+            const availableCopies = book.available_copies;
+            const totalCopies = book.total_copies;
+            if(availableCopies < copiesToSubtract) {
+                reject('These copies need to be available before they can be removed');
+                return;
+            }
+            if(totalCopies < copiesToSubtract) {
+                reject('You cannot remove more than the total copies');
+                return;
+            }
+
+            const updateQuery = 'UPDATE books SET total_copies = total_copies - ?, available_copies = available_copies - ? WHERE book_id = ?';
+            const updateValues = [copiesToSubtract, copiesToSubtract, bookId];
+            await db.query(updateQuery, updateValues);
+            resolve();
+        });
+    }
+
+    static removeBook(bookId) { 
+        return new Promise(async (resolve, reject) => {
+            const query = 'DELETE FROM books WHERE book_id = ?';
+            const values = [bookId];
+            await db.query(query, values);
+            resolve();
+        });
+    }
 }
 
 module.exports = Books;
