@@ -1,25 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Book Portal</title>
+    <link rel="stylesheet" href="addbook.css">
 </head>
 
-<form action="/addBookToDatabase" method="POST">
-    <label for="title">Book Title:</label>
-    <input type="text" id="title" name="title" required><br><br>
+<body>
 
-    <label for="author">Author:</label>
-    <input type="text" id="author" name="author" required><br><br>
+    <div class="form-container">
+        <h1>Add a New Book</h1>
+        <form action="/addBookToDatabase" method="POST">
+            <div class="form-group">
+                <label for="title">Book Title:</label>
+                <input type="text" id="title" name="title" required>
+            </div>
 
-    <label for="year">Publication Year:</label>
-    <input type="number" id="year" name="year" required><br><br>
+            <div class="form-group">
+                <label for="author">Author:</label>
+                <input type="text" id="author" name="author" required>
+            </div>
 
-    <label for="copies">Number of Copies:</label>
-    <input type="number" id="copies" name="copies" value="1" min="1"><br><br>
+            <div class="form-group">
+                <label for="year">Publication Year:</label>
+                <input type="number" id="year" name="year" required>
+            </div>
 
-    <input type="submit" value="Submit">
-</form>
-<script src="/main-bundled.js"></script>
+            <div class="form-group">
+                <label for="copies">Number of Copies:</label>
+                <input type="number" id="copies" name="copies" value="1" min="1">
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Submit">
+            </div>
+        </form>
+    </div>
+
+    <script src="/main-bundled.js"></script>
 
 </body>
+
 </html>

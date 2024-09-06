@@ -1,23 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Login Customer Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Admin Page</title>
+    <link rel="stylesheet" href="loginadmin.css">
 </head>
+
 <body>
 
-    <% errors.forEach(function(message) { %>
-        <p><%= message %>. This is a flash message,needs to be modified with CSS</p>
-    <%}) %>
+    <!-- Flash Messages -->
+    <div class="flash-messages">
+        <% errors.forEach(function(message) { %>
+            <p class="flash-message">
+                <%= message %>. This is a flash message, needs to be modified with CSS
+            </p>
+            <% }) %>
+    </div>
 
-<form action="/loginAdmin" method="POST">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" required><br><br>
-    
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required><br><br>
-    
-    <input type="submit" value="Login">
-</form>
+    <!-- Login Form -->
+    <div class="login-container">
+        <h1>Customer Login</h1>
+        <form action="/loginAdmin" method="POST">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Login">
+            </div>
+        </form>
+    </div>
 
 </body>
+
 </html>

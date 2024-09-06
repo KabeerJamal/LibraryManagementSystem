@@ -1,15 +1,46 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Home Page</title>
-</head>
-<body> 
-    <h1>Welcome to the Home Page</h1>
+<html lang="en">
 
-  
-    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="home.css">
+</head>
+
+<body>
+    <h1>U.K Library</h1>
+
     <a href="/loginCustomerPage">Login Customer</a>
     <a href="/registerCustomerPage">Register Customer</a>
     <a href="/loginAdminPage">Login Admin</a>
-  <!-- footer begins -->
-  <%- include('includes/footer') %>
+
+    <!-- JavaScript for Parallax Cursor -->
+    <script>
+        // Create the custom cursor element
+        const cursor = document.createElement('div');
+        cursor.id = 'cursor';
+        document.body.appendChild(cursor);
+
+        // Parallax movement for the cursor
+        document.addEventListener('mousemove', (e) => {
+            const parallaxFactor = 0.15; // Adjust this factor to control the parallax effect
+
+            // Calculate the offset of the mouse position relative to the center
+            const mouseX = e.pageX - window.innerWidth / 2;
+            const mouseY = e.pageY - window.innerHeight / 2;
+
+            // Apply parallax transformation to the custom cursor
+            cursor.style.transform = `translate(${mouseX * parallaxFactor}px, ${mouseY * parallaxFactor}px)`;
+            cursor.style.left = `${e.pageX}px`;
+            cursor.style.top = `${e.pageY}px`;
+        });
+    </script>
+
+    <!-- footer begins -->
+    <%- include('includes/footer') %>
+</body>
+
+</html> 

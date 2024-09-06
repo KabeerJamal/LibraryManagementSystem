@@ -1,0 +1,136 @@
+/* Reset and basic styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+    cursor: none;
+    /* Hide default cursor */
+}
+
+/* Body styling with background image and overlay */
+body {
+    background-image: url('lms.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    /* Centers content horizontally */
+    align-items: center;
+    /* Centers content vertically */
+    flex-direction: column;
+    /* Stack heading and links vertically */
+    text-align: center;
+    /* Centers text */
+    position: relative;
+    overflow: hidden;
+}
+
+/* Dark overlay to make text more visible */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+}
+
+/* Custom cursor effect */
+#cursor {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    pointer-events: none;
+    transition: transform 0.1s ease;
+    z-index: 9999;
+}
+
+/* Elegant Heading with Subtle Glow representing wisdom */
+h1 {
+    font-size: 4rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.6), 0 0 20px rgba(255, 255, 255, 0.4);
+    margin-bottom: 50px;
+    opacity: 0;
+    animation: fadeIn 3s ease forwards, wisdomGlow 5s infinite alternate ease-in-out;
+    z-index: 1;
+}
+
+/* Smooth Fade-in animation */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Gentle Glowing effect representing wisdom */
+@keyframes wisdomGlow {
+    0% {
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.6), 0 0 20px rgba(255, 255, 255, 0.4);
+    }
+
+    100% {
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.7), 0 0 40px rgba(255, 255, 255, 0.6);
+    }
+}
+
+/* Anchor (link) styling */
+a {
+    display: inline-block;
+    margin: 20px;
+    padding: 20px 50px;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    transition: all 0.4s ease;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+a:hover {
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+    /* Slight enlarge on hover */
+}
+
+/* Responsive Design for mobile screens */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    a {
+        font-size: 1.2rem;
+        padding: 15px 30px;
+    }
+
+    body {
+        cursor: default;
+        /* Default cursor on mobile */
+    }
+
+    #custom-cursor {
+        display: none;
+        /* Hide the custom cursor on mobile */
+    }
+}
