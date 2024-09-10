@@ -75,6 +75,20 @@ app.listen(process.env.PORT);
 
 
 //add publication year as well in search
-//increasing copies via search done.
-//file in includes folder for flash messages
 
+//file in includes folder for flash messages
+//some changes in home.ejs
+
+///adminPortal opening without asking user pass
+
+
+
+//user has reserve button when searching, and user cant  increase decrease copies or delete book(needs to be done)
+//user reserve add to cart?
+
+//Tomm
+//user cant delete or increase decrease copies
+//pull umer code
+//push your code
+
+//work more on the project

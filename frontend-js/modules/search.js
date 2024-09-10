@@ -49,20 +49,27 @@ export default class Search{
         axios.post('/search', {searchTerm: this.searchField.value}).then((response) => {
             //over here we get the response from the server, which is information of the book.
             //we then display this information in the result container by using .innerHTML
-            if (response.data.length == 0) {
+
+        
+            if (response.data.books.length == 0) {
                 this.resultArea.innerHTML = `<p class="alert alert-danger text-center shadow-sm">No results found</p>`;
                 this.hideLoaderIcon();
             } else {
-                for (let i = 0; i < response.data.length; i++) {
+                for (let i = 0; i < response.data.books.length; i++) {
                     this.resultArea.innerHTML += `<p>${i+1}</p>
-                    <a href="/book/${response.data[i].book_id}" class="search-overlay__result">
-                    <p class="search-overlay__result-title">${response.data[i].title}</p>
-                    <p class="search-overlay__result-author">${response.data[i].author}</p>
+                    <a href="/book/${response.data.books[i].book_id}" class="search-overlay__result">
+                    <p class="search-overlay__result-title">${response.data.books[i].title}</p>
+                    <p class="search-overlay__result-author">${response.data.books[i].author}</p>
                     </a>`;
+                    
+                    if(response.data.role == 'customer') {
+                        this.resultArea.innerHTML += `<button class="btn btn-primary">Reserve</button>`;
+                    }
                 }
                 this.hideLoaderIcon();
             }
-        }).catch(() => {
+        }).catch((error) => {
+            console.log(error);
             alert('Hello, the request failed');
         })
     }

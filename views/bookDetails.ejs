@@ -19,6 +19,7 @@
         <!--
         Need to work on decrease copise as well
         -->
+        <% if (bookInfo.role == 'admin') { %>
         <form method="POST" action="/decreaseCopies/<%= bookInfo.book_id %>">
             <h2>Decrease Total Copies by:</h2>
             <input type="number" name="copiesToSubtract" required>
@@ -29,6 +30,7 @@
             <input type="number" name="copiesToAdd" required>
             <button type="submit">Submit</button>
         </form>
+        <% } %>
 
     </div>
     <div>
@@ -43,6 +45,8 @@
         <h2>Added to this library at:</h2>
         <p><%= bookInfo.created_at%></p>
     </div>
+    <% if (bookInfo.role == 'admin') { %>
     <a href="/removeBook/<%= bookInfo.book_id %>">Remove Book</a>
+    <% } %>
 </body>
 </html>
