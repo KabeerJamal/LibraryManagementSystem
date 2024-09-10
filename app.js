@@ -83,12 +83,12 @@ app.listen(process.env.PORT);
 
 
 
-//user has reserve button when searching, and user cant  increase decrease copies or delete book(needs to be done)
+
 //user reserve add to cart?
 
 //Tomm
-//user cant delete or increase decrease copies
-//pull umer code
-//push your code
+
+//pseudo code for Umer
+//basic code for Reservation
 
 //work more on the project
