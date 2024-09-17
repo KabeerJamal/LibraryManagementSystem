@@ -1,0 +1,12 @@
+hellllllllllllllllo
+<h1>Reservation Details</h1>
+<div>
+    <% reservations.forEach(function(reservation) { %>
+        <p><%= reservation.reservation_id%></p>
+        <p><%= reservation.book_id %></p>
+        <p><%= reservation.number_of_copies %></p>
+        <p><%= reservation.status %></p>
+        <p><%= reservation.reserve_date %></p>
+        <p><%= reservation.collect_date %></p>
+    <% }); %>
+</div>

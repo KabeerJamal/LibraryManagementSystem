@@ -93,9 +93,15 @@ exports.searchBooks = async function(req, res) {
 exports.bookDetails = async function(req, res) {
     //send information to Books.js
     try {
+        //console.log(req.body.dontRender);
         const bookInfo = await Books.receiveBookDetails(req.params.bookId);
         bookInfo.role = req.session.user.role;
-        res.render('bookDetails.ejs', {bookInfo});
+        if(req.body.dontRender == true) {
+            res.json({bookInformation: bookInfo, customer: req.session.user.username});
+        } else {
+            res.render('bookDetails.ejs', {bookInfo});
+        }
+        
     } catch (error) {
         console.log(error);
     }

@@ -88,7 +88,30 @@ app.listen(process.env.PORT);
 
 //Tomm
 
-//pseudo code for Umer
-//basic code for Reservation
 
-//work more on the project
+//Can a user reserve multiple books at a time? then in reservation table, array like structure neded for bookId and copyId
+//add images to books
+//User should be able to reserve multiple copies. 
+//Once he reserves he should be able to view his book statuses.(make this feature) then work on notifications
+
+//if user delete his id, what happens to his reservations?
+
+
+
+
+//thought process
+//A button  where a user when he presses it, he can see all his reservations(done)
+
+//Press the button, which calls router, which calls reservatioController, which calls reservationModel, which gets all the reservations of the user and sends it to the view
+//In the view we show all the reservations of the user.(done)
+
+//Next step
+//Instead of bookid and shit , i get the book name and shit.(changes need to be made in Reservaiton class)
+//can also add link to the book which opens book details
+
+
+
+
+
+
+

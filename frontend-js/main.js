@@ -1,5 +1,6 @@
-import Search from './modules/search'
+import SearchAndReserve from './modules/searchAndReserve.js';
 
-if (document.querySelector('.search-icon')) {
-    new Search();
+
+if (document.querySelector('.search-icon') ) {
+    new SearchAndReserve();
 }

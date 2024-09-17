@@ -9,6 +9,7 @@ const express = require('express');
 const router = express.Router();
 const userController = require('./controllers/userController');
 const bookController = require('./controllers/bookController');
+const reservationController = require('./controllers/reservationController');
 
 /**
  * Route for the home page.
@@ -94,8 +95,16 @@ router.get('/removeBook/:bookId', bookController.removeBook);
 router.post('/search', bookController.searchBooks);
 
 
-router.get('/book/:bookId', bookController.bookDetails);
+router.get('/book/:bookId', bookController.bookDetails);//this is to render bookDetails.ejs
+router.post('/book/:bookId', bookController.bookDetails);//this is for the modal in search.js
 
+//receives a post request with the bookId and copyId, which we then direct to reservationController.reserveBook
+router.post('/reserve', reservationController.reserveBook);
+
+router.get('/userReservationDetails', reservationController.userReservationDetails);
+
+
+//UMER INSTRUCTIONS
 //over here you do a router.get of the URL u wrote in admin portal, and then you direct it to a function in reservationController(u can name the function borrowerDetails), then go to reservationController line 3.
 
 module.exports = router;

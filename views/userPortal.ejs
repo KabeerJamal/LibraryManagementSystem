@@ -1,13 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Admin Portal</title>
+    <title>User Portal</title>
+    <link rel="stylesheet" type="text/css" href="userPortal.css">
 </head>
 <body>
+    <!-- We used axios, so couldnt do res.render from front end so thats why manually creating
+     a flash message-->
+    <div id="flash-message" class="flash-message"></div>
+    <!-- Flash Messages -->
+    <div class="flash-messages">
+        <% errors.forEach(function(message) { %>
+            <p class="flash-message">
+                <%= message %>.
+            </p>
+            <% }) %>
+    </div>
+
+     <!-- Flash Messages -->
+     <div class="flash-messages">
+        <% success.forEach(function(message) { %>
+            <p class="flash-message">
+                <%= message %>. 
+            </p>
+            <% }) %>
+    </div>
     <h1>Welcome to the <%= user.username %> Portal</h1>
     <a href="/logout">Logout</a>
+    <a href="/userReservationDetails">
+        <button>View your reservation details</button>
+    </a>
+    <h2>Search for a book</h2>
     <div class="search-icon">
         <i class="fas fa-search"></i>
+    </div>
+    <!-- Modal (small screen) -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Available Copies</h2>
+            <ul id="bookCopies">
+            <!-- Available copies will be dynamically inserted here, 
+             you will find it in search.js openModal funciton -->
+
+            </ul>
+            <button id="reserve">Reserve a copy</button>
+        </div>
     </div>
 <!-- footer begins -->
 <%- include('includes/footer') %>
