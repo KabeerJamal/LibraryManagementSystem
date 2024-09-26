@@ -19,8 +19,8 @@ class Books {
                     try {
                         
                         // Insert book information into the database
-                        const query = 'INSERT INTO books (title, author, total_copies, available_copies, publication_year) VALUES (?, ?, ?, ?, ?)';
-                        const values = [this.data.title, this.data.author, this.data.copies , this.data.copies, this.data.year];
+                        const query = 'INSERT INTO books (title, author, total_copies, available_copies, publication_year, cover_image) VALUES (?, ?, ?, ?, ?, ?)';
+                        const values = [this.data.title, this.data.author, this.data.copies , this.data.copies, this.data.year, this.data.coverImagePath];
                         await db.query(query, values);
                         resolve("new book added to database");
                         }   catch (error) {
@@ -48,7 +48,8 @@ class Books {
             title: this.data.title.trim().toLowerCase(),
             author: this.data.author.trim().toLowerCase(),
             year: this.data.year.trim().toLowerCase(),
-            copies: parseInt(this.data.copies)
+            copies: parseInt(this.data.copies),
+            coverImagePath: this.data.coverImagePath
         }
 
     }

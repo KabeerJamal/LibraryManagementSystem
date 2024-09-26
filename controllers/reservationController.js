@@ -33,7 +33,7 @@ exports.userReservationDetails = async (req, res) => {
         //console.log(req.session.user.username);
         const userId = await Reservation.getUserIdWoCreatingObject(req.session.user.username);
         const reservations = await Reservation.getUserReservations(userId);
-        console.log(reservations);
+        //console.log(reservations);
         res.render('userReservationDetails.ejs', {reservations});
     } catch(e) {
         console.log(e);

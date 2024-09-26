@@ -6,7 +6,13 @@ exports.addBooks = async function(req, res) {
 
 exports.addBooksToDatabase = async function(req, res) {
     // Create a new book object
-    //console.log(req.body);
+
+    // Construct the cover image path
+    const coverImagePath = `/uploads/${req.file.filename}`;
+
+     // Add coverImagePath to req.body
+    req.body.coverImagePath = coverImagePath;
+    console.log(req.body);
     const book = new Books(req.body);
 
     try {
@@ -96,6 +102,8 @@ exports.bookDetails = async function(req, res) {
         //console.log(req.body.dontRender);
         const bookInfo = await Books.receiveBookDetails(req.params.bookId);
         bookInfo.role = req.session.user.role;
+        console.log(bookInfo);
+        //We have dontRender here, so in this case we just show the modal and not the detailed page
         if(req.body.dontRender == true) {
             res.json({bookInformation: bookInfo, customer: req.session.user.username});
         } else {

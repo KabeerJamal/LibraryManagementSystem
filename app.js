@@ -11,6 +11,9 @@ const session = require('express-session');
 const mysqlStore = require('express-mysql-session')(session);
 const flash = require('connect-flash');
 
+
+
+
 const options ={
     connectionLimit: 10,
     password: process.env.DB_PASSWORD,
@@ -70,6 +73,7 @@ app.set('view engine', 'ejs');
 //Use the router for handling routes
 app.use('/', router)
 
+
 //Start the server and listen on port defined in .env file
 app.listen(process.env.PORT);
 
@@ -100,7 +104,10 @@ app.listen(process.env.PORT);
 
 //Next step
 // ya just design the user reservation details page
-
+//cancel reservation
+//add book images(done)
+//add image of book wherever being displayed
+//search filter
 
 
 

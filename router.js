@@ -11,6 +11,24 @@ const userController = require('./controllers/userController');
 const bookController = require('./controllers/bookController');
 const reservationController = require('./controllers/reservationController');
 
+const multer = require('multer');
+const path = require('path');
+
+
+//Conigure storage for multer 
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'public/uploads/');  // Directory where the image will be stored
+    },
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + path.extname(file.originalname);
+        cb(null, file.fieldname + '-' + uniqueSuffix);  // Generate unique file name
+    }
+});
+
+
+const upload = multer({ storage: storage });
+
 /**
  * Route for the home page.
  * @name GET /
@@ -86,7 +104,7 @@ router.get('/addBooks', bookController.addBooks);
  * @name POST /addBooksToDatabase
  * @function
  */
-router.post('/addBookToDatabase', bookController.addBooksToDatabase);
+router.post('/addBookToDatabase',upload.single('cover_image'), bookController.addBooksToDatabase);
 router.post('/increaseCopies/:bookId', bookController.increaseCopies);
 router.post('/decreaseCopies/:bookId', bookController.decreaseCopies);
 router.get('/removeBook/:bookId', bookController.removeBook);
