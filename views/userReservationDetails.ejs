@@ -1,12 +1,18 @@
-hellllllllllllllllo
+
 <h1>Reservation Details</h1>
 <div>
+    <% let i = 0%>
     <% reservations.forEach(function(reservation) { %>
-        <p><%= reservation.reservation_id%></p>
-        <p><%= reservation.book_id %></p>
-        <p><%= reservation.number_of_copies %></p>
-        <p><%= reservation.status %></p>
-        <p><%= reservation.reserve_date %></p>
-        <p><%= reservation.collect_date %></p>
+    <% i = i + 1%>
+        <p><%= i %></p>
+        <p>USERNAME:<%= reservation.username%></p>
+        <p>NUMBER OF COPIES RESERVED:<%= reservation.number_of_copies %></p>
+        <p>STATUS:<%= reservation.status %></p>
+        <p>RESERVAION DATE:<%= reservation.reserve_date %></p>
+        <p>COLLECTION DATE:<%= reservation.collect_date %></p>
+        <p>RETURN DATE:<%= reservation.return_date %></p>
+        <p>COLLECTION DATE DEADLINE:<%= reservation.collect_date_deadline %></p>
+        <p>TITLE OF BOOK<a href ="/book/<%=reservation.book_id%>" ><%= reservation.title %></a></p>
+        <p>AUTHOR OF BOOK<%= reservation.author %></p>
     <% }); %>
 </div>

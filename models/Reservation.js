@@ -113,7 +113,8 @@ class Reservation{
     static getUserReservations(userId) {
         return new Promise(async (resolve, reject) => {
             try {
-                const query = 'SELECT * FROM reservations WHERE user_id = ?';
+                //const query = 'SELECT * FROM reservations WHERE user_id = ?';
+                const query = 'SELECT books.book_id, username, number_of_copies, status, reserve_date, collect_date, collect_date_deadline, return_date, title, author FROM reservations, users, books WHERE reservations.user_id = users.id AND reservations.book_id = books.book_id AND users.id = ?';
                 const values = [userId];
                 let [rows] = await db.query(query, values);
                 resolve(rows);

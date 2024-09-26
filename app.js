@@ -80,7 +80,7 @@ app.listen(process.env.PORT);
 //some changes in home.ejs
 
 ///adminPortal opening without asking user pass
-
+//deal with the fact that you cant just get the password from the database when doing a call to the database
 
 
 
@@ -98,16 +98,9 @@ app.listen(process.env.PORT);
 
 
 
-
-//thought process
-//A button  where a user when he presses it, he can see all his reservations(done)
-
-//Press the button, which calls router, which calls reservatioController, which calls reservationModel, which gets all the reservations of the user and sends it to the view
-//In the view we show all the reservations of the user.(done)
-
 //Next step
-//Instead of bookid and shit , i get the book name and shit.(changes need to be made in Reservaiton class)
-//can also add link to the book which opens book details
+// ya just design the user reservation details page
+
 
 
 
