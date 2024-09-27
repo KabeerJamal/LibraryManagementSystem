@@ -13,13 +13,14 @@ class Reservation{
           users.username AS borrower_name, 
           books.title AS book_title, 
           reservations.status, 
-          reservations.created_at AS reserve_date, 
+          reservations.reserve_date, 
           reservations.collect_date, 
-          reservations.due_date
+          reservations.collect_date_deadline,
+          reservations.return_date
         FROM 
           reservations
         JOIN 
-          users ON reservations.user_id = users.user_id
+          users ON reservations.user_id = users.id
         JOIN 
           books ON reservations.book_id = books.book_id
       `;

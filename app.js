@@ -105,7 +105,9 @@ app.listen(process.env.PORT);
 //Next step
 // ya just design the user reservation details page
 //cancel reservation
-//add book images(done)
+//collection
+//if not returned add in bad debt
+//admin can see all reservations.(done)
 //add image of book wherever being displayed
 //search filter
 
