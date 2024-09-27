@@ -123,6 +123,8 @@ router.get('/userReservationDetails', reservationController.userReservationDetai
 
 
 //UMER INSTRUCTIONS
+router.get("/showReservations", reservationController.borrowerDetails);
+
 //over here you do a router.get of the URL u wrote in admin portal, and then you direct it to a function in reservationController(u can name the function borrowerDetails), then go to reservationController line 3.
 
 module.exports = router;

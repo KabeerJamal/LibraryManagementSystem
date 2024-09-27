@@ -1,7 +1,16 @@
 const Reservation = require('../models/Reservation');
 
 //UMER INSTRUCTIONS
-exports.borrowerDetails = (req, res) => {
+exports.borrowerDetails = async (req, res) => {
+  try {
+    const reservations = await Reservation.borrowerDetails();
+    console.log("Reservations: ", reservations); // Debug log
+    res.render("borrowerDetails.ejs", { reservations });
+  } catch (error) {
+    console.error("Error loading reservation details:", error); // Log error to console
+    res.status(500).send("Error loading reservation details");
+  }
+};
     //Over here you create an object of Reservation model(or the function in reservation model is static and then you dont need to create an object) and then you call the function borrowerDetails from the model
     //Use try,catch block to handle errors(So in model if the function resolves, try block runs and if it rejects, catch block runs)
     //make sure to use await keyword.
@@ -12,7 +21,7 @@ exports.borrowerDetails = (req, res) => {
     //and then you show the data in the ejs file
 
     //for reference look into bookDetails function in the bookController.js file and see how it works in cojunction with the book model "receiveBookDetails" function and also see how it renders data to the ejs file
-};
+
 
 //create a function reserveBook in reservationController.js 
 exports.reserveBook = async (req, res) => {

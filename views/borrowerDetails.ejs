@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Borrower Details</title>
+    <link rel="stylesheet" href="/borrowdetails.css">
+</head>
+
+<body>
+<h1>Reservation Details</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Borrower Name</th>
+            <th>Book Title</th>
+            <th>Status</th>
+            <th>Reserve Date</th>
+            <th>Collect Date</th>
+            <th>Return Date</th>
+            <th>Due Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% reservations.forEach(reservation=> { %>
+            <tr>
+                <td>
+                    <%= reservation.borrower_name %>
+                </td>
+                <td>
+                    <%= reservation.book_title %>
+                </td>
+                <td>
+                    <%= reservation.status %>
+                </td>
+                <td>
+                    <%= reservation.reserve_date %>
+                </td>
+                <td>
+                    <%= reservation.collect_date %>
+                </td>
+                <td>
+                    <%= reservation.return_date %>
+                </td>
+                <td>
+                    <%= reservation.due_date %>
+                </td>
+            </tr>
+            <% }) %>
+    </tbody>
+</table>
+
+    <a href="/adminPortal" class="btn">Back to Admin Portal</a>
+</body>
+
+</html>

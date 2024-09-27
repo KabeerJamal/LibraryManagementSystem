@@ -4,7 +4,35 @@ class Reservation{
     constructor(data) {
         this.data = data;
     }
+
     //UMER INSTRUCTIONS
+    static async borrowerDetails() {
+    try {
+      const query = `
+        SELECT 
+          users.username AS borrower_name, 
+          books.title AS book_title, 
+          reservations.status, 
+          reservations.created_at AS reserve_date, 
+          reservations.collect_date, 
+          reservations.due_date
+        FROM 
+          reservations
+        JOIN 
+          users ON reservations.user_id = users.user_id
+        JOIN 
+          books ON reservations.book_id = books.book_id
+      `;
+
+      // Use async/await with mysql2/promise
+      const [results] = await db.query(query);
+      return results;
+    } catch (err) {
+      throw new Error("Error retrieving reservation details: " + err);
+    }
+  }
+
+
     //You can make the function static, that way you can call the function without creating an object of the class
     //Over here you create a function borrower details which you already called  in the controller
     //Make sure you are returning a promise from the function, look other functions in the model for reference
