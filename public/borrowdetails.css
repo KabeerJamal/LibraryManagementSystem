@@ -1,3 +1,8 @@
+
+/* Page title */
+/* Import a Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Roboto+Slab:wght@700&display=swap');
+
 /* Global Reset */
 * {
     margin: 0;
@@ -42,9 +47,6 @@ body::before {
     text-align: center;
 }
 
-/* Page title */
-/* Import a Google Font */
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Roboto+Slab:wght@700&display=swap');
 
 h1 {
     font-family: 'Merriweather', serif;

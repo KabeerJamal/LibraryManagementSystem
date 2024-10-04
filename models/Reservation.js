@@ -16,7 +16,9 @@ class Reservation{
           reservations.reserve_date, 
           reservations.collect_date, 
           reservations.collect_date_deadline,
-          reservations.return_date
+          reservations.return_date,
+          reservations.returned_at,
+          reservations.reservation_id
         FROM 
           reservations
         JOIN 
@@ -147,6 +149,32 @@ class Reservation{
                 const values = [userId];
                 let [rows] = await db.query(query, values);
                 resolve(rows);
+            } catch(e) {
+                reject(e);
+            }
+        });
+    }
+
+    static async bookCollected(reservationId) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const query = 'UPDATE reservations SET status = "Collected", collect_date = ?  WHERE reservation_id = ?';
+                const values = [new Date(), reservationId];
+                await db.query(query, values);
+                resolve();
+            } catch(e) {
+                reject(e);
+            }
+        });
+    }
+
+    static async bookReturned(reservationId) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const query = 'UPDATE reservations SET status = "Completed", returned_at = ?  WHERE reservation_id = ?';
+                const values = [new Date(), reservationId];
+                await db.query(query, values);
+                resolve();
             } catch(e) {
                 reject(e);
             }

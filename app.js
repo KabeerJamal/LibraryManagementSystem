@@ -107,13 +107,32 @@ app.listen(process.env.PORT);
 //cancel reservation
 //collection
 //if not returned add in bad debt
+//reservations should have search feature.
 //admin can see all reservations.(done)
 //add image of book wherever being displayed
 //search filter
 
+//Many tasks to do, but this includes fundamanetal features to be done in backend
+
+//Cancel reservations(me)
+//2)Collection logic(me)
+//if not returned, add in bad debt
+//The reservation should have search feature(me)
+//Main page books and search there as well.
+//Settings page where admin can customize to his own liking.
 
 
 
 
+//Collected button, where we click, the status changes to collected, we get a collected date and due date, and reservation status cahnges to collected.
+//the return date cahnges to not returned yet, with a returned button. 
+//If we click return button, the status changes to returned, and we get a returned date.
+//If return date passes due date, the status changes to bad debt and status has to change to something, like overdue or something.
+//If collect date passed and book not collected, cancel reservation and status changes to cancelled.
+//Also remove button once collected
 
 
+
+//changes status dynamically as well when collected, returned.
+//search feature for reservations
+//clean code.

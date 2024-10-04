@@ -4,7 +4,17 @@ const Reservation = require('../models/Reservation');
 exports.borrowerDetails = async (req, res) => {
   try {
     const reservations = await Reservation.borrowerDetails();
-    console.log("Reservations: ", reservations); // Debug log
+    
+    reservations.forEach(reservation => {
+        reservation.reserve_date = formatDate(reservation.reserve_date);
+        reservation.collect_date = formatDate(reservation.collect_date);
+        reservation.collect_date_deadline = formatDate(reservation.collect_date_deadline);
+        reservation.return_date = formatDate(reservation.return_date);
+        if (reservation.returned_at) {
+            reservation.returned_at = formatDate(reservation.returned_at);
+        }
+    });
+    //console.log("Reservations: ", reservations); // Debug log
     res.render("borrowerDetails.ejs", { reservations });
   } catch (error) {
     console.error("Error loading reservation details:", error); // Log error to console
@@ -49,3 +59,35 @@ exports.userReservationDetails = async (req, res) => {
         res.send('Error getting user reservations');
     }
 };
+
+exports.collectBook = async (req, res) => { 
+    try {
+        //send reservation id to Reservation model function.
+        await Reservation.bookCollected(req.params.reservation_id);
+
+        //the model function wil get that specific reservation and in it ,update the collect date and chnage status
+
+        res.json('Book collected');
+        
+    } catch(e) {
+        res.json('Error collecting book');
+    }
+}
+
+exports.returnBook = async (req, res) => {
+    try {
+        //send reservation id to Reservation model function.
+        await Reservation.bookReturned(req.params.reservation_id);
+        //the model function wil get that specific reservation and in it ,update the return date and chnage status
+        res.json('Book returned');
+    } catch(e) {
+        res.json('Error returning book');
+    }
+}
+
+
+//Helper function
+// Function to format dates in YYYY-MM-DD format
+function formatDate(dateString) {
+    return new Date(dateString).toISOString().slice(0, 10);
+}
