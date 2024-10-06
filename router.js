@@ -121,8 +121,13 @@ router.post('/reserve', reservationController.reserveBook);
 
 router.get('/userReservationDetails', reservationController.userReservationDetails);
 
+//Admin can collect and return books:
 router.post('/collect/:reservation_id', reservationController.collectBook);
 router.post('/return/:reservation_id', reservationController.returnBook);
+
+//User can cancel a reservation:
+router.post('/cancelReservation/:reservation_id', reservationController.cancelReservation);
+
 //UMER INSTRUCTIONS
 router.get("/showReservations", reservationController.borrowerDetails);
 

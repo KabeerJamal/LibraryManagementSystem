@@ -8,15 +8,13 @@
 
 <body>
 <h1>Reservation Details</h1>
-<div class="search-icon">
-    <i class="fas fa-search"></i>
-</div>
+
 
 <!-- We used axios, so couldnt do res.render from front end so thats why manually creating
      a flash message-->
      <div id="flash-message" class="flash-message"></div>
 
-<table>
+<table class="everyone-reservation-table">
     <thead>
         <tr>
             <th>Borrower Name</th>
@@ -31,6 +29,7 @@
     </thead>
     <tbody>
         <% reservations.forEach(reservation=> { %>
+            <% if (reservation.status != 'completed') { %>
             <tr>
                 <td>
                     <%= reservation.borrower_name %>
@@ -46,12 +45,6 @@
                 </td>
                 <td>
                     <%= reservation.collect_date %>
-                    <!-- Click this button if User has collected a book -->
-                    <!--
-                    <form action="/collect/<%= reservation.reservation_id %>" method="GET">
-                        <button type="submit">Collect</button>
-                    </form> 
-                    -->
                     <% if (reservation.collect_date == null) { %>
                     <button class="collect" data-number="<%= reservation.reservation_id %>">Collect</button>
                     <% } %>                
@@ -70,6 +63,7 @@
                     <%= reservation.collect_date_deadline %>
                 <td>
             </tr>
+                <% } %>
             <% }) %>
     </tbody>
 </table>

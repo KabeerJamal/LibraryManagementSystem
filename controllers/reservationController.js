@@ -52,7 +52,7 @@ exports.userReservationDetails = async (req, res) => {
         //console.log(req.session.user.username);
         const userId = await Reservation.getUserIdWoCreatingObject(req.session.user.username);
         const reservations = await Reservation.getUserReservations(userId);
-        //console.log(reservations);
+        console.log(reservations);
         res.render('userReservationDetails.ejs', {reservations});
     } catch(e) {
         console.log(e);
@@ -85,9 +85,23 @@ exports.returnBook = async (req, res) => {
     }
 }
 
+exports.cancelReservation = async (req, res) => {
+    try {
+        //send reservation id to Reservation model function.
+        await Reservation.cancelReservation(req.params.reservation_id);
+        //the model function wil get that specific reservation and in it ,update the status to cancelled
+        res.json('Reservation cancelled');
+    } catch(e) {
+        res.json('Error cancelling reservation');
+    }
+}
 
 //Helper function
 // Function to format dates in YYYY-MM-DD format
 function formatDate(dateString) {
+    if (!dateString) {
+        return null;
+    }
     return new Date(dateString).toISOString().slice(0, 10);
 }
+

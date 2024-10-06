@@ -85,6 +85,7 @@ app.listen(process.env.PORT);
 
 ///adminPortal opening without asking user pass
 //deal with the fact that you cant just get the password from the database when doing a call to the database
+//can an admin cancel someones reservation? can the admin block someone from membership?
 
 
 
@@ -124,15 +125,10 @@ app.listen(process.env.PORT);
 
 
 
-//Collected button, where we click, the status changes to collected, we get a collected date and due date, and reservation status cahnges to collected.
-//the return date cahnges to not returned yet, with a returned button. 
-//If we click return button, the status changes to returned, and we get a returned date.
-//If return date passes due date, the status changes to bad debt and status has to change to something, like overdue or something.
-//If collect date passed and book not collected, cancel reservation and status changes to cancelled.
-//Also remove button once collected
 
 
 
-//changes status dynamically as well when collected, returned.
-//search feature for reservations
+//User: view past reservation details, Admin: view past reservation details -> bad debt + completed (using filter)
+//search feature for reservations(both current and past) (including filter of statuses)
+
 //clean code.

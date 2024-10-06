@@ -145,7 +145,7 @@ class Reservation{
         return new Promise(async (resolve, reject) => {
             try {
                 //const query = 'SELECT * FROM reservations WHERE user_id = ?';
-                const query = 'SELECT books.book_id, username, number_of_copies, status, reserve_date, collect_date, collect_date_deadline, return_date, title, author FROM reservations, users, books WHERE reservations.user_id = users.id AND reservations.book_id = books.book_id AND users.id = ?';
+                const query = 'SELECT reservation_id, books.book_id, username, number_of_copies, status, reserve_date, collect_date, collect_date_deadline, return_date, title, author FROM reservations, users, books WHERE reservations.user_id = users.id AND reservations.book_id = books.book_id AND users.id = ?';
                 const values = [userId];
                 let [rows] = await db.query(query, values);
                 resolve(rows);
@@ -173,6 +173,19 @@ class Reservation{
             try {
                 const query = 'UPDATE reservations SET status = "Completed", returned_at = ?  WHERE reservation_id = ?';
                 const values = [new Date(), reservationId];
+                await db.query(query, values);
+                resolve();
+            } catch(e) {
+                reject(e);
+            }
+        });
+    }
+
+    static async cancelReservation(reservationId) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const query = 'DELETE FROM reservations WHERE reservation_id = ?';
+                const values = [reservationId];
                 await db.query(query, values);
                 resolve();
             } catch(e) {

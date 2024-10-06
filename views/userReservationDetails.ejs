@@ -1,19 +1,60 @@
+<!DOCTYPE html>
+<html>
 
+<head>
+    <title>Borrower Details</title>
+    <link rel="stylesheet" href="/borrowdetails.css">
+</head>
+
+<body>
 <h1>Reservation Details</h1>
-<div>
-    <% let i = 0%>
-    <% reservations.forEach(function(reservation) { %>
-    <% i = i + 1%>
-        <p><%= i %></p>
-        <p>USERNAME:<%= reservation.username%></p>
-        <p>NUMBER OF COPIES RESERVED:<%= reservation.number_of_copies %></p>
-        <p>STATUS:<%= reservation.status %></p>
-        <p>RESERVAION DATE:<%= reservation.reserve_date %></p>
-        <p>COLLECTION DATE:<%= reservation.collect_date %></p>
-        <p>RETURN DATE:<%= reservation.return_date %></p>
-        <p>COLLECTION DATE DEADLINE:<%= reservation.collect_date_deadline %></p>
-        <p>TITLE OF BOOK<a href ="/book/<%=reservation.book_id%>" ><%= reservation.title %></a></p>
-        <p>AUTHOR OF BOOK<%= reservation.author %></p>
-        <a>Cancel Reservation</a>
-    <% }); %>
-</div>
+
+
+<!-- We used axios, so couldnt do res.render from front end so thats why manually creating
+     a flash message-->
+     <div id="flash-message" class="flash-message"></div>
+
+<table class="user-reservation-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Username</th>
+            <th>Number of Copies Reserved</th>
+            <th>Status</th>
+            <th>Reservation Date</th>
+            <th>Collection Date</th>
+            <th>Return Date</th>
+            <th>Collection Date Deadline</th>
+            <th>Title of Book</th>
+            <th>Author of Book</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% let i = 0 %>
+        <% reservations.forEach(function(reservation) { %>
+        <% i = i + 1 %>
+        <% if (reservation.status != 'completed') { %>
+        <tr class="reservation-row" data-number="<%= reservation.reservation_id %>">
+            <td><%= i %></td>
+            <td><%= reservation.username %></td>
+            <td><%= reservation.number_of_copies %></td>
+            <td><%= reservation.status %></td>
+            <td><%= reservation.reserve_date %></td>
+            <td><%= reservation.collect_date %></td>
+            <td><%= reservation.return_date %></td>
+            <td><%= reservation.collect_date_deadline %></td>
+            <td><a href="/book/<%= reservation.book_id %>"><%= reservation.title %></a></td>
+            <td><%= reservation.author %></td>
+            <td>
+                <% if (reservation.status === 'reserved') { %>
+                <button class="cancel-reservation" data-number="<%= reservation.reservation_id %>">Cancel Reservation</button>
+                <% } %>
+            </td>
+        </tr>
+        <% } %>
+        <% }); %>
+    </tbody>
+</table>
+
+<%- include('includes/footer') %>
