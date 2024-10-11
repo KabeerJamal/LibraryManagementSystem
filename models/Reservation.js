@@ -193,6 +193,18 @@ class Reservation{
             }
         });
     }
+
+    static async getBadAndCompletedReservations() {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const query = 'SELECT reservation_id, books.book_id, username, number_of_copies, status, reserve_date, collect_date, collect_date_deadline, return_date, returned_at, title, author FROM reservations, users, books WHERE reservations.user_id = users.id AND reservations.book_id = books.book_id AND (reservations.status = "overdue" OR reservations.status = "completed")';
+                let [rows] = await db.query(query);
+                resolve(rows);
+            } catch(e) {
+                reject(e);
+            }
+        });
+    }
 }
 
 module.exports = Reservation;

@@ -130,6 +130,8 @@ router.post('/cancelReservation/:reservation_id', reservationController.cancelRe
 
 //UMER INSTRUCTIONS
 router.get("/showReservations", reservationController.borrowerDetails);
+router.get("/showBadAndCompletedReservations", reservationController.showBadAndCompletedReservations);
+//do a router.get from admin portal to reservation controller. then go to reservation controller.
 
 //over here you do a router.get of the URL u wrote in admin portal, and then you direct it to a function in reservationController(u can name the function borrowerDetails), then go to reservationController line 3.
 

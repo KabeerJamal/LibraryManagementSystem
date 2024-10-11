@@ -3,7 +3,8 @@ const app = express();
 const dotenv = require('dotenv');
 
 
-
+const cron = require('node-cron');
+const db = require('./db');
 
 dotenv.config();
 
@@ -12,6 +13,35 @@ const mysqlStore = require('express-mysql-session')(session);
 const flash = require('connect-flash');
 
 
+//To schedule automated tasks
+// Function to update overdue reservations
+const updateOverdueReservations = async () => {
+    try {
+        // Your SQL query to update reservations
+        const query = `
+            UPDATE reservations
+            SET status = 'overdue'
+            WHERE return_date < CURDATE() AND status = 'collected'
+        `;
+        //write code for reserved but not collected as well.
+        
+        const [result] = await db.query(query);
+        console.log(`${result.affectedRows} reservations updated to 'overdue'`);
+    } catch (error) {
+        console.error('Error updating overdue reservations:', error);
+    }
+};
+
+
+//then write code for reserved but not collected as well.(JUST ADD CODE IN Reservation.cancelReservation)
+//pms to run website locallt forever
+//notifications to be sent to user when overdue
+
+// Schedule the job to run every day at midnight
+cron.schedule('25 0 * * *', () => {
+    console.log('Running job to check for overdue reservations');
+    updateOverdueReservations();
+});
 
 
 const options ={
@@ -74,10 +104,12 @@ app.set('view engine', 'ejs');
 app.use('/', router)
 
 
+
 //Start the server and listen on port defined in .env file
 app.listen(process.env.PORT);
 
 
+//need to deal with time issue in database. borrower details in reservation model.
 //add publication year as well in search
 
 //file in includes folder for flash messages
@@ -104,10 +136,7 @@ app.listen(process.env.PORT);
 
 
 //Next step
-// ya just design the user reservation details page
-//cancel reservation
-//collection
-//if not returned add in bad debt
+
 //reservations should have search feature.
 //admin can see all reservations.(done)
 //add image of book wherever being displayed
@@ -115,9 +144,7 @@ app.listen(process.env.PORT);
 
 //Many tasks to do, but this includes fundamanetal features to be done in backend
 
-//Cancel reservations(me)
-//2)Collection logic(me)
-//if not returned, add in bad debt
+
 //The reservation should have search feature(me)
 //Main page books and search there as well.
 //Settings page where admin can customize to his own liking.
@@ -127,8 +154,10 @@ app.listen(process.env.PORT);
 
 
 
-
+//Admin has access to every user. He can see all reservations.take actions on them.
 //User: view past reservation details, Admin: view past reservation details -> bad debt + completed (using filter)
+//overdue logic and automated reservation cacnellation.(use a trigger)
 //search feature for reservations(both current and past) (including filter of statuses)
+//Send notification to user when overdue
 
 //clean code.

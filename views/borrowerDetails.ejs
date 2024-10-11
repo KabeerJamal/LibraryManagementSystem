@@ -29,7 +29,7 @@
     </thead>
     <tbody>
         <% reservations.forEach(reservation=> { %>
-            <% if (reservation.status != 'completed') { %>
+            <% if (reservation.status != 'completed' && reservation.status != 'overdue') { %>
             <tr>
                 <td>
                     <%= reservation.borrower_name %>
