@@ -32,8 +32,20 @@ const updateOverdueReservations = async () => {
     }
 };
 
+// Function to cancel reservations that have not been collected by deleting it from database
+const cancelNotCollectedReservations = async () => {
+    try {
+        // Your SQL query to update reservations
+        const query = `
+            DELETE FROM reservations
+            WHERE collect_date_deadline < CURDATE() AND status = 'reserved'
+        `;
+        const [result] = await db.query(query);
+    } catch (error) {
+        console.error('Error updating overdue reservations:', error);
+    }
+};
 
-//then write code for reserved but not collected as well.(JUST ADD CODE IN Reservation.cancelReservation)
 //pms to run website locallt forever
 //notifications to be sent to user when overdue
 
@@ -41,6 +53,7 @@ const updateOverdueReservations = async () => {
 cron.schedule('25 0 * * *', () => {
     console.log('Running job to check for overdue reservations');
     updateOverdueReservations();
+    cancelNotCollectedReservations();
 });
 
 
@@ -137,10 +150,8 @@ app.listen(process.env.PORT);
 
 //Next step
 
-//reservations should have search feature.
-//admin can see all reservations.(done)
-//add image of book wherever being displayed
-//search filter
+
+
 
 //Many tasks to do, but this includes fundamanetal features to be done in backend
 
@@ -159,5 +170,19 @@ app.listen(process.env.PORT);
 //overdue logic and automated reservation cacnellation.(use a trigger)
 //search feature for reservations(both current and past) (including filter of statuses)
 //Send notification to user when overdue
+//add image of book wherever being displayed
 
 //clean code.
+
+//i want a search option in admin reservation page with a search filter that should work as follows.
+
+//1)You can search for books and borrower name(later adapt to where user can select what to search for)
+//2)You can filter out the results based on the status of the reservation
+//3)You can further filter\sort the results based on the date of reservation
+//4) i want the user to have same code, but for him the search should be based on the book name and the status of the reservation and date of reservation
+
+
+//1) almost implemented, then work on 2.
+
+//option to see all reservations (show all reservation button)
+//Tommorow work on filters.

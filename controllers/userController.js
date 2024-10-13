@@ -1,5 +1,7 @@
 const User = require('../models/User')
 
+
+
 /**
  * Renders the home page based on the user's role.
  * If the user is logged in as an admin, it renders the admin portal page.

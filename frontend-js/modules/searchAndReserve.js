@@ -187,11 +187,10 @@ export default class SearchAndReserve{
 
     injectHTML() {
         document.body.insertAdjacentHTML('beforeend', 
-         `<div class="search-icon-2 ">
-             <i class="fas fa-search"></i>
-             <input type="text" placeholder="Search" id="live-search-field">
-             <span class="close-search"><i class="fas fa-times-circle"></i></span>
-         </div>
+          `<div class="search-icon-2 ">
+              <input type="text" placeholder="Search" id="live-search-field">
+              <span class="close-search"><i class="fas fa-times-circle"></i></span>
+          </div>
          <div class="result-container ">
              <div class="loader-container">
                  <div class="loader"></div>

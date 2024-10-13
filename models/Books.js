@@ -86,18 +86,6 @@ class Books {
     //create a searchBooks function
     //this book will send the information it received and call a search query to search from the database the book and return the information of that book
     static searchBooks(searchTerm) {
-        /*
-        return new Promise(async (resolve, reject) => {
-            console.log(searchTerm);
-            const query = 'SELECT * FROM books WHERE title LIKE ? OR author LIKE ?';
-            const values = [`%${searchTerm}%`, `%${searchTerm}%`];
-            const [rows] = await db.query(query, values);
-            resolve(rows);
-
-
-        })
-        */
-
         return new Promise(async (resolve, reject) => {
     
             let query;

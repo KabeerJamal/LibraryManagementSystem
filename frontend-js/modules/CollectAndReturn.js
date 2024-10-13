@@ -39,6 +39,11 @@ export default class CollectAndReturn {
         parentElementCollect.appendChild(collectDateElement);
 
         const returnDateElement = document.createElement('p');
+        const returnButton = document.createElement('button');
+        returnButton.textContent = 'Returned?';
+        returnButton.classList.add('return');
+        returnButton.setAttribute('data-number', number);
+        parentElementReturn.appendChild(returnButton);
         returnDateElement.textContent = `${returnDate}`;
         parentElementReturn.appendChild(returnDateElement);
 

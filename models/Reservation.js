@@ -18,7 +18,9 @@ class Reservation{
           reservations.collect_date_deadline,
           reservations.return_date,
           reservations.returned_at,
-          reservations.reservation_id
+          reservations.reservation_id,
+          reservations.user_id,
+          reservations.book_id
         FROM 
           reservations
         JOIN 
@@ -204,6 +206,21 @@ class Reservation{
                 reject(e);
             }
         });
+    }
+
+    static async searchReservations(searchTerm) {
+        return new Promise(async (resolve,reject) => {
+            try {
+                //contact the database and get the reservations based on the search term
+                //make a query like getUserResercvations and on that answer search for the search term
+                const query = 'SELECT reservation_id, books.book_id, username, number_of_copies, status, reserve_date, collect_date, collect_date_deadline, return_date, title, author FROM reservations, users, books WHERE reservations.user_id = users.id AND reservations.book_id = books.book_id AND (username LIKE ? OR title LIKE ?)';
+                const values = [`%${searchTerm}%`, `%${searchTerm}%`];
+                let [rows] = await db.query(query, values);
+                resolve(rows);
+            } catch(error) {
+                reject(error);
+            }
+        })
     }
 }
 

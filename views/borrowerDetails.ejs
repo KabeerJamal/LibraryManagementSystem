@@ -14,6 +14,10 @@
      a flash message-->
      <div id="flash-message" class="flash-message"></div>
 
+     <div class="search-icon-reservation">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search" id="live-search-field">
+    </div>
 <table class="everyone-reservation-table">
     <thead>
         <tr>
@@ -27,14 +31,14 @@
             <th>Collect date deadline</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="all-reservations-table-body">
         <% reservations.forEach(reservation=> { %>
             <% if (reservation.status != 'completed' && reservation.status != 'overdue') { %>
             <tr>
-                <td>
+                <td data-number="<%= reservation.user_id %>">
                     <%= reservation.borrower_name %>
                 </td>
-                <td>
+                <td data-number="<%= reservation.book_id %>">
                     <%= reservation.book_title %>
                 </td>
                 <td class="status" data-number="<%= reservation.reservation_id %>">
@@ -54,7 +58,7 @@
                 </td>
                 <td class="return-date" data-number="<%= reservation.reservation_id %>">
                     <%= reservation.return_date %>
-                    <% if(reservation.returned_at == null) { %>
+                    <% if(reservation.returned_at == null && reservation.collect_date != null) { %>
                         <button class="return" data-number="<%= reservation.reservation_id %>">Returned?</button>
                     <% } %>
 

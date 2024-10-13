@@ -4,7 +4,7 @@ const Reservation = require('../models/Reservation');
 exports.borrowerDetails = async (req, res) => {
   try {
     const reservations = await Reservation.borrowerDetails();
-    console.log("Reservations: ", reservations); // Debug log
+    //console.log("Reservations: ", reservations); // Debug log
     reservations.forEach(reservation => {
         reservation.reserve_date = formatDate(reservation.reserve_date);
         reservation.collect_date = formatDate(reservation.collect_date);
@@ -116,6 +116,22 @@ exports.showBadAndCompletedReservations = async (req, res) => {
     }
 };
 
+exports.searchReservations = async (req, res) => {
+    try {
+        const reservationInfo = await Reservation.searchReservations(req.body.searchTerm);
+        //console.log(reservationInfo);
+        if (reservationInfo.length == 0) {
+            res.json('');
+            return;
+        }
+        res.json({reservation: reservationInfo})
+        //    , role: req.session.user.role}); -> could implement this in fuuture.
+
+
+    } catch (error) {
+        console.log(error);
+    }
+}
 //Helper function
 // Function to format dates in YYYY-MM-DD format
 function formatDate(dateString) {
