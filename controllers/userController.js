@@ -1,4 +1,5 @@
 const User = require('../models/User')
+const Book = require("../models/Books");
 
 
 
@@ -10,17 +11,25 @@ const User = require('../models/User')
  * @param {Object} req - The request object.
  * @param {Object} res - The response object.
  */
-exports.home = function(req, res) {
+exports.home = async function(req, res) {
     if (req.session.user) {        
         if(req.session.user.role == 'admin') {
             res.render('adminPortal.ejs');
         } else {
-            res.render('userPortal.ejs', {user: req.session.user});
+            res.render('userPortal.ejs', { user: req.session.user });
         }
-     } else {
-        res.render('home.ejs');
-     }
-}
+    } else {
+        try {
+            // Make sure getAllBooks is asynchronous if necessary
+            const books = await Book.getAllBooks(); // Assuming this returns a promise
+            res.render('home', { books });
+        } catch (error) {
+            console.error("Error fetching books:", error);
+            res.render('home', { books: [] }); // Render with an empty array in case of error
+        }
+    }
+};
+
 
 /**
  * Renders the customer login page.

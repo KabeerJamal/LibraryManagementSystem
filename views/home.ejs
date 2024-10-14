@@ -4,42 +4,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-
-    <!-- Link to external CSS file -->
-    <link rel="stylesheet" href="home.css">
+    <title>U.K Library</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/home.css">
 </head>
 
 <body>
-    <h1>U.K Library</h1>
-
-    <a href="/loginCustomerPage">Login Customer</a>
-    <a href="/registerCustomerPage">Register Customer</a>
-    <a href="/loginAdminPage">Login Admin</a>
-
-    
-     JavaScript for Parallax Cursor
-    <script>
-        // Create the custom cursor element
-        const cursor = document.createElement('div');
-        cursor.id = 'cursor';
-        document.body.appendChild(cursor);
-
-        // Parallax movement for the cursor
-        document.addEventListener('mousemove', (e) => {
-            const parallaxFactor = 0.15; // Adjust this factor to control the parallax effect
-
-            // Calculate the offset of the mouse position relative to the center
-            const mouseX = e.pageX - window.innerWidth / 2;
-            const mouseY = e.pageY - window.innerHeight / 2;
-
-            // Apply parallax transformation to the custom cursor
-            cursor.style.transform = `translate(${mouseX * parallaxFactor}px, ${mouseY * parallaxFactor}px)`;
-            cursor.style.left = `${e.pageX}px`;
-            cursor.style.top = `${e.pageY}px`;
-        });
-    </script>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="logo">U.K Library</div>
+        <div class="nav-links">
+            <a href="/loginCustomerPage" class="btn">Customer Login</a>
+            <a href="/registerCustomerPage" class="btn">Customer Register</a>
+            <a href="/loginAdminPage" class="btn">Admin Login</a>
+        </div>
+    </div>
 
 
-    <!-- footer begins -->
+    <!-- Book Cards (if books exist) -->
+    <% if (books && books.length> 0) { %>
+        <div class="card-container">
+            <% books.forEach(book=> { %>
+                <div class="card">
+                    <img src="<%= book.cover_image %>" alt="<%= book.title %>">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <%= book.title %>
+                        </div>
+                        <div class="card-author">by <%= book.author %>
+                        </div>
+                        <div class="card-description">
+                            <%= book.description %>
+                        </div>
+                    </div>
+                </div>
+                <% }) %>
+        </div>
+        <% } else { %>
+            <div class="no-books">
+                <p>No books available at the moment. Please check back later.</p>
+            </div>
+            <% } %>
+        
     <%- include('includes/footer') %>
+</body>
+
+</html>

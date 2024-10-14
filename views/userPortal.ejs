@@ -1,53 +1,100 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Portal</title>
+<<<<<<< Updated upstream
     <link rel="stylesheet" type="text/css" href="userPortal.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+=======
+    <link rel="stylesheet" href="/userPortal.css">
+>>>>>>> Stashed changes
 </head>
+
 <body>
-    <!-- We used axios, so couldnt do res.render from front end so thats why manually creating
-     a flash message-->
-    <div id="flash-message" class="flash-message"></div>
-    <!-- Flash Messages -->
-    <div class="flash-messages">
-        <% errors.forEach(function(message) { %>
-            <p class="flash-message">
-                <%= message %>.
-            </p>
-            <% }) %>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="logo">U.K Library</div>
+        <div class="nav-links">
+            <a href="/home" class="btn">Home</a>
+            <a href="/logout" class="btn">Logout</a>
+        </div>
     </div>
 
-     <!-- Flash Messages -->
-     <div class="flash-messages">
-        <% success.forEach(function(message) { %>
-            <p class="flash-message">
-                <%= message %>. 
-            </p>
-            <% }) %>
+    <!-- Flash Messages -->
+    <div class="flash-messages">
+        <% if (errors && errors.length> 0) { %>
+            <% errors.forEach(function(message) { %>
+                <p class="flash-message error-message">
+                    <%= message %>.
+                </p>
+                <% }) %>
+                    <% } %>
+
+                        <% if (success && success.length> 0) { %>
+                            <% success.forEach(function(message) { %>
+                                <p class="flash-message success-message">
+                                    <%= message %>.
+                                </p>
+                                <% }) %>
+                                    <% } %>
     </div>
-    <h1>Welcome to the <%= user.username %> Portal</h1>
-    <a href="/logout">Logout</a>
-    <a href="/userReservationDetails">
-        <button>View your reservation details</button>
-    </a>
-    <h2>Search for a book</h2>
-    <div class="search-icon">
-        <i class="fas fa-search"></i>
-    </div>
-    <!-- Modal (small screen) -->
+
+    <!-- User Portal Content -->
+    <main class="portal-content">
+        <h1>Welcome to the <%= user.username %> Portal</h1>
+
+        <div class="user-actions">
+            <a href="/userReservationDetails" class="btn">View Reservation Details</a>
+        </div>
+
+        <h2>Search for a Book</h2>
+        <div class="search-icon">
+            <i class="fas fa-search"></i>
+        </div>
+
+        <!-- Book Cards Section (for search results) -->
+        <% if (books && books.length> 0) { %>
+            <div class="card-container">
+                <% books.forEach(book=> { %>
+                    <div class="card">
+                        <img src="<%= book.cover_image %>" alt="<%= book.title %>">
+                        <div class="card-body">
+                            <div class="card-title">
+                                <%= book.title %>
+                            </div>
+                            <div class="card-author">by <%= book.author %>
+                            </div>
+                            <div class="card-description">
+                                <%= book.description %>
+                            </div>
+                        </div>
+                    </div>
+                    <% }) %>
+            </div>
+            <% } else { %>
+                <div class="no-books">
+                    <p>No books found for your search. Please try again.</p>
+                </div>
+                <% } %>
+    </main>
+
+    <!-- Modal for Available Copies -->
     <div id="modal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Available Copies</h2>
             <ul id="bookCopies">
-            <!-- Available copies will be dynamically inserted here, 
-             you will find it in search.js openModal funciton -->
-
+                <!-- Book copies will be dynamically inserted here -->
             </ul>
-            <button id="reserve">Reserve a copy</button>
+            <button id="reserve" class="btn">Reserve a Copy</button>
         </div>
     </div>
-<!-- footer begins -->
-<%- include('includes/footer') %>
+
+    <%- include('includes/footer') %>
+</body>
+
+</html>

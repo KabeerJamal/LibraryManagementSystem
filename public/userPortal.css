@@ -1,52 +1,222 @@
-/* Style for the modal (small screen) */
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Body Styling */
+body {
+  background-image: url('lms.jpg');
+  background-size: cover;
+  background-position: center;
+  color: #ffffff;
+  position: relative;
+  overflow-y: auto;
+}
+
+/* Dark overlay for readability */
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: -1;
+}
+
+/* Navbar Styling */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 20px;
+  backdrop-filter: blur(5px);
+  background: rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.navbar .logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.navbar .nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+.navbar .nav-links a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 10px;
+  border-radius: 5px;
+  transition: background 0.3s ease;
+}
+
+.navbar .nav-links a:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Flash Messages */
+.flash-messages {
+  position: fixed;
+  top: 5rem;
+  width: 100%;
+  text-align: center;
+  z-index: 100;
+  padding: 10px;
+}
+
+.flash-message {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.error-message {
+  background-color: #e74c3c;
+}
+
+.success-message {
+  background-color: #2ecc71;
+}
+
+/* Main Portal Content */
+.portal-content {
+  margin-top: 6.5rem;
+  text-align: center;
+  color: #ffffff;
+}
+
+.portal-content h1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.user-actions {
+  margin: 2rem 0;
+}
+
+.user-actions .btn {
+  background-color: #3498db;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  transition: background 0.3s ease;
+  text-decoration: none;
+}
+
+.user-actions .btn:hover {
+  background-color: #2980b9;
+}
+
+/* Search Icon */
+.search-icon {
+  margin-top: 1.5rem;
+  font-size: 2rem;
+  color: #ffffff;
+}
+
+/* Modal Styles */
 .modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent background */
+  display: none;
+  position: fixed;
+  z-index: 200;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 500px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  color: #333;
+  text-align: center;
+}
+
+.modal h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.modal .close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.modal button {
+  margin-top: 1rem;
+  padding: 10px 20px;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  transition: background 0.3s ease;
+}
+
+.modal button:hover {
+  background-color: #2980b9;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 10px;
   }
-  
+
+  .navbar .logo {
+    font-size: 1.5rem;
+  }
+
+  .navbar .nav-links a {
+    font-size: 0.9rem;
+  }
+
+  .portal-content h1 {
+    font-size: 1.8rem;
+  }
+
   .modal-content {
-    background-color: white;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 50%;
-    border-radius: 10px;
+    width: 90%;
   }
-  
-  .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-  }
-  
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }
-
-  .flash-message {
-    display: none;
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 10px 20px;
-    background-color: #4caf50; /* Green background */
-    color: white; /* White text */
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
 }
 
-.flash-message.error {
-    background-color: #f44336; /* Red background for errors */
+@media (max-width: 480px) {
+  .navbar .logo {
+    font-size: 1.2rem;
+  }
+
+  .navbar .nav-links a {
+    font-size: 0.8rem;
+  }
+
+  .portal-content h1 {
+    font-size: 1.5rem;
+  }
+
+  .modal-content {
+    width: 95%;
+  }
 }
-  
