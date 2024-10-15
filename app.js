@@ -190,3 +190,7 @@ app.listen(process.env.PORT);
 //3)option to see all reservations (show all reservation button)
 //2)Tommorow work on filters.(1-remove the badreservation related file/code(need to clean))
 //4)organise all reservations for user and admin.
+
+
+//small things, z-index of flash messages and overdue logic check.
+//Clean all html css ,code, use includes and everything

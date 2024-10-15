@@ -1,4 +1,4 @@
-import SearchAndReserve from './modules/searchAndReserve.js';
+import SearchAndReserve from './modules/SearchAndReserve.js';
 import CancelReservation from './modules/CancelReservation.js';
 import CollectAndReturn from './modules/CollectAndReturn.js';
 import ReservationSearch from './modules/ReservationSearch.js';

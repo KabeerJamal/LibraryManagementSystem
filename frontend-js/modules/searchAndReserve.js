@@ -175,12 +175,14 @@ export default class SearchAndReserve{
         axios.post('/reserve', {bookId: data.bookInformation.book_id, userName : data.customer, numberOfCopiesToReserve: 1}).then((response) => {
             this.modal.style.display = 'none';
             if (response.data == 'Book reserved') {
+
                 this.showFlashMessage('Book reserved');
             } else {
+
                 this.showFlashMessage('Error reserving book', true);
             }
         }).catch((error) => {
-            console.log(error);
+
             this.showFlashMessage('Reservation failed. Please try again.', true);
         });
     }

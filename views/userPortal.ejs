@@ -21,7 +21,11 @@
         </div>
     </div>
 
-    <!-- Flash Messages -->
+    <!-- We used axios, so couldnt do res.render from front end so thats why manually creating
+     a flash message-->
+     <div id="flash-message" class="flash-message"></div>
+    <!-- 
+     Flash Messages 
     <div class="flash-messages">
         <% if (errors && errors.length> 0) { %>
             <% errors.forEach(function(message) { %>
@@ -38,7 +42,7 @@
                                 </p>
                                 <% }) %>
                                     <% } %>
-    </div>
+    </div> -->
 
     <!-- User Portal Content -->
     <main class="portal-content">
