@@ -16,7 +16,8 @@ exports.home = async function(req, res) {
         if(req.session.user.role == 'admin') {
             res.render('adminPortal.ejs');
         } else {
-            res.render('userPortal.ejs', { user: req.session.user });
+            const books = await Book.getAllBooks();
+            res.render('userPortal.ejs', { user: req.session.user, books });
         }
     } else {
         try {

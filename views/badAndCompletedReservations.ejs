@@ -55,10 +55,11 @@
                 </td>
                 <td class="return-date" data-number="<%= reservation.reservation_id %>">
                     <%= reservation.return_date %>
-                    <% if(reservation.returned_at == null) { %>
-                        <button class="return" data-number="<%= reservation.reservation_id %>">Returned?</button>
+                    <%if(reservation.status != 'overdue') { %>
+                        <% if(reservation.returned_at == null) { %>
+                            <button class="return" data-number="<%= reservation.reservation_id %>">Returned?</button>
+                        <% } %>
                     <% } %>
-
                 </td>
                 <td>
                     <%= reservation.collect_date_deadline %>

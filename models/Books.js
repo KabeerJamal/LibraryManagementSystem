@@ -54,34 +54,6 @@ class Books {
       this.data.year = "";
     }
 
-<<<<<<< Updated upstream
-    //create a searchBooks function
-    //this book will send the information it received and call a search query to search from the database the book and return the information of that book
-    static searchBooks(searchTerm) {
-        return new Promise(async (resolve, reject) => {
-    
-            let query;
-            let values;
-    
-            if (!searchTerm) {
-                // If search term is empty, return no results
-                query = 'SELECT * FROM books WHERE 1 = 0';
-                values = [];
-            } else {
-                // If search term is not empty, proceed with the original query
-                query = 'SELECT * FROM books WHERE title LIKE ? OR author LIKE ?';
-                values = [`%${searchTerm}%`, `%${searchTerm}%`];
-            }
-    
-            try {
-                const [rows] = await db.query(query, values);
-                resolve(rows);
-            } catch (err) {
-                reject(err);
-            }
-        });
-    }
-=======
     //get rid of any bogus properties
     this.data = {
       title: this.data.title.trim().toLowerCase(),
@@ -146,7 +118,6 @@ class Books {
     return new Promise(async (resolve, reject) => {
       let query;
       let values;
->>>>>>> Stashed changes
 
       if (!searchTerm) {
         // If search term is empty, return no results

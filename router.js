@@ -130,8 +130,8 @@ router.post('/return/:reservation_id', reservationController.returnBook);
 router.post('/cancelReservation/:reservation_id', reservationController.cancelReservation);
 
 router.get("/showReservations", reservationController.borrowerDetails);
+/*
 router.get("/showBadAndCompletedReservations", reservationController.showBadAndCompletedReservations);
-
-
+*/
 
 module.exports = router;

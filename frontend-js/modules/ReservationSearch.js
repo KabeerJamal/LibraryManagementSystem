@@ -33,7 +33,7 @@ export default class ReservationSearch {
     sendRequest() {
         axios.post('/searchReservation', {searchTerm: this.searchField.value}).then((response) => {
             //I want to render the reservations to the page
-            //console.log(response.data.reservation);
+            console.log(response.data.reservation);
             this.updateTable(response.data.reservation);
         }).catch((error) => {
             console.error('Error:', error);
@@ -65,7 +65,7 @@ export default class ReservationSearch {
                              ${(reservation.collect_date) ? this.formatDate(reservation.collect_date) : '<button class="collect" data-number="' + reservation.reservation_id + '">Collect</button>'}
                         </td>
                         <td class="returned-at" data-number="${reservation.reservation_id}">
-                        ${reservation.returned_at ? reservation.returned_at : ''}
+                        ${reservation.returned_at ? this.formatDate(reservation.returned_at) : ''}
                         </td>
                         <td class="return-date" data-number="${reservation.reservation_id}">
                             ${this.formatDate(reservation.return_date)}
@@ -74,6 +74,39 @@ export default class ReservationSearch {
                         <td>${this.formatDate(reservation.collect_date_deadline)}</td>
                     </tr>
                 `;  
+                this.reservationResults.innerHTML += row;
+            }
+            else {
+                const row = `
+                    <tr>
+                        <td data-number="${reservation.user_id}">
+                        ${reservation.username}
+                        </td>
+                        <td data-number="${reservation.book_id}">
+                        ${reservation.title}
+                        </td>
+                        <td class="status" data-number="${reservation.reservation_id}">
+                        ${reservation.status}
+                        </td>
+                        <td>${this.formatDate(reservation.reserve_date)}</td>
+                        <td>
+                        ${this.formatDate(reservation.collect_date)}
+                        ${reservation.collect_date == null ? '<button class="collect" data-number="' + reservation.reservation_id + '">Collect</button>' : ''}
+                        </td>
+                        <td class="returned-at" data-number="${reservation.reservation_id}">
+                         ${reservation.returned_at ? this.formatDate(reservation.returned_at) : ''}
+                        </td>
+                        <td class="return-date" data-number="${reservation.reservation_id}">
+                        ${this.formatDate(reservation.return_date)}
+                        ${reservation.status !== 'overdue' 
+                        ? (reservation.returned_at === null 
+                        ? '<button class="return" data-number="' + reservation.reservation_id + '">Returned?</button>' 
+                        : '') 
+                        : ''
+                        }
+                        </td>
+                        <td>${this.formatDate(reservation.collect_date_deadline)}</td>
+                        `;  
                 this.reservationResults.innerHTML += row;
             }
         });
@@ -86,7 +119,7 @@ export default class ReservationSearch {
             return '';
         }
 
-        return new Date(dateString).toISOString().slice(0, 10); 
+        return new Date(dateString).toISOString().slice(0, 10) 
         
         
     }

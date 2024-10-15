@@ -18,6 +18,7 @@
         <i class="fas fa-search"></i>
         <input type="text" placeholder="Search" id="live-search-field">
     </div>
+    <%- include('includes/filterSearchReservation') %>
 <table class="everyone-reservation-table">
     <thead>
         <tr>
@@ -67,8 +68,43 @@
                     <%= reservation.collect_date_deadline %>
                 <td>
             </tr>
-                <% } %>
-            <% }) %>
+                <% } else { %>
+                    <tr>
+                        <td>
+                            <%= reservation.borrower_name %>
+                        </td>
+                        <td>
+                            <%= reservation.book_title %>
+                        </td>
+                        <td class="status" data-number="<%= reservation.reservation_id %>">
+                            <%= reservation.status %>
+                        </td>
+                        <td >
+                            <%= reservation.reserve_date %>
+                        </td>
+                        <td>
+                            <%= reservation.collect_date %>
+                            <% if (reservation.collect_date == null) { %>
+                            <button class="collect" data-number="<%= reservation.reservation_id %>">Collect</button>
+                            <% } %>                
+                        </td>
+                        <td class="returned-at" data-number="<%= reservation.reservation_id %>">
+                            <%= reservation.returned_at %>
+                        </td>
+                        <td class="return-date" data-number="<%= reservation.reservation_id %>">
+                            <%= reservation.return_date %>
+                            <%if(reservation.status != 'overdue') { %>
+                                <% if(reservation.returned_at == null) { %>
+                                    <button class="return" data-number="<%= reservation.reservation_id %>">Returned?</button>
+                                <% } %>
+                            <% } %>
+                        </td>
+                        <td>
+                            <%= reservation.collect_date_deadline %>
+                        <td>
+                    </tr>
+                        <% } %>
+                    <% }) %>
     </tbody>
 </table>
 

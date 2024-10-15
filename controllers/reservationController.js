@@ -96,6 +96,7 @@ exports.cancelReservation = async (req, res) => {
     }
 }
 
+/*
 //Create a function which goes to Reservation, gets all completed and bad debt reservations and renders them to a new ejs file
 exports.showBadAndCompletedReservations = async (req, res) => {
     try {
@@ -115,7 +116,7 @@ exports.showBadAndCompletedReservations = async (req, res) => {
         res.send('Error getting bad and completed reservations');
     }
 };
-
+*/
 exports.searchReservations = async (req, res) => {
     try {
         const reservationInfo = await Reservation.searchReservations(req.body.searchTerm);

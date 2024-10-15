@@ -220,3 +220,10 @@ body::before {
     width: 95%;
   }
 }
+
+.card img {
+  width: 30%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 5px 5px 0 0;
+}

@@ -124,6 +124,7 @@ app.listen(process.env.PORT);
 
 //need to deal with time issue in database. borrower details in reservation model.
 //add publication year as well in search
+//count of how many overdues/bad debts and a strike or smth.
 
 //file in includes folder for flash messages
 //some changes in home.ejs
@@ -184,5 +185,8 @@ app.listen(process.env.PORT);
 
 //1) almost implemented, then work on 2.
 
-//option to see all reservations (show all reservation button)
-//Tommorow work on filters.
+
+//Before all that, pull umer code.
+//3)option to see all reservations (show all reservation button)
+//2)Tommorow work on filters.(1-remove the badreservation related file/code(need to clean))
+//4)organise all reservations for user and admin.
