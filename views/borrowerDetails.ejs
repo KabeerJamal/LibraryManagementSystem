@@ -32,7 +32,7 @@
             <th>Collect date deadline</th>
         </tr>
     </thead>
-    <tbody id="all-reservations-table-body">
+    <tbody class="all-reservations-table-body">
         <% reservations.forEach(reservation=> { %>
             <% if (reservation.status != 'completed' && reservation.status != 'overdue') { %>
             <tr>

@@ -167,6 +167,7 @@ app.listen(process.env.PORT);
 
 
 //Admin has access to every user. He can see all reservations.take actions on them.
+
 //User: view past reservation details, Admin: view past reservation details -> bad debt + completed (using filter)
 //overdue logic and automated reservation cacnellation.(use a trigger)
 //search feature for reservations(both current and past) (including filter of statuses)
@@ -192,5 +193,17 @@ app.listen(process.env.PORT);
 //4)organise all reservations for user and admin.
 
 
+
 //small things, z-index of flash messages and overdue logic check.
 //Clean all html css ,code, use includes and everything
+
+
+//Tomm
+//A button showing all reservations, when you search you only look at the filter.(also do a front end search no need for back end)
+//clean code
+//organise the reservation for user and admin
+
+//A settings page for admin and customer.
+//notifications?
+//Contacting the admin?
+//Front end betterment

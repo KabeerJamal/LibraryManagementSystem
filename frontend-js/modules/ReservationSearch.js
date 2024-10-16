@@ -5,13 +5,19 @@ export default class ReservationSearch {
         this.searchField = document.querySelector('#live-search-field');
         this.typingWaitTimer;
         this.previousValue = '';
-        this.reservationResults = document.getElementById('all-reservations-table-body');
+        this.reservationResults = document.querySelectorAll('.all-reservations-table-body')[0];
 
+        this.reservationStatus = document.getElementById('reservation-status');
+        this.rows = document.querySelectorAll('.all-reservations-table-body tr');
         this.events();
     }
 
     events() {
         this.searchField.addEventListener('keyup', () => this.keyPressHandler());
+
+        this.reservationStatus.addEventListener('change',() => {
+            this.updateTableFilter(this.reservationStatus.value);
+        })
 
     }
 
@@ -33,7 +39,7 @@ export default class ReservationSearch {
     sendRequest() {
         axios.post('/searchReservation', {searchTerm: this.searchField.value}).then((response) => {
             //I want to render the reservations to the page
-            console.log(response.data.reservation);
+            //console.log(response.data.reservation);
             this.updateTable(response.data.reservation);
         }).catch((error) => {
             console.error('Error:', error);
@@ -110,6 +116,26 @@ export default class ReservationSearch {
                 this.reservationResults.innerHTML += row;
             }
         });
+    }
+
+    updateTableFilter(status) {
+        if (status === 'all') {
+            this.rows.forEach(row => {
+                row.style.display = ''; // Show all rows
+            });
+            return;
+        }
+
+        this.rows.forEach(row => {
+            row.style.display = ''; // Show all rows
+        });
+
+        this.rows.forEach(row => {
+            const statusCell = row.querySelector('.status');
+            if (!(statusCell.textContent.trim() == status)) {
+                row.style.display = 'none';
+            }
+        })
     }
 
     //Helper function
