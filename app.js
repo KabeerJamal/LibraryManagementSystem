@@ -199,6 +199,8 @@ app.listen(process.env.PORT);
 
 
 //Tomm
+//Accounting for first searching then filtering
+//if i search roalnd,then ronaldo then i get empty shit.
 //A button showing all reservations, when you search you only look at the filter.(also do a front end search no need for back end)
 //clean code
 //organise the reservation for user and admin
@@ -207,3 +209,5 @@ app.listen(process.env.PORT);
 //notifications?
 //Contacting the admin?
 //Front end betterment
+
+

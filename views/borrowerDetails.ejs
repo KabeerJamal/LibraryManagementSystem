@@ -36,19 +36,19 @@
         <% reservations.forEach(reservation=> { %>
             <% if (reservation.status != 'completed' && reservation.status != 'overdue') { %>
             <tr>
-                <td data-number="<%= reservation.user_id %>">
+                <td class="name" data-number="<%= reservation.user_id %>">
                     <%= reservation.borrower_name %>
                 </td>
-                <td data-number="<%= reservation.book_id %>">
+                <td class = "title" data-number="<%= reservation.book_id %>">
                     <%= reservation.book_title %>
                 </td>
                 <td class="status" data-number="<%= reservation.reservation_id %>">
                     <%= reservation.status %>
                 </td>
-                <td >
+                <td class = "reserve-date">
                     <%= reservation.reserve_date %>
                 </td>
-                <td>
+                <td class = "collect-date">
                     <%= reservation.collect_date %>
                     <% if (reservation.collect_date == null) { %>
                     <button class="collect" data-number="<%= reservation.reservation_id %>">Collect</button>
@@ -64,25 +64,25 @@
                     <% } %>
 
                 </td>
-                <td>
+                <td class="collect-date-deadline">
                     <%= reservation.collect_date_deadline %>
                 <td>
             </tr>
                 <% } else { %>
                     <tr>
-                        <td>
+                        <td class="name" data-number="<%= reservation.user_id %>">
                             <%= reservation.borrower_name %>
                         </td>
-                        <td>
+                        <td class = "title" data-number="<%= reservation.user_id %>">
                             <%= reservation.book_title %>
                         </td>
                         <td class="status" data-number="<%= reservation.reservation_id %>">
                             <%= reservation.status %>
                         </td>
-                        <td >
+                        <td class = "reserve-date">
                             <%= reservation.reserve_date %>
                         </td>
-                        <td>
+                        <td class = "collect-date">
                             <%= reservation.collect_date %>
                             <% if (reservation.collect_date == null) { %>
                             <button class="collect" data-number="<%= reservation.reservation_id %>">Collect</button>
@@ -99,7 +99,7 @@
                                 <% } %>
                             <% } %>
                         </td>
-                        <td>
+                        <td class="collect-date-deadline">
                             <%= reservation.collect_date_deadline %>
                         <td>
                     </tr>
