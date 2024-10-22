@@ -197,7 +197,7 @@ app.listen(process.env.PORT);
 //Work on flash messages when increasing and decreasing copies
 //Clean all html css ,code, use includes and everything(start with nav bar in admin portal)
 
-//Tomm : deal with main background image everywhere and common css. deal with includes not showing in adminPortal for font awesome.
+//Tomm : deal with main background image everywhere, go through every html file step by step(get done with clean code tomm)
 
 
 

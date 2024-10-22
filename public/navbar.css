@@ -1,0 +1,103 @@
+
+/* Transparent Navbar with blur and shadow */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 20px;
+    backdrop-filter: blur(5px);
+    /* Increased blur for more contrast */
+    background: rgba(0, 0, 0, 0.4);
+    /* Slightly more opaque background */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    
+}
+
+.navbar .logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.navbar .nav-links {
+    display: flex;
+    gap: 20px;
+}
+
+.navbar .nav-links a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1rem;
+    padding: 10px;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+}
+
+.navbar .nav-links a:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 10px;
+    }
+
+    .navbar .logo {
+        font-size: 1.5rem;
+    }
+
+    .navbar .nav-links a {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+
+    .main-content {
+        padding: 10px;
+        gap: 10px;
+    }
+
+    .card {
+        width: 100%;
+        max-width: 350px;
+    }
+}
+
+/* For smaller devices and screens */
+@media (max-width: 480px) {
+    .navbar .logo {
+        font-size: 1.2rem;
+    }
+
+    .navbar .nav-links a {
+        font-size: 0.8rem;
+        padding: 5px;
+    }
+
+    .card {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .card img {
+        height: 150px;
+        /* Adjust image height for smaller cards */
+    }
+
+    .card-title {
+        font-size: 1.2rem;
+    }
+
+    .card-author {
+        font-size: 0.9rem;
+    }
+
+    .card a.btn {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+}
