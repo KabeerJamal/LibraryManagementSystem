@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Roboto+Slab:wght@700&display=swap');
+
 /* Global Reset */
 * {
     margin: 0;
@@ -6,7 +8,7 @@
     font-family: 'Arial', sans-serif;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Roboto+Slab:wght@700&display=swap');
+
 
 h1 {
     font-family: 'Merriweather', serif;
@@ -49,26 +51,7 @@ body::before {
     z-index: -1;
 }
 
-/* Flash Messages */
-.flash-messages {
-    position: absolute;
-    top: 10px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
 
-.flash-message {
-    background-color: rgba(255, 0, 0, 0.8);
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 1rem;
-    margin-bottom: 10px;
-    text-align: center;
-    box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
-    animation: fadeIn 1s ease-in-out;
-}
 
 /* Container for the Admin Portal */
 .admin-container {

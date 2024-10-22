@@ -1,0 +1,25 @@
+
+      <!-- Book Cards Section (for search results) -->
+      <% if (books && books.length> 0) { %>
+        <div class="card-container">
+            <% books.forEach(book=> { %>
+                <div class="card">
+                    <img src="<%= book.cover_image %>" alt="<%= book.title %>">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <%= book.title %>
+                        </div>
+                        <div class="card-author">by <%= book.author %>
+                        </div>
+                        <div class="card-description">
+                            <%= book.description %>
+                        </div>
+                    </div>
+                </div>
+                <% }) %>
+        </div>
+        <% } else { %>
+            <div class="no-books">
+                <p>No books found for your search. Please try again.</p>
+            </div>
+            <% } %>

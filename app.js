@@ -103,6 +103,8 @@ app.use(express.static('public'));
 app.use(function(req, res, next) {
     res.locals.errors = req.flash('errors');
     res.locals.success = req.flash('success');
+    //make user session data available from within view templates
+    res.locals.user = req.session.user;//ejs can access the user object which has username and avatar
     next();
 })
 
@@ -132,6 +134,7 @@ app.listen(process.env.PORT);
 ///adminPortal opening without asking user pass
 //deal with the fact that you cant just get the password from the database when doing a call to the database
 //can an admin cancel someones reservation? can the admin block someone from membership?
+//What hapens to reserved books if books removed.
 
 
 
@@ -184,22 +187,21 @@ app.listen(process.env.PORT);
 //4) i want the user to have same code, but for him the search should be based on the book name and the status of the reservation and date of reservation
 
 
-//1) almost implemented, then work on 2.
 
 
-//Before all that, pull umer code.
-//3)option to see all reservations (show all reservation button)
-//2)Tommorow work on filters.(1-remove the badreservation related file/code(need to clean))
+
+
+
 //4)organise all reservations for user and admin.
-
-
-
 //small things, z-index of flash messages and overdue logic check.
-//Clean all html css ,code, use includes and everything
+//Work on flash messages when increasing and decreasing copies
+//Clean all html css ,code, use includes and everything(start with nav bar in admin portal)
+
+//Tomm : deal with main background image everywhere and common css. deal with includes not showing in adminPortal for font awesome.
 
 
-//Tomm
-//Accounting for first searching then filtering
+
+
 
 //clean code
 //organise the reservation for user and admin

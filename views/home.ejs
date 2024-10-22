@@ -6,47 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>U.K Library</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/home.css">
+    <%- include('includes/commonCss') %>
+    <%- include('includes/fontAwesome') %>
 </head>
 
 <body>
     <!-- Navbar -->
-    <div class="navbar">
-        <div class="logo">U.K Library</div>
-        <div class="nav-links">
-            <a href="/loginCustomerPage" class="btn">Customer Login</a>
-            <a href="/registerCustomerPage" class="btn">Customer Register</a>
-            <a href="/loginAdminPage" class="btn">Admin Login</a>
-        </div>
-    </div>
+    <%- include('includes/navbar') %>
 
-
-    <!-- Book Cards (if books exist) -->
-    <% if (books && books.length> 0) { %>
-        <div class="card-container">
-            <% books.forEach(book=> { %>
-                <div class="card">
-                    <img src="<%= book.cover_image %>" alt="<%= book.title %>">
-                    <div class="card-body">
-                        <div class="card-title">
-                            <%= book.title %>
-                        </div>
-                        <div class="card-author">by <%= book.author %>
-                        </div>
-                        <div class="card-description">
-                            <%= book.description %>
-                        </div>
-                    </div>
-                </div>
-                <% }) %>
-        </div>
-        <% } else { %>
-            <div class="no-books">
-                <p>No books available at the moment. Please check back later.</p>
-            </div>
-            <% } %>
-        
+    <%- include('includes/bookCards') %>
+    
     <%- include('includes/footer') %>
-</body>
-
-</html>

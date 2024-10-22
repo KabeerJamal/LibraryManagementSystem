@@ -5,44 +5,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Portal</title>
+    <%- include('includes/commonCss') %>
     <link rel="stylesheet" type="text/css" href="userPortal.css">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="searchBook.css">
+    <%- include('includes/fontAwesome') %>
     <link rel="stylesheet" href="/userPortal.css">
+    <link rel="stylesheet" href="/flashMessagesFrontEnd.css">
 </head>
 
 <body>
     <!-- Navbar -->
-    <div class="navbar">
-        <div class="logo">U.K Library</div>
-        <div class="nav-links">
-            <a href="/home" class="btn">Home</a>
-            <a href="/logout" class="btn">Logout</a>
-        </div>
-    </div>
+    <%- include('includes/navbar') %>
 
     <!-- We used axios, so couldnt do res.render from front end so thats why manually creating
      a flash message-->
      <div id="flash-message" class="flash-message"></div>
-    <!-- 
-     Flash Messages 
-    <div class="flash-messages">
-        <% if (errors && errors.length> 0) { %>
-            <% errors.forEach(function(message) { %>
-                <p class="flash-message error-message">
-                    <%= message %>.
-                </p>
-                <% }) %>
-                    <% } %>
 
-                        <% if (success && success.length> 0) { %>
-                            <% success.forEach(function(message) { %>
-                                <p class="flash-message success-message">
-                                    <%= message %>.
-                                </p>
-                                <% }) %>
-                                    <% } %>
-    </div> -->
 
     <!-- User Portal Content -->
     <main class="portal-content">
@@ -53,36 +31,16 @@
         </div>
 
         <h2>Search for a Book</h2>
+
         <div class="search-icon">
             <i class="fas fa-search"></i>
         </div>
 
-        <!-- Book Cards Section (for search results) -->
-        <% if (books && books.length> 0) { %>
-            <div class="card-container">
-                <% books.forEach(book=> { %>
-                    <div class="card">
-                        <img src="<%= book.cover_image %>" alt="<%= book.title %>">
-                        <div class="card-body">
-                            <div class="card-title">
-                                <%= book.title %>
-                            </div>
-                            <div class="card-author">by <%= book.author %>
-                            </div>
-                            <div class="card-description">
-                                <%= book.description %>
-                            </div>
-                        </div>
-                    </div>
-                    <% }) %>
-            </div>
-            <% } else { %>
-                <div class="no-books">
-                    <p>No books found for your search. Please try again.</p>
-                </div>
-                <% } %>
     </main>
 
+
+    <%- include('includes/bookCards') %>
+    
     <!-- Modal for Available Copies -->
     <div id="modal" class="modal">
         <div class="modal-content">
@@ -96,6 +54,3 @@
     </div>
 
     <%- include('includes/footer') %>
-</body>
-
-</html>

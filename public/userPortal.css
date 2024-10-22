@@ -66,31 +66,7 @@ body::before {
   background: rgba(255, 255, 255, 0.2);
 }
 
-/* Flash Messages */
-.flash-messages {
-  position: fixed;
-  top: 5rem;
-  width: 100%;
-  text-align: center;
-  z-index: 100;
-  padding: 10px;
-}
 
-.flash-message {
-  display: inline-block;
-  padding: 10px 20px;
-  margin: 5px;
-  border-radius: 5px;
-  font-weight: bold;
-}
-
-.error-message {
-  background-color: #e74c3c;
-}
-
-.success-message {
-  background-color: #2ecc71;
-}
 
 /* Main Portal Content */
 .portal-content {
@@ -121,12 +97,7 @@ body::before {
   background-color: #2980b9;
 }
 
-/* Search Icon */
-.search-icon {
-  margin-top: 1.5rem;
-  font-size: 2rem;
-  color: #ffffff;
-}
+
 
 /* Modal Styles */
 .modal {

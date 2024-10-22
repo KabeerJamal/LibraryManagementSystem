@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS reservations (
     user_id INT NOT NULL,                           -- User making the reservation
     book_id INT NOT NULL,                           -- The book being reserved
     number_of_copies INT NOT NULL,                  -- Number of copies reserved
-    status ENUM('reserved', 'completed', 'cancelled', 'collected') NOT NULL DEFAULT 'reserved',  -- Status of the reservation
+    status ENUM('reserved', 'completed', 'cancelled', 'collected','overdue') NOT NULL DEFAULT 'reserved',  -- Status of the reservation
     reserve_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Date of the reservation (auto-generated)
     collect_date DATE DEFAULT NULL,                 -- Actual date when the book is collected (to be updated later)
     collect_date_deadline DATE GENERATED ALWAYS AS (DATE_ADD(reserve_date, INTERVAL 7 DAY)) VIRTUAL, -- Derived attribute, 7 days from reserve_date

@@ -3,10 +3,12 @@
 
 <head>
     <title>Admin Portal</title>
+    <%- include('includes/commonCss') %>
     <link rel="stylesheet" href="adminportal.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <% include('includes/fontAwesome') %>
+    <link rel="stylesheet" href="/searchBook.css">
+    <link rel="stylesheet" href="/flashMessagesFrontEnd.css">
+    
 </head>
 
 <body>
@@ -16,19 +18,19 @@
         <p>
             <%= message %>. This is a flash message,needs to be modified with CSS
         </p>
-        <%}) %>
+    <%}) %>
 
-            <% errors.forEach(function(message) { %>
-                <p>
+    <% errors.forEach(function(message) { %>
+        <p>
                     <%= message %>. This is a flash message,needs to be modified with CSS
-                </p>
-                <%}) %>
+        </p>
+    <%}) %>
 
-                    <a href="/addBooks">Add Books</a>
-                    <a href="/logout">Logout</a>
-                    <div class="search-icon">
-                        <i class="fas fa-search"></i>
-                    </div>
+    <a href="/addBooks">Add Books</a>
+    <a href="/logout">Logout</a>
+    <div class="search-icon">
+        <i class="fas fa-search"></i>
+    </div>
                     <a href="/showReservations" class="btn">Show Reservations</a>
                     <!--a button here which sends a get request to showCompleted reservation, then we go to ROUTER-->
                     <!-- <a href="/showBadAndCompletedReservations" class="btn">Show Completed Reservations</a> -->

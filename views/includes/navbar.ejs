@@ -1,0 +1,34 @@
+
+
+
+
+<%if (!user) {%>
+    <div class="navbar">
+        <div class="logo">U.K Library</div>
+        <div class="nav-links">
+            <a href="/loginCustomerPage" class="btn">Customer Login</a>
+            <a href="/registerCustomerPage" class="btn">Customer Register</a>
+            <a href="/loginAdminPage" class="btn">Admin Login</a>
+        </div>
+    </div>
+
+<%} else if (user.role == "admin") {%>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="logo">U.K Library</div>
+        <div class="nav-links">
+            <a href="/home" class="btn">Home</a>
+            <a href="/logout" class="btn">Logout</a>
+        </div>
+    </div>
+    
+<%} else {%>
+     <!-- Navbar -->
+     <div class="navbar">
+        <div class="logo">U.K Library</div>
+        <div class="nav-links">
+            <a href="/home" class="btn">Home</a>
+            <a href="/logout" class="btn">Logout</a>
+        </div>
+    </div>
+<%}%>
