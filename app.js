@@ -140,7 +140,7 @@ app.listen(process.env.PORT);
 
 //user reserve add to cart?
 
-//Tomm
+
 
 
 //Can a user reserve multiple books at a time? then in reservation table, array like structure neded for bookId and copyId
@@ -192,12 +192,9 @@ app.listen(process.env.PORT);
 
 
 
-//4)organise all reservations for user and admin.
 //small things, z-index of flash messages and overdue logic check.
 //Work on flash messages when increasing and decreasing copies
-//Clean all html css ,code, use includes and everything(start with nav bar in admin portal)
 
-//Tomm : deal with main background image everywhere, go through every html file step by step(get done with clean code tomm)
 
 
 

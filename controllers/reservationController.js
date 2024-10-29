@@ -53,6 +53,15 @@ exports.userReservationDetails = async (req, res) => {
         const userId = await Reservation.getUserIdWoCreatingObject(req.session.user.username);
         const reservations = await Reservation.getUserReservations(userId);
         //console.log(reservations);
+        reservations.forEach(reservation => {
+            reservation.reserve_date = formatDate(reservation.reserve_date);
+            reservation.collect_date = formatDate(reservation.collect_date);
+            reservation.collect_date_deadline = formatDate(reservation.collect_date_deadline);
+            reservation.return_date = formatDate(reservation.return_date);
+            if (reservation.returned_at) {
+                reservation.returned_at = formatDate(reservation.returned_at);
+            }
+        });
         res.render('userReservationDetails.ejs', {reservations});
     } catch(e) {
         console.log(e);
@@ -96,27 +105,7 @@ exports.cancelReservation = async (req, res) => {
     }
 }
 
-/*
-//Create a function which goes to Reservation, gets all completed and bad debt reservations and renders them to a new ejs file
-exports.showBadAndCompletedReservations = async (req, res) => {
-    try {
-        const reservations = await Reservation.getBadAndCompletedReservations();
-        reservations.forEach(reservation => {
-            reservation.reserve_date = formatDate(reservation.reserve_date);
-            reservation.collect_date = formatDate(reservation.collect_date);
-            reservation.collect_date_deadline = formatDate(reservation.collect_date_deadline);
-            reservation.return_date = formatDate(reservation.return_date);
-            if (reservation.returned_at) {
-                reservation.returned_at = formatDate(reservation.returned_at);
-            }
-        });
-        res.render('badAndCompletedReservations.ejs', {reservations});
-    } catch(e) {
-        console.log(e);
-        res.send('Error getting bad and completed reservations');
-    }
-};
-*/
+
 exports.searchReservations = async (req, res) => {
     try {
         const reservationInfo = await Reservation.searchReservations(req.body.searchTerm);

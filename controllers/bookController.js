@@ -102,7 +102,6 @@ exports.bookDetails = async function(req, res) {
         //console.log(req.body.dontRender);
         const bookInfo = await Books.receiveBookDetails(req.params.bookId);
         bookInfo.role = req.session.user.role;
-        //console.log(bookInfo);
         //We have dontRender here, so in this case we just show the modal and not the detailed page
         if(req.body.dontRender == true) {
             res.json({bookInformation: bookInfo, customer: req.session.user.username});

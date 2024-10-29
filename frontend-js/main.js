@@ -16,6 +16,7 @@ if(document.querySelector('.everyone-reservation-table')) {
     new CollectAndReturn();
 }
 
-if(document.querySelector('.everyone-reservation-table')) {
+//User reservation details.ejs and borrower details.ejs
+if(document.querySelector('.everyone-reservation-table') || document.querySelector('.user-reservation-table')) {
     new ReservationSearch();
 }

@@ -1,10 +1,4 @@
-/* Global Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Arial', sans-serif;
-}
+
 
 /* Body Styling */
 body {
@@ -19,38 +13,6 @@ body {
     position: relative;
 }
 
-body::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
-    /* Dark overlay for contrast */
-    z-index: -1;
-}
-
-/* Flash Messages */
-.flash-messages {
-    position: absolute;
-    top: 10px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
-.flash-message {
-    background-color: rgba(255, 0, 0, 0.8);
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 1rem;
-    margin-bottom: 10px;
-    text-align: center;
-    box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
-    animation: fadeIn 1s ease-in-out;
-}
 
 /* Registration Container */
 .register-container {

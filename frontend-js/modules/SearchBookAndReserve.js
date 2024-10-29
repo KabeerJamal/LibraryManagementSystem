@@ -19,6 +19,9 @@ export default class SearchAndReserve{
         this.resultArea = document.querySelector('.result');
         this.typingWaitTimer;
         this.previousValue = '';
+
+        //display is set already so i set it to none.
+        document.getElementById('flash-message').style.display = 'none';
         
 
 

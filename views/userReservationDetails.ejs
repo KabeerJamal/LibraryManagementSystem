@@ -3,7 +3,9 @@
 
 <head>
     <title>Borrower Details</title>
+    <%- include('includes/commonCss') %>
     <link rel="stylesheet" href="/borrowdetails.css">
+    <link rel="stylesheet" href="/flashMessagesFrontEnd.css">
 </head>
 
 <body>
@@ -14,11 +16,16 @@
      a flash message-->
      <div id="flash-message" class="flash-message"></div>
 
+     <div class="search-icon-reservation">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search" id="live-search-field">
+    </div>
+    <%- include('includes/filterSearchReservation') %>
+
 <table class="user-reservation-table">
     <thead>
         <tr>
             <th>#</th>
-            <th>Username</th>
             <th>Number of Copies Reserved</th>
             <th>Status</th>
             <th>Reservation Date</th>
@@ -30,21 +37,21 @@
             <th>Action</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody class="user-reservation-table-body">
         <% let i = 0 %>
         <% reservations.forEach(function(reservation) { %>
-        <% i = i + 1 %>
+        
         <% if (reservation.status != 'completed') { %>
+        <% i = i + 1 %>
         <tr class="reservation-row" data-number="<%= reservation.reservation_id %>">
             <td><%= i %></td>
-            <td><%= reservation.username %></td>
             <td><%= reservation.number_of_copies %></td>
-            <td><%= reservation.status %></td>
+            <td class="status" data-number="<%= reservation.reservation_id %>"><%= reservation.status %></td>
             <td><%= reservation.reserve_date %></td>
             <td><%= reservation.collect_date %></td>
             <td><%= reservation.return_date %></td>
             <td><%= reservation.collect_date_deadline %></td>
-            <td><a href="/book/<%= reservation.book_id %>"><%= reservation.title %></a></td>
+            <td><a href="/book/<%= reservation.book_id %>"><%= reservation.book_title %></a></td>
             <td><%= reservation.author %></td>
             <td>
                 <% if (reservation.status === 'reserved') { %>
