@@ -107,6 +107,7 @@ export default class SearchAndReserve{
                     
                     if(response.data.role == 'customer') {
                         this.resultArea.innerHTML += `<button class="btn btn-primary" data-number="${response.data.books[i].book_id}">Reserve</button>`;
+                        this.resultArea.innerHTML += `<button class="btn btn-primary" data-number="${response.data.books[i].book_id}">Add to Cart</button>`;
                     }
                 }
                 this.hideLoaderIcon();

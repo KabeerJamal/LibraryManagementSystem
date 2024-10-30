@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Borrower Details</title>
+    <link rel="stylesheet" href="/borrowdetails.css">
+</head>
+
+<body>
+<h1>Overdue and Completed Reservations</h1>
+
+
+<!-- We used axios, so couldnt do res.render from front end so thats why manually creating
+     a flash message-->
+     <div id="flash-message" class="flash-message"></div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Borrower Name</th>
+            <th>Book Title</th>
+            <th>Status</th>
+            <th>Reserve Date</th>
+            <th>Collect Date</th>
+            <th>Returned At</th>
+            <th>Due Date</th>
+            <th>Collect date deadline</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        <% reservations.forEach(reservation=> { %>
+            <% if (reservation.status == 'completed' || reservation.status == 'overdue') { %>
+            <tr>
+                <td>
+                    <%= reservation.username %>
+                </td>
+                <td>
+                    <%= reservation.title %>
+                </td>
+                <td class="status" data-number="<%= reservation.reservation_id %>">
+                    <%= reservation.status %>
+                </td>
+                <td >
+                    <%= reservation.reserve_date %>
+                </td>
+                <td>
+                    <%= reservation.collect_date %>
+                    <% if (reservation.collect_date == null) { %>
+                    <button class="collect" data-number="<%= reservation.reservation_id %>">Collect</button>
+                    <% } %>                
+                </td>
+                <td class="returned-at" data-number="<%= reservation.reservation_id %>">
+                    <%= reservation.returned_at %>
+                </td>
+                <td class="return-date" data-number="<%= reservation.reservation_id %>">
+                    <%= reservation.return_date %>
+                    <%if(reservation.status != 'overdue') { %>
+                        <% if(reservation.returned_at == null) { %>
+                            <button class="return" data-number="<%= reservation.reservation_id %>">Returned?</button>
+                        <% } %>
+                    <% } %>
+                </td>
+                <td>
+                    <%= reservation.collect_date_deadline %>
+                <td>
+            </tr>
+                <% } %>
+            <% }) %>
+    </tbody>
+</table>
+
+    <a href="/adminPortal" class="btn">Back to Admin Portal</a>
+    <%- include('includes/footer') %>

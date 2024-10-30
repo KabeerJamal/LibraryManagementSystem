@@ -124,60 +124,34 @@ app.use('/', router)
 app.listen(process.env.PORT);
 
 
-//need to deal with time issue in database. borrower details in reservation model.
-//add publication year as well in search
-//count of how many overdues/bad debts and a strike or smth.
 
-//file in includes folder for flash messages
-//some changes in home.ejs
+
+
+//Security problems:
 
 ///adminPortal opening without asking user pass
 //deal with the fact that you cant just get the password from the database when doing a call to the database
-//can an admin cancel someones reservation? can the admin block someone from membership?
-//What hapens to reserved books if books removed.
-
-
-
-//user reserve add to cart?
 
 
 
 
-//Can a user reserve multiple books at a time? then in reservation table, array like structure neded for bookId and copyId
-//add images to books
-//User should be able to reserve multiple copies. 
-//Once he reserves he should be able to view his book statuses.(make this feature) then work on notifications
+//Some design questions:
+
+//(Tomm)Can a user reserve multiple books at a time? then in reservation table, array like structure neded for bookId and copyId
+//(Tomm)User should be able to reserve multiple copies.(limit set by admin) 
+//(Tomm)user reserve add to cart?
 
 //if user delete his id, what happens to his reservations?
+//can an admin cancel someones reservation? can the admin block someone from membership?
+//What hapens to reserved books if books removed.
+//need to deal with time issue in database. borrower details in reservation model.
+//add publication year as well in search
+//count of how many overdues/bad debts and a strike or smth.
+//reservation limit.
 
 
 
-//Next step
-
-
-
-
-//Many tasks to do, but this includes fundamanetal features to be done in backend
-
-
-//The reservation should have search feature(me)
-//Main page books and search there as well.
-//Settings page where admin can customize to his own liking.
-
-
-
-
-
-
-//Admin has access to every user. He can see all reservations.take actions on them.
-
-//User: view past reservation details, Admin: view past reservation details -> bad debt + completed (using filter)
-//overdue logic and automated reservation cacnellation.(use a trigger)
-//search feature for reservations(both current and past) (including filter of statuses)
-//Send notification to user when overdue
-//add image of book wherever being displayed
-
-//clean code.
+//Search feature some shit left(date of reservation):
 
 //i want a search option in admin reservation page with a search filter that should work as follows.
 
@@ -185,12 +159,12 @@ app.listen(process.env.PORT);
 //2)You can filter out the results based on the status of the reservation
 //3)You can further filter\sort the results based on the date of reservation
 //4) i want the user to have same code, but for him the search should be based on the book name and the status of the reservation and date of reservation
+//History of reservations table
 
 
 
 
-
-
+//Adjustments in css:
 
 //small things, z-index of flash messages and overdue logic check.
 //Work on flash messages when increasing and decreasing copies
@@ -199,13 +173,13 @@ app.listen(process.env.PORT);
 
 
 
+//Things to do :
 
-//clean code
-//organise the reservation for user and admin
-
-//A settings page for admin and customer.
-//notifications?
+//A settings page for admin and customer.//Settings page where admin can customize to his own liking.//view stats
+//notifications?//Send notification to user when overdue(umer, tell him about cronjob)
 //Contacting the admin?
 //Front end betterment
-
+//Admin has access to every user. He can see all reservations.take actions on them.
+//Main page books and search there as well.
+//User profile page
 
