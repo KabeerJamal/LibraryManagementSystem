@@ -4,13 +4,13 @@
 <head>
     <title>Borrower Details</title>
     <%- include('includes/commonCss') %>
-    <link rel="stylesheet" href="/borrowdetails.css">
+    <!-- <link rel="stylesheet" href="/borrowdetails.css"> -->
     <link rel="stylesheet" href="/flashMessagesFrontEnd.css">
     <link rel="stylesheet" href="/modal.css">
 </head>
 
 <body>
-<h1>Reservation Details</h1>
+<h1>Overdue Managment</h1>
 
 
 <!-- We used axios, so couldnt do res.render from front end so thats why manually creating
@@ -23,10 +23,16 @@
     </div>
     <%- include('includes/filterSearchReservation') %>
 
-
     <%- include('includes/modal') %>
 
     <%- include('includes/borrowerTable') %>
+
+    <div class="search-icon-reservation">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search" id="live-search-field-userRecord">
+    </div>
+
+    <%- include('includes/userRecordTable') %>
 
     <a href="/adminPortal" class="btn">Back to Admin Portal</a>
     <script>

@@ -6,6 +6,7 @@
     <%- include('includes/commonCss') %>
     <link rel="stylesheet" href="/borrowdetails.css">
     <link rel="stylesheet" href="/flashMessagesFrontEnd.css">
+    <link rel="stylesheet" href="/modal.css">
 </head>
 
 <body>
@@ -22,18 +23,28 @@
     </div>
     <%- include('includes/filterSearchReservation') %>
 
+     <!-- Modal for Borrowed Copies(also used in userPortal, can put it in includes.) -->
+     <!-- <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Books reserved by the customers</h2>
+            <ul id="bookCopies"> -->
+                <!-- Book copies will be dynamically inserted here -->
+            <!-- </ul>
+        </div>
+    </div> -->
+    <%- include('includes/modal') %>
+
 <table class="user-reservation-table">
     <thead>
         <tr>
-            <th>#</th>
-            <th>Number of Copies Reserved</th>
+            <th>Reservation Number</th>
+            <th>Books Reserved</th>
             <th>Status</th>
             <th>Reservation Date</th>
             <th>Collection Date</th>
             <th>Return Date</th>
             <th>Collection Date Deadline</th>
-            <th>Title of Book</th>
-            <th>Author of Book</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -45,13 +56,20 @@
         <% i = i + 1 %>
         <tr class="reservation-row" data-number="<%= reservation.reservation_id %>">
             <td><%= i %></td>
-            <td><%= reservation.number_of_copies %></td>
+            <td class="title-copies" data-number="<%= reservation.book_id %>">
+                <!-- <% if (reservation.books.length == 1) { %>
+                <%= reservation.books[0].book_title %> <%= reservation.books[0].number_of_copies %>
+                <% } else {%>
+                    <button class="show-books" data-number="<%= reservation.reservation_id %>">Show Books</button>
+                    <% }%> -->
+                <button class="show-books" data-number="<%= reservation.reservation_id %>">Show Books</button>
+            </td>
             <td class="status" data-number="<%= reservation.reservation_id %>"><%= reservation.status %></td>
             <td><%= reservation.reserve_date %></td>
             <td><%= reservation.collect_date %></td>
             <td><%= reservation.return_date %></td>
             <td><%= reservation.collect_date_deadline %></td>
-            <td><a href="/book/<%= reservation.book_id %>"><%= reservation.book_title %></a></td>
+            <!-- <td><a href="/book/<%= reservation.book_id %>"><%= reservation.book_title %></a></td> -->
             <td><%= reservation.author %></td>
             <td>
                 <% if (reservation.status === 'reserved') { %>
@@ -63,5 +81,12 @@
         <% }); %>
     </tbody>
 </table>
+
+<a href="/userPortal" class="btn">Back to User Portal</a>
+<script>
+    // Pass `reservations` to the frontend by embedding it in the page
+    const reservations = <%- JSON.stringify(reservations) %>;   
+    // Now you can use `reservations` in your frontend JavaScript
+</script>
 
 <%- include('includes/footer') %>

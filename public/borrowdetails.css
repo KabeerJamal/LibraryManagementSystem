@@ -127,6 +127,50 @@ tbody tr:hover {
     box-shadow: 0 10px 30px rgba(0, 217, 255, 0.6);
 }
 
+
+
+
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .navbar {
+      padding: 10px;
+    }
+  
+    .navbar .logo {
+      font-size: 1.5rem;
+    }
+  
+    .navbar .nav-links a {
+      font-size: 0.9rem;
+    }
+  
+    .portal-content h1 {
+      font-size: 1.8rem;
+    }
+  
+    .modal-content {
+      width: 90%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .navbar .logo {
+      font-size: 1.2rem;
+    }
+  
+    .navbar .nav-links a {
+      font-size: 0.8rem;
+    }
+  
+    .portal-content h1 {
+      font-size: 1.5rem;
+    }
+  
+    .modal-content {
+      width: 95%;
+    }
+  }
+
 /* Fade-in animation */
 @keyframes fadeIn {
     0% {

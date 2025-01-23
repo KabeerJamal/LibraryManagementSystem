@@ -9,18 +9,17 @@
     <link rel="stylesheet" type="text/css" href="userPortal.css">
     <link rel="stylesheet" type="text/css" href="searchBook.css">
     <%- include('includes/fontAwesome') %>
-    <link rel="stylesheet" href="/userPortal.css">
-    <link rel="stylesheet" href="/flashMessagesFrontEnd.css">
+    <link rel="stylesheet" href="addToCart.css">
+    <link rel="stylesheet" href="flashMessagesFrontEnd.css">
+    <Link rel="stylesheet" href="modal.css">
 </head>
 
 <body>
     <!-- Navbar -->
     <%- include('includes/navbar') %>
-
-    <!-- We used axios, so couldnt do res.render from front end so thats why manually creating
-     a flash message-->
-     <div id="flash-message" class="flash-message"></div>
-
+       <!-- We used axios, so couldnt do res.render from front end so thats why manually creating
+    a flash message-->
+    <div id="flash-message" class="flash-messages"> </div>
 
     <!-- User Portal Content -->
     <main class="portal-content">
@@ -38,19 +37,8 @@
 
     </main>
 
-
-
+    <%- include('includes/addToCart') %>
     
-    <!-- Modal for Available Copies -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Available Copies</h2>
-            <ul id="bookCopies">
-                <!-- Book copies will be dynamically inserted here -->
-            </ul>
-            <button id="reserve" class="btn">Reserve a Copy</button>
-        </div>
-    </div>
+    <%- include('includes/modal') %>
 
     <%- include('includes/footer') %>

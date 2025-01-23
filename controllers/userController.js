@@ -17,7 +17,18 @@ exports.home = async function(req, res) {
             res.render('adminPortal.ejs');
         } else {
             const books = await Book.getAllBooks();
-            res.render('userPortal.ejs', { user: req.session.user, books });
+            // res.render('userPortal.ejs',
+            //      { user: req.session.user, books,
+            //        AvailableCopiesText: true }
+            //     );
+            res.render('userPortal.ejs', { 
+                user: { 
+                    ...req.session.user, // Spread the existing user properties
+                    books: books         // Add the books as a property of the user object
+                },
+                AvailableCopiesText: true 
+            });
+            
         }
     } else {
         try {
@@ -148,4 +159,33 @@ exports.registerCustomer = async function(req,res) {
  */
 exports.adminPortal = function(req, res) {
     res.render('adminPortal.ejs');
+}
+
+exports.userPortal = async function(req, res) {
+    res.render('userPortal.ejs', {AvailableCopiesText: true});
+}
+
+
+exports.mustBeLoggedInAdmin = function(req, res, next) {
+    if (req.session.user && req.session.user.role == 'admin') {
+        next();
+    } else {
+        req.flash('errors', 'You must be logged in to perform that action');
+        req.session.save(function() {
+            res.redirect('/loginAdminPage');
+        });
+    }
+
+}
+
+exports.mustBeLoggedInUser = function(req, res, next) {
+    if (req.session.user && req.session.user.role == 'user') {
+        next();
+    } else {
+        req.flash('errors', 'You must be logged in to perform that action');
+        req.session.save(function() {
+            res.redirect('/loginCustomerPage');
+        });
+    }
+
 }

@@ -14,6 +14,12 @@ export default class CollectAndReturn {
                 const number = e.target.getAttribute('data-number');
                 this.sendRequestToReturn(number);
             }
+            if(e.target.classList.contains('bad-debt')) {
+                console.log("bad debt button clicked"); 
+                const number = e.target.getAttribute('data-number');
+                
+                this.sendRequestToBadDebt(number);
+            }
         });
     }
 
@@ -24,10 +30,10 @@ export default class CollectAndReturn {
         //generate current date and add it with collect button
         let date = new Date();
         let collectDate = date.toISOString().slice(0,10);
+        //return date needs to be consistent with what admin selects********
         let returnDate = new Date(date.getTime() + 14 * 24 * 60 * 60 * 1000).toISOString().slice(0,10);
 
         const collectButton = document.querySelector('.collect[data-number="' + number + '"]');
-
         
         const parentElementCollect = collectButton.parentElement;
         const parentElementReturn = document.querySelector('.return-date[data-number="' + number + '"]');
@@ -50,6 +56,8 @@ export default class CollectAndReturn {
         let changeStatus = document.querySelector('.status[data-number="' + number + '"]');
         changeStatus.textContent = 'collected';
 
+
+
         collectButton.remove();
         //remove the collect button
 
@@ -60,8 +68,12 @@ export default class CollectAndReturn {
 
     }
 
+    //pass the current reseravtion status, then go to router.js
     sendRequestToReturn(number){
+       
         axios.post('/return/' + number).then((response) => {
+            let status = document.querySelector('.status[data-number="' + number + '"]');
+            console.log(status.textContent);
             this.showFlashMessage('Book returned');
             //generate current date and add it with collect button
             let date = new Date();
@@ -74,8 +86,15 @@ export default class CollectAndReturn {
             returnDateElement.textContent = `${returnDate}`;
             parentElementReturn.appendChild(returnDateElement);
 
-            let changeStatus = document.querySelector('.status[data-number="' + number + '"]');
-            changeStatus.textContent = 'completed';
+
+            //2 things, doing overdue and then pressing return doesnt cahnge text content and removes baddebt button.
+            //console isnt logging need to fix this tomm.
+           if(!(response.data == 'OverdueBookReturned')) {
+                status.textContent = 'completed';
+           } else {
+                const badDebtButton = document.querySelector('.bad-debt[data-number="' + number + '"]');
+                badDebtButton.remove();
+           }
     
             returnButton.remove();
             //remove the collect button
@@ -96,5 +115,20 @@ export default class CollectAndReturn {
         setTimeout(() => {
             flashMessage.style.display = 'none';
         }, 3000); // Hide after 3 seconds
+    }
+
+    sendRequestToBadDebt(number) {
+        axios.post('/badDebt/' + number).then((response) => {
+            //this.showFlashMessage('Bad Debt');
+            console.log("response received from server");
+            let status = document.querySelector('.status[data-number="' + number + '"]');
+            status.textContent = 'baddebt';
+            const badDebtButton = document.querySelector('.bad-debt[data-number="' + number + '"]');
+            const returnButton = document.querySelector('.return[data-number="' + number + '"]');
+            badDebtButton.remove();
+            returnButton.remove();
+        }).catch((error) => {
+            console.log(error);
+        });
     }
 }

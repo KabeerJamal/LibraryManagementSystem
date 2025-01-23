@@ -10,6 +10,8 @@ const router = express.Router();
 const userController = require('./controllers/userController');
 const bookController = require('./controllers/bookController');
 const reservationController = require('./controllers/reservationController');
+const overdueAndBadDebtController = require('./controllers/overdueAndBadDebtController');
+const globalSettings = require('./controllers/globalSettings');
 
 const multer = require('multer');
 const path = require('path');
@@ -90,7 +92,9 @@ router.post('/registerCustomer', userController.registerCustomer);
  * @name GET /adminPortal
  * @function
  */
-router.get('/adminPortal', userController.adminPortal);
+router.get('/adminPortal', userController.mustBeLoggedInAdmin, userController.adminPortal);
+
+router.get('/userPortal', userController.userPortal);   
 
 /**
  * Route for adding books.
@@ -130,6 +134,22 @@ router.post('/return/:reservation_id', reservationController.returnBook);
 router.post('/cancelReservation/:reservation_id', reservationController.cancelReservation);
 
 router.get("/showReservations", reservationController.borrowerDetails);
+
+router.post("/baddebt/:reservation_id", reservationController.badDebt);
+router.get("/userRecord",userController.mustBeLoggedInAdmin, reservationController.userRecord);
+
+router.post("/updateReservationLimit", reservationController.updateReservationLimit, reservationController.userRecord);
+
+router.get("/overdueManagmentPage", overdueAndBadDebtController.overdueManagementPage);
+
+// API to get settings
+router.get('/api/settings', (req, res) => {
+    try {
+        res.json(globalSettings);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch settings' });
+    }
+});
 
 module.exports = router;
 

@@ -1,0 +1,25 @@
+<table class="user-record-table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Reserved</th>
+            <th>Collected</th>
+            <th>Completed</th>
+            <th>Overdue</th>
+            <th>Bad debt</th>
+        </tr>
+    </thead>
+    <tbody class="user-record-table-body">
+        <% Object.entries(reservationsUser).forEach(([key,value]) => { %>
+            <tr class="record-row">
+                <td><%= key %></td>
+                <td><%= value.reserved %></td>
+                <td><%= value.collected %></td>
+                <td><%= value.completed %></td>
+                <td><%= value.overdue %></td>
+                <td><%= value.baddebt %></td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>
+

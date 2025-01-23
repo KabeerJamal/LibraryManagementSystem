@@ -1,0 +1,18 @@
+
+    <!-- Modal for Available Copies -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <% if (AvailableCopiesText){%>
+                <h2>Available Copies</h2>
+            <%} else {%>
+                <h2>Books reserved by the customers</h2>
+            <%}%>
+            <ul id="bookCopies">
+                <!-- Book copies will be dynamically inserted here -->
+            </ul>
+            <% if (AvailableCopiesText){%>
+            <button id="reserve" class="btn">Reserve a Copy</button>
+            <%}%>
+        </div>
+    </div>

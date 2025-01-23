@@ -99,7 +99,7 @@ exports.searchBooks = async function(req, res) {
 exports.bookDetails = async function(req, res) {
     //send information to Books.js
     try {
-        //console.log(req.body.dontRender);
+  
         const bookInfo = await Books.receiveBookDetails(req.params.bookId);
         bookInfo.role = req.session.user.role;
         //We have dontRender here, so in this case we just show the modal and not the detailed page

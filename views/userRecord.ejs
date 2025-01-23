@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Record</title>
+    <%- include('includes/commonCss') %>
+    <link rel="stylesheet" href="/navbar.css">
+    <link rel="stylesheet" href="/userRecord.css">
+</head>
+<body>
+    <%- include('includes/navbar') %>
+
+    <div class="search-icon-reservation">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search" id="live-search-field-userRecord">
+    </div>
+
+    <%- include('includes/userRecordTable') %>
+    <%- include('includes/setLimit') %> 
+
+<%- include('includes/footer') %>

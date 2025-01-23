@@ -9,6 +9,7 @@ export default class ReservationSearch {
 
         this.reservationStatus = document.getElementById('reservation-status');
 
+        //search for username depends if we are in admin or user view
         this.userDetails = false; 
         this.rows = document.querySelectorAll('.all-reservations-table-body tr');
         if (this.rows.length === 0) {
@@ -125,14 +126,28 @@ export default class ReservationSearch {
             }
             */
             const statusCell = row.querySelector('.status').textContent.trim();
-        
+
+            //get the reservation id
+            const reservationId = row.querySelector('.status').getAttribute('data-number');
+
+            //now use the reservaiton id , to get all the books
+            const reservation = reservations.find(reservation => reservation.reservation_id == reservationId);
+            
             //Include all the information you have to comapre with search term in an array. 
             //And then check if any of the fields match the search term in the array
+            let fieldsToSearch = [];
+            reservation.books.forEach(book => {
+                fieldsToSearch.push(book.book_title.toLowerCase());
+            });
+            // // Define the fields to search based on the presence of userDetails
+            // fieldsToSearch = !this.userDetails 
+            //     ? fieldsToSearch.push(row.children[0].textContent.trim().toLowerCase()) //searching for username and book title 
+            //     : skip;//just searching for book title
 
-            // Define the fields to search based on the presence of userDetails
-            const fieldsToSearch = !this.userDetails 
-                ? [row.children[0].textContent.trim().toLowerCase(), row.children[1].textContent.trim().toLowerCase()] 
-                : [row.children[7].textContent.trim().toLowerCase()];
+            if (!this.userDetails) {
+                fieldsToSearch.push(row.children[1].textContent.trim().toLowerCase());
+            }
+            
     
             // Determine if the row matches the current filter
             const matchesFilter = (status === 'all') || (statusCell === status);

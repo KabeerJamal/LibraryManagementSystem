@@ -46,14 +46,66 @@ const cancelNotCollectedReservations = async () => {
     }
 };
 
+const resetReservationCount = async () => {
+    try {
+        // Your SQL query to update reservations
+        const query = `
+            UPDATE users
+            SET reservation_count = 0
+        `;
+        const [result] = await db.query(query);
+    } catch (error) {
+        console.error('Error updating overdue reservations:', error);
+    }
+}
+
+//create a funciton that will run in cron job once everyday.
+const checkOverdueReservations = async () => {
+    //for every user, check the reservations that are overdue and isActive is true
+    try {
+        const query = `SELECT user_id, COUNT(*) AS overdue_reservations
+                       FROM reservations
+                       WHERE status = 'overdue' 
+                       AND is_active = TRUE
+                       GROUP BY user_id;
+                    `
+        const [result] = await db.query(query);
+
+        //need to get this threshold from the database
+        const threshold = 3;
+
+        // Check if any user exceeds the threshold
+        const userExceedingThreshold = result.some(row => row.overdue_reservations > threshold);
+
+        if (userExceedingThreshold) {
+            console.log("One or more users have exceeded the overdue reservation threshold.");
+        } else {
+        console.log("No users have exceeded the overdue reservation threshold.");
+        }
+
+    // Optionally, get the list of users who exceed the threshold
+    const usersAboveThreshold = result.filter(row => row.overdue_reservations > threshold);
+
+    if (usersAboveThreshold.length > 0) {
+        console.log("Users exceeding threshold:", usersAboveThreshold);
+    }
+    } catch (error) {
+        console.error('Error counting overdue reservations:', error);
+    }
+
+};
+
+
 //pms to run website locallt forever
 //notifications to be sent to user when overdue
 
 // Schedule the job to run every day at midnight
-cron.schedule('25 0 * * *', () => {
-    console.log('Running job to check for overdue reservations');
+cron.schedule('31 14 * * *', () => {
+    console.log('Running job to check for overdue reservations and resetting reservation limit');
     updateOverdueReservations();
     cancelNotCollectedReservations();
+    resetReservationCount();
+    checkOverdueReservations();
 });
 
 
@@ -87,8 +139,9 @@ app.use(session({
     secret: process.env.SESS_SECRET,
     cookie: {
         maxAge: TWO_HOURS,
-        sameSite: true,
-        secure: IN_PROD//set to true for production enviourment
+        sameSite: "strict",
+        secure: IN_PROD,//set to true for production enviourment
+        httpOnly: true
     }
 }))
 
@@ -127,59 +180,20 @@ app.listen(process.env.PORT);
 
 
 
-//Security problems:
-
-///adminPortal opening without asking user pass
-//deal with the fact that you cant just get the password from the database when doing a call to the database
-
-
-
-
-//Some design questions:
-
-//(Tomm)Can a user reserve multiple books at a time? then in reservation table, array like structure neded for bookId and copyId
-//(Tomm)User should be able to reserve multiple copies.(limit set by admin) 
-//(Tomm)user reserve add to cart?
-
-//if user delete his id, what happens to his reservations?
-//can an admin cancel someones reservation? can the admin block someone from membership?
-//What hapens to reserved books if books removed.
-//need to deal with time issue in database. borrower details in reservation model.
-//add publication year as well in search
-//count of how many overdues/bad debts and a strike or smth.
-//reservation limit.
-
-
-
-//Search feature some shit left(date of reservation):
-
-//i want a search option in admin reservation page with a search filter that should work as follows.
-
-//1)You can search for books and borrower name(later adapt to where user can select what to search for)
-//2)You can filter out the results based on the status of the reservation
-//3)You can further filter\sort the results based on the date of reservation
-//4) i want the user to have same code, but for him the search should be based on the book name and the status of the reservation and date of reservation
-//History of reservations table
-
-
-
-
-//Adjustments in css:
-
-//small things, z-index of flash messages and overdue logic check.
-//Work on flash messages when increasing and decreasing copies
 
 
 
 
 
-//Things to do :
 
-//A settings page for admin and customer.//Settings page where admin can customize to his own liking.//view stats
-//notifications?//Send notification to user when overdue(umer, tell him about cronjob)
-//Contacting the admin?
-//Front end betterment
-//Admin has access to every user. He can see all reservations.take actions on them.
-//Main page books and search there as well.
-//User profile page
+
+
+
+
+
+
+
+
+
+
 

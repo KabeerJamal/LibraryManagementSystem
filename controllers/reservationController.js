@@ -1,21 +1,26 @@
 const Reservation = require('../models/Reservation');
+const reservationHelper = require('./helpers/reservationHelper');
 
-//UMER INSTRUCTIONS
 exports.borrowerDetails = async (req, res) => {
   try {
-    const reservations = await Reservation.borrowerDetails();
-    //console.log("Reservations: ", reservations); // Debug log
-    reservations.forEach(reservation => {
-        reservation.reserve_date = formatDate(reservation.reserve_date);
-        reservation.collect_date = formatDate(reservation.collect_date);
-        reservation.collect_date_deadline = formatDate(reservation.collect_date_deadline);
-        reservation.return_date = formatDate(reservation.return_date);
-        if (reservation.returned_at) {
-            reservation.returned_at = formatDate(reservation.returned_at);
-        }
-    });
-    //console.log("Reservations: ", reservations); // Debug log
-    res.render("borrowerDetails.ejs", { reservations });
+    // let reservations = await Reservation.borrowerDetails();
+    // //console.log("Reservations: ", reservations); // Debug log
+    // reservations = modifyReservationsTable(reservations);
+    // reservations.forEach(reservation => {
+    //     //console.log(reservation.books);
+    //     reservation.reserve_date = formatDate(reservation.reserve_date);
+    //     reservation.collect_date = formatDate(reservation.collect_date);
+    //     reservation.collect_date_deadline = formatDate(reservation.collect_date_deadline);
+    //     reservation.return_date = formatDate(reservation.return_date);
+    //     if (reservation.returned_at) {
+    //         reservation.returned_at = formatDate(reservation.returned_at);
+    //     }
+    // });
+    //console.log(reservations);
+    let reservations = await reservationHelper.getReservationDataAdmin();
+
+    
+    res.render('borrowerDetails.ejs', { reservations, AvailableCopiesText: false , partialSearchFilter: false});
   } catch (error) {
     console.error("Error loading reservation details:", error); // Log error to console
     res.status(500).send("Error loading reservation details");
@@ -38,31 +43,34 @@ exports.reserveBook = async (req, res) => {
     //over here you create object of reservation model, where you pass in hte information
     try {
         const reservation = new Reservation(req.body);
-        await reservation.reserveBook();
-        res.send('Book reserved');
+        
+        let reservationCount = await reservation.reserveBook();
+        res.send({ success: true, reservationCount });
     } catch(e) {
         console.log(e);
-        res.send('Error reserving book');
+        res.send({ success: false, message: e });
     }
     
 };
 
 exports.userReservationDetails = async (req, res) => {
     try {
-        //console.log(req.session.user.username);
-        const userId = await Reservation.getUserIdWoCreatingObject(req.session.user.username);
-        const reservations = await Reservation.getUserReservations(userId);
-        //console.log(reservations);
-        reservations.forEach(reservation => {
-            reservation.reserve_date = formatDate(reservation.reserve_date);
-            reservation.collect_date = formatDate(reservation.collect_date);
-            reservation.collect_date_deadline = formatDate(reservation.collect_date_deadline);
-            reservation.return_date = formatDate(reservation.return_date);
-            if (reservation.returned_at) {
-                reservation.returned_at = formatDate(reservation.returned_at);
-            }
-        });
-        res.render('userReservationDetails.ejs', {reservations});
+        let reservations = await reservationHelper.getReservationDataUser(req.session.user.username);
+
+        // const userId = await Reservation.getUserIdWoCreatingObject(req.session.user.username);
+        // let reservations = await Reservation.getUserReservations(userId);
+        // reservations = modifyReservationsTable(reservations);
+        // reservations.forEach(reservation => {
+        //     reservation.reserve_date = formatDate(reservation.reserve_date);
+        //     reservation.collect_date = formatDate(reservation.collect_date);
+        //     reservation.collect_date_deadline = formatDate(reservation.collect_date_deadline);
+        //     reservation.return_date = formatDate(reservation.return_date);
+        //     if (reservation.returned_at) {
+        //         reservation.returned_at = formatDate(reservation.returned_at);
+        //     }
+        // });
+
+        res.render('userReservationDetails.ejs', { reservations, AvailableCopiesText: false , partialSearchFilter: false});
     } catch(e) {
         console.log(e);
         res.send('Error getting user reservations');
@@ -85,10 +93,16 @@ exports.collectBook = async (req, res) => {
 
 exports.returnBook = async (req, res) => {
     try {
+        //in req, you will get the variable telling if the status was overdue or not, pass it to model
         //send reservation id to Reservation model function.
-        await Reservation.bookReturned(req.params.reservation_id);
+        const result = await Reservation.bookReturned(req.params.reservation_id);
         //the model function wil get that specific reservation and in it ,update the return date and chnage status
-        res.json('Book returned');
+        //response should be based on if status was overdue or not(then line 81, collect and return)
+        if (result == 'overdue') {
+            res.json('OverdueBookReturned');
+        } else {
+            res.json('Book returned');
+        }
     } catch(e) {
         res.json('Error returning book');
     }
@@ -122,12 +136,45 @@ exports.searchReservations = async (req, res) => {
         console.log(error);
     }
 }
-//Helper function
-// Function to format dates in YYYY-MM-DD format
-function formatDate(dateString) {
-    if (!dateString) {
-        return null;
+
+
+exports.badDebt = async (req, res) => {
+    try {
+        //send reservation id to Reservation model function.
+        await Reservation.badDebt(req.params.reservation_id);
+        //the model function wil get that specific reservation and in it ,update the status to bad debt
+        res.json('Bad debt recorded');
+    } catch(e) {
+        res.json('Error recording bad debt');
     }
-    return new Date(dateString).toISOString().slice(0, 10);
 }
 
+exports.userRecord = async (req, res) => {
+    try {
+        let userRecordData = await reservationHelper.getUserRecordData();
+        
+        res.render('userRecord.ejs', { 
+            reservationsUser: userRecordData.reservations,
+            bookLimit: userRecordData.bookLimit,
+            copyLimit: userRecordData.copyLimit,
+            reservationLimitDay: userRecordData.reservationLimitDay
+        });
+    } catch (error) {
+        console.error("Error loading reservation details:", error); // Log error to console
+        res.status(500).send("Error loading reservation details");
+    }
+}
+
+
+
+exports.updateReservationLimit = async (req, res,next) => {
+    try {
+        const { bookLimit, copyLimit, reservationLimitDay } = req.body; // Extract limits from the request body
+
+        // Call the function to update the reservation limits
+        await Reservation.updateReservationLimit(bookLimit, copyLimit, reservationLimitDay);
+        next();
+    } catch(e) {
+        res.json('Error updating reservation limit');
+    }
+}
