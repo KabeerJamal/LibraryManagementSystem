@@ -16,6 +16,8 @@ export default class SearchAndReserve{
         this.reserveFinalBtn = document.getElementById('#reserve');
         this.storeResponseData = [];
         this.storeResponseData2 = [];//to avoid add to cart more than once error.
+        //to avoid error of pressing checkout twice:
+        this.reservationTransactionCompleted = false;
         
         this.storeResponseDataSingle = [];
 
@@ -249,6 +251,7 @@ export default class SearchAndReserve{
                 this.showFlashMessage('Book reserved');
                 sessionStorage.clear();
                 this.processedBookIds = new Set();
+                this.reservationTransactionCompleted = true;
                 this.showBookId(); 
             } else {
 
@@ -256,6 +259,7 @@ export default class SearchAndReserve{
                 //CAN IMPROVE USER INTERFACE HERE
                 sessionStorage.clear();
                 this.processedBookIds = new Set();
+                
                 this.showBookId(); 
             }
         }).catch((error) => {
@@ -479,7 +483,9 @@ export default class SearchAndReserve{
             return result;
         }, {});
 
-        this.storeResponseData = [];
+        if(this.reservationTransactionCompleted){
+            this.storeResponseData = [];
+        }
         return formattedData;
         
         //this.storeResponseData2 = formattedData;
@@ -609,11 +615,11 @@ export default class SearchAndReserve{
         let totalCopiesToReserve = 0;
 
         data.customer.books.forEach(book => {
-            //book.numberOfCopiesToReserve = parseInt(book.numberOfCopiesToReserve, 10);
+            book.numberOfCopiesToReserve = parseInt(book.numberOfCopiesToReserve, 10);
             //console.log(book);
             totalCopiesToReserve += book.numberOfCopiesToReserve;
         });
-        //console.log(totalCopiesToReserve);
+        console.log(totalCopiesToReserve);
         if (totalCopiesToReserve > this.settings.copy_limit) { 
             return false
         }
@@ -635,7 +641,27 @@ export default class SearchAndReserve{
  *  */
 
 
-//(tomm) test cron job code. do similar for bad debt. you are in step 2 of gpt session storage.
+//if you update a value with a form, and send data to router which does res.render, whole page refereshes. instead do axios and update only that part of the page.
+
+
+
+//(tomm) need to show if punishment is "deactivation" then clicking manage hides the fine button.
+// git push + flash front end
+//then work on search and make it robust.
+
+//To test overdue or baddebt reservations, create new reservations, make sure return date is -1, collect a book and run cron job to check and apply for punishment
+
+
+
+
+
+//, then we can implement the logic of applying punishment.
+//then a user interface which can see the punishments.
+//also make sure to put userReservationDetails table in includes
+
+
+
+
 
 
 
@@ -652,14 +678,16 @@ export default class SearchAndReserve{
 //a option to deactivate\activate users at a time 
 // if user has status overdue, he cant reserve more books.
 //Deactive and activate users option/disable option(user gets logged out).
-//pressing checkouy twice can lead to error.(this.storeResponseData)
+//pressing checkouy twice can lead to error.(this.storeResponseData)(format data of response function)(NEED TO FIX)
 //userRecord-> if you press the user, see that users reservation details with his name in search field.
 //helper function in controller
+//a fine table in database, which stores the fine amount and the user id.
 //There should be active and inactive types of reservations(for bad debt and overdue), also those which are inactive, go to past reservaitons(which is implemented later). once punishment completed, current active overdue and baddebt become inactive. eventually shit becomes inactive.
+//fine paid table?
 
 //2)
 //admin can set how many days after the reservation and after collecting, the book is supposed to be collected and returned respectfully.(then need to make change in both frontend and backend. admin decides and we set those numbers in database and in frontend CollectAndReturn.js)
-//current reservations follow old deadline while new reservations follow new deadline.^
+//current reservations follow old deadline while new reservations follow new deadline.^ 
 //send notifications when deadline is close.
 //also automatically, if after a certain extra days, the book is not returned, marked as bad debt.(admin can select this as well)
 //both fronbt end and back end need to have same return date which admin selects(no consistency atm)
@@ -734,7 +762,12 @@ export default class SearchAndReserve{
 
 //11) customer can only register and create an account after he pays or something 
 
-//12) option to undo a reservation
+//12) option to undo a reservation(every type of undo possible) or a punishment
+//13) right now, reservation limit is set for every day and is then reset. i should also give the admin the option to set reservation limit per day OR  depend on how many pending reservations.
+//14) on delete cascade, on update cascade database
 
-
+//15) when admin sets reservation limit, we do res.render(backend), maybe implement axios front end?
+//16) when selecting punishment or reservation limit, some warning if we did not complete the form(2 mins)
+//17)could use batch insert for multiple reservations in reservations.reserveBook
+//18)userRecord search need to be empty at beginning and not show all the names
 //10) testing and deployment

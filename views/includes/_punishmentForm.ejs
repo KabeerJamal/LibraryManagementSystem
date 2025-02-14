@@ -1,0 +1,34 @@
+<form id="punishment<%= type %>Form" class="punishmentForm">
+    <label for="punishmentType">Select punishment for <%= label %>:</label>
+    <select id="punishmentType<%= type %>" name="punishmentType<%= type %>">
+        <option value="fine" <%= punishmentData[type]?.punishment_type === 'fine' ? 'selected' : '' %>>Fine</option>
+        <option value="deactivation" <%= punishmentData[type]?.punishment_type === 'deactivation' ? 'selected' : '' %>>Deactivation</option>
+        <option value="noReservations" <%= punishmentData[type]?.punishment_type === 'noReservations' ? 'selected' : '' %>>No more reservations</option>
+    </select>
+
+
+    <label for="threshold">Threshold (number of reservations one can <%= label.toLowerCase() %> until punishment is applied):</label>
+    <input 
+        type="number" 
+        id="threshold<%= type %>" 
+        name="threshold<%= type %>" 
+        min="1" 
+        value="<%= punishmentData[type]?.threshold || '' %>">
+    
+    
+
+        <div id="durationField<%= type %>" 
+            class="duration-field <%= (punishmentData[type]?.punishment_type === 'deactivation' || punishmentData[type]?.punishment_type === 'noReservations') ? 'visible' : 'hidden' %>">       
+            <label for="duration">Duration of punishment (in days):</label>
+            <input 
+               type="number" 
+               id="duration<%= type %>" 
+               name="duration" 
+               min="1" 
+               value="<%= punishmentData[type]?.duration_in_days || '' %>">
+            
+        </div>
+       
+
+    <button type="submit">Submit</button>
+</form>

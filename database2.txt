@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS Users.users (
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     role ENUM('admin', 'customer') NOT NULL,
+    reservation_count INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -31,7 +32,7 @@ CREATE TABLE IF NOT EXISTS reservations (
     user_id INT NOT NULL,                           -- User making the reservation
     book_id INT NOT NULL,                           -- The book being reserved
     number_of_copies INT NOT NULL,                  -- Number of copies reserved
-    status ENUM('reserved', 'completed', 'cancelled', 'collected','overdue') NOT NULL DEFAULT 'reserved',  -- Status of the reservation
+    status ENUM('reserved', 'completed', 'cancelled', 'collected','overdue','baddebt') NOT NULL DEFAULT 'reserved',  -- Status of the reservation
     reserve_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Date of the reservation (auto-generated)
     collect_date DATE DEFAULT NULL,                 -- Actual date when the book is collected (to be updated later)
     collect_date_deadline DATE GENERATED ALWAYS AS (DATE_ADD(reserve_date, INTERVAL 7 DAY)) VIRTUAL, -- Derived attribute, 7 days from reserve_date
@@ -84,15 +85,15 @@ CREATE TABLE IF NOT EXISTS reservation_items (
 
 CREATE TABLE IF NOT EXISTS user_punishments (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL UNIQUE,         -- Ensures one punishment per user at a time
+    user_id INT NOT NULL,         -- User can have multiple punishments
     punishment_id INT NOT NULL,           -- References punishments table
     applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     status ENUM('active','completed') NOT NULL DEFAULT 'active',
-    fine_amount DECIMAL(10,2) DEFAULT 0,   -- Only if applicable
-    duration_in_days INT DEFAULT 0,        -- Duration of restriction
+    fine_amount DECIMAL(10,2) DEFAULT NULL,   -- Only if applicable
+    duration_in_days INT DEFAULT NULL,        -- Duration of restriction
 
     CONSTRAINT fk_userpunishments_users
-        FOREIGN KEY (user_id) REFERENCES users(user_id)
+        FOREIGN KEY (user_id) REFERENCES users(id)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
 
@@ -105,7 +106,7 @@ CREATE TABLE IF NOT EXISTS user_punishments (
 
 CREATE TABLE IF NOT EXISTS punishments (
     punishment_id INT AUTO_INCREMENT PRIMARY KEY,
-    punishment_type ENUM('fine', 'limited_reservations', 'deactivate_user') NOT NULL,
+    punishment_type ENUM('fine', 'noReservations', 'deactivation') NOT NULL,
     description VARCHAR(255) DEFAULT NULL
 );
 
@@ -126,6 +127,21 @@ CREATE TABLE IF NOT EXISTS punishment_reservations (
         ON UPDATE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS punishment_active (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    context ENUM('bad_debt', 'overdue') NOT NULL UNIQUE, -- Specifies the context of the punishment
+    punishment_id INT NOT NULL,                   -- Links to punishments table
+    threshold INT NOT NULL,                        -- Number of offenses before punishment is applied
+    fine_amount DECIMAL(10,2) DEFAULT NULL,        -- If applicable for fines
+    duration_in_days INT DEFAULT NULL,            -- Duration of restriction
+
+    CONSTRAINT fk_active_punishment
+        FOREIGN KEY (punishment_id) REFERENCES punishments(punishment_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+
 
 CREATE TABLE IF NOT EXISTS settings (
     id INT AUTO_INCREMENT PRIMARY KEY,    -- Unique ID for each setting
@@ -138,22 +154,49 @@ CREATE TABLE IF NOT EXISTS settings (
 ALTER TABLE Users.users 
 ADD COLUMN reservation_count INT DEFAULT 0;
 
-INSERT INTO settings (key_name, value)
-VALUES 
-    ('overdue_threshold', 3), 
-    ('bad_debt_threshold', 5)
-ON DUPLICATE KEY UPDATE value = VALUES(value);
+
 
 ALTER TABLE reservations
 ADD COLUMN is_active BOOLEAN NOT NULL DEFAULT TRUE;
 
 
+
+
+ALTER TABLE punishment_active
+ADD CONSTRAINT unique_context UNIQUE (context);
+
+
+SET FOREIGN_KEY_CHECKS = 0;
+TRUNCATE TABLE user_punishments;
+TRUNCATE TABLE punishment_reservations;
+SET FOREIGN_KEY_CHECKS = 1;
+
+
+
+
+
+
+
+
+
+ALTER TABLE user_punishments
+ADD COLUMN context ENUM('baddebt', 'overdue') DEFAULT NULL;
+
+
+
+
+
+SELECT * FROM punishments WHERE punishment_id = 1;
+
+select * from user_punishments;
+select * from punishment_reservations;
+select * from punishment_active;
+select * from punishments;
 select * from settings;
 select * from reservations;
 select * from reservation_items;
 select * from users;
 select * from books;
-
 
 
 

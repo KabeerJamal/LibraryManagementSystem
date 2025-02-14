@@ -1,22 +1,9 @@
 const Reservation = require('../models/Reservation');
 const reservationHelper = require('./helpers/reservationHelper');
+const GlobalSettings = require('../models/GlobalSettings');
 
 exports.borrowerDetails = async (req, res) => {
   try {
-    // let reservations = await Reservation.borrowerDetails();
-    // //console.log("Reservations: ", reservations); // Debug log
-    // reservations = modifyReservationsTable(reservations);
-    // reservations.forEach(reservation => {
-    //     //console.log(reservation.books);
-    //     reservation.reserve_date = formatDate(reservation.reserve_date);
-    //     reservation.collect_date = formatDate(reservation.collect_date);
-    //     reservation.collect_date_deadline = formatDate(reservation.collect_date_deadline);
-    //     reservation.return_date = formatDate(reservation.return_date);
-    //     if (reservation.returned_at) {
-    //         reservation.returned_at = formatDate(reservation.returned_at);
-    //     }
-    // });
-    //console.log(reservations);
     let reservations = await reservationHelper.getReservationDataAdmin();
 
     
@@ -172,9 +159,35 @@ exports.updateReservationLimit = async (req, res,next) => {
         const { bookLimit, copyLimit, reservationLimitDay } = req.body; // Extract limits from the request body
 
         // Call the function to update the reservation limits
-        await Reservation.updateReservationLimit(bookLimit, copyLimit, reservationLimitDay);
+        const globalSettings = new GlobalSettings(bookLimit, copyLimit, reservationLimitDay);
+        await globalSettings.updateReservationLimit();
         next();
     } catch(e) {
         res.json('Error updating reservation limit');
     }
 }
+
+exports.reservationsWithBooks = async (req, res) => {
+    try {
+        const reservations = await Reservation.findBooksGivenReservationIds(req.body.number);
+        res.json(reservations);
+    } catch(e) {
+        console.log(e);
+        res.json('Error getting reservations with books');
+    }
+}
+exports.updateReturnAndCollectDeadline = async (req, res) => {  
+    try {
+        const { type, value } = req.body;
+        console.log(type, value);
+        await GlobalSettings.updateDeadline(type, value);
+        
+        // ✅ Return a structured response
+        res.json({ success: true, message: 'Deadline updated successfully' });
+    } catch(e) {
+        console.log(e);
+        
+        // ✅ Return a structured error response
+        res.status(500).json({ success: false, message: 'Error updating deadline' });
+    }
+};

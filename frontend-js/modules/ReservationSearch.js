@@ -60,20 +60,6 @@ export default class ReservationSearch {
         this.previousValue = value
     }
 
-    /*
-    //Backend search
-    sendRequest() {
-        axios.post('/searchReservation', {searchTerm: this.searchField.value}).then((response) => {
-            //I want to render the reservations to the page
-            console.log(response.data.reservation);
-            this.updateTable(response.data.reservation);
-        }).catch((error) => {
-            console.error('Error:', error);
-        });
-    }
-    */
-    
-
     //Front end search
     searchReservation() {
         this.applyFilterAndSearch(); // Apply both filter and search logic
@@ -86,45 +72,7 @@ export default class ReservationSearch {
 
         // Iterate over all rowss
         this.rows.forEach(row => {
-            /*
-            const statusCell = row.querySelector('.status').textContent.trim();
-
-            if (!this.userDetails) {
-                const username = row.children[0].textContent.trim().toLowerCase();
-                const title = row.children[1].textContent.trim().toLowerCase();
-
-                
-                // Determine if the row matches the current filter
-                const matchesFilter = (status === 'all') || (statusCell === status);
-
-                // Determine if the row matches the search term (check both username and title)
-                const matchesSearch = (!searchTerm) || username.includes(searchTerm) || title.includes(searchTerm);
-
-                // If both filter and search match, show the row, otherwise hide it
-                if (matchesFilter && matchesSearch) {
-                    row.style.display = ''; // Show row
-                } else {
-                    row.style.display = 'none'; // Hide row
-                }
-            } else {
-                const title = row.children[7].textContent.trim().toLowerCase();
-                console.log(title);
-
-                
-                // Determine if the row matches the current filter
-                const matchesFilter = (status === 'all') || (statusCell === status);
-
-                // Determine if the row matches the search term (check both username and title)
-                const matchesSearch = (!searchTerm)  || title.includes(searchTerm);
-
-                // If both filter and search match, show the row, otherwise hide it
-                if (matchesFilter && matchesSearch) {
-                    row.style.display = ''; // Show row
-                } else {
-                    row.style.display = 'none'; // Hide row
-                }
-            }
-            */
+          
             const statusCell = row.querySelector('.status').textContent.trim();
 
             //get the reservation id

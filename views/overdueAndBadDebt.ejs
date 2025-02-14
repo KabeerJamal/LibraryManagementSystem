@@ -7,6 +7,7 @@
     <!-- <link rel="stylesheet" href="/borrowdetails.css"> -->
     <link rel="stylesheet" href="/flashMessagesFrontEnd.css">
     <link rel="stylesheet" href="/modal.css">
+    <link rel="stylesheet" href="/punishmentForm.css">
 </head>
 
 <body>
@@ -15,12 +16,14 @@
 
 <!-- We used axios, so couldnt do res.render from front end so thats why manually creating
      a flash message-->
-     <div id="flash-message" class="flash-message"></div>
+    <div id="flash-message" class="flash-message"></div>
 
-     <div class="search-icon-reservation">
+    <div class="search-icon-reservation">
         <i class="fas fa-search"></i>
         <input type="text" placeholder="Search" id="live-search-field">
     </div>
+
+    <%- include('includes/flashMessage') %>
     <%- include('includes/filterSearchReservation') %>
 
     <%- include('includes/modal') %>
@@ -33,6 +36,19 @@
     </div>
 
     <%- include('includes/userRecordTable') %>
+    <%- include('includes/_punishmentForm', { type: 'BadDebt', label: 'Bad Debt' }) %>
+    <%- include('includes/_punishmentForm', { type: 'Overdue', label: 'Overdue' }) %>
+
+    <div class="search-icon-reservation">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search" id="live-search-field-punishment">
+    </div>
+    <%-include('includes/filterSearchPunishment') %>    
+    <%- include('includes/punishmentTable') %>
+    
+
+    <%- include('includes/modalPunishment') %>
+    <%- include('includes/modalShowReservations') %>
 
     <a href="/adminPortal" class="btn">Back to Admin Portal</a>
     <script>

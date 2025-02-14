@@ -7,9 +7,14 @@
     <%- include('includes/commonCss') %>
     <link rel="stylesheet" href="/navbar.css">
     <link rel="stylesheet" href="/userRecord.css">
+    <link rel="stylesheet" href="/flashMessagesFrontEnd.css">
 </head>
 <body>
     <%- include('includes/navbar') %>
+
+          <!-- We used axios, so couldnt do res.render from front end so thats why manually creating
+    a flash message-->
+    <div id="flash-message" class="flash-messages"> </div>
 
     <div class="search-icon-reservation">
         <i class="fas fa-search"></i>
@@ -18,5 +23,7 @@
 
     <%- include('includes/userRecordTable') %>
     <%- include('includes/setLimit') %> 
+    <%- include('includes/returnAndCollectDeadline') %>   
+
 
 <%- include('includes/footer') %>

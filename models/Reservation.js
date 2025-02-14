@@ -5,32 +5,8 @@ class Reservation{
         this.data = data;
     }
 
-    //UMER INSTRUCTIONS
     static async borrowerDetails() {
     try {
-        /*
-      const query = `
-        SELECT 
-          users.username AS borrower_name, 
-          books.title AS book_title, 
-          reservations.status, 
-          reservations.reserve_date, 
-          reservations.collect_date, 
-          reservations.collect_date_deadline,
-          reservations.return_date,
-          reservations.returned_at,
-          reservations.reservation_id,
-          reservations.user_id,
-          reservations.book_id
-
-        FROM 
-          reservations
-        JOIN 
-          users ON reservations.user_id = users.id
-        JOIN 
-          books ON reservations.book_id = books.book_id
-      `;
-        */
       const query = `SELECT 
             reservations.reservation_id,
             books.book_id,
@@ -63,18 +39,7 @@ class Reservation{
     } catch (err) {
       throw new Error("Error retrieving reservation details: " + err);
     }
-  }
-
-
-    //You can make the function static, that way you can call the function without creating an object of the class
-    //Over here you create a function borrower details which you already called  in the controller
-    //Make sure you are returning a promise from the function, look other functions in the model for reference
-    //in the function you get all data of reservation from the database via sql query and then you resolve the promise
-
-    //It should be similar to receiveBookDetails function in the Books model(only difference is that you are getting all the data of reservation from the database)
-    //So look into the Books model receiveBookdetials funciton for reference
-
-    //you store the information in the database regarding books reserved.
+    }
 
     async reserveBook() {
         return new Promise(async (resolve, reject) => {
@@ -101,7 +66,6 @@ class Reservation{
                 // Start the transaction
                 await connection.beginTransaction();
 
-                console.log("hi");
                 // Step 1: Insert a new reservation record in `reservations` table
                 const reservationQuery = `INSERT INTO reservations (user_id) VALUES (?)`;
                 const [reservationResult] = await connection.query(reservationQuery, [userId]);
@@ -355,29 +319,59 @@ class Reservation{
         })
     }
 
-    static async updateReservationLimit(booklimit,copylimit, reservationLimitDay) {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const query = `
-                INSERT INTO settings (key_name, value)
-                VALUES ('book_limit', ?), ('copy_limit', ?), ('reservation_limit_day',?)
-                ON DUPLICATE KEY UPDATE 
-                    value = VALUES(value);
-                `;
-                const values = [booklimit, copylimit, reservationLimitDay];
-                await db.query(query, values);
-                resolve();
-            } catch(e) {
-                reject(e);
-            }
-        });
-    }
+    // static async updateReservationLimit(booklimit,copylimit, reservationLimitDay) {
+    //     return new Promise(async (resolve, reject) => {
+    //         try {
+    //             const query = `
+    //             INSERT INTO settings (key_name, value)
+    //             VALUES ('book_limit', ?), ('copy_limit', ?), ('reservation_limit_day',?)
+    //             ON DUPLICATE KEY UPDATE 
+    //                 value = VALUES(value);
+    //             `;
+    //             const values = [booklimit, copylimit, reservationLimitDay];
+    //             await db.query(query, values);
+    //             resolve();
+    //         } catch(e) {
+    //             reject(e);
+    //         }
+    //     });
+    // }
 
-    static async getReservationLimit() {
+
+    // static async getReservationLimit() {
+    //     return new Promise(async (resolve, reject) => {
+    //         try {
+    //             const query = 'SELECT * FROM settings WHERE key_name = "book_limit" OR key_name = "copy_limit" OR key_name = "reservation_limit_day"';
+    //             let [rows] = await db.query(query);
+    //             resolve(rows);
+    //         } catch(e) {
+    //             reject(e);
+    //         }
+    //     });
+    // }
+
+    static async findBooksGivenReservationIds(reservationIds) {
         return new Promise(async (resolve, reject) => {
             try {
-                const query = 'SELECT * FROM settings WHERE key_name = "book_limit" OR key_name = "copy_limit" OR key_name = "reservation_limit_day"';
-                let [rows] = await db.query(query);
+                if (!Array.isArray(reservationIds) || reservationIds.length === 0) {
+                    return resolve([]); // Return an empty array if no reservation IDs are provided
+                }
+    
+                // Generate placeholders (?, ?, ?)
+                const placeholders = reservationIds.map(() => '?').join(', ');
+    
+                const query = `
+                    SELECT
+                        ri.reservation_id,
+                        b.book_id,
+                        b.title,
+                        b.author,
+                        ri.number_of_copies
+                    FROM reservation_items ri
+                    JOIN books b ON ri.book_id = b.book_id
+                    WHERE ri.reservation_id IN (${placeholders});
+                `;
+                let [rows] = await db.query(query, reservationIds);
                 resolve(rows);
             } catch(e) {
                 reject(e);

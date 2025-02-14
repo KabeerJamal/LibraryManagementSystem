@@ -12,6 +12,8 @@ const session = require('express-session');
 const mysqlStore = require('express-mysql-session')(session);
 const flash = require('connect-flash');
 
+const overdueAndBadDebtController = require('./controllers/overdueAndBadDebtController');
+
 
 //To schedule automated tasks
 // Function to update overdue reservations
@@ -46,6 +48,7 @@ const cancelNotCollectedReservations = async () => {
     }
 };
 
+//a limit for number of reservations a day.
 const resetReservationCount = async () => {
     try {
         // Your SQL query to update reservations
@@ -59,40 +62,71 @@ const resetReservationCount = async () => {
     }
 }
 
-//create a funciton that will run in cron job once everyday.
-const checkOverdueReservations = async () => {
-    //for every user, check the reservations that are overdue and isActive is true
+// Generic function to check overdue/baddebt reservations
+const checkReservations = async (statusType, thresholdKey) => {
     try {
-        const query = `SELECT user_id, COUNT(*) AS overdue_reservations
-                       FROM reservations
-                       WHERE status = 'overdue' 
-                       AND is_active = TRUE
-                       GROUP BY user_id;
-                    `
-        const [result] = await db.query(query);
+        console.log(`Checking ${statusType} reservations...`);
 
-        //need to get this threshold from the database
-        const threshold = 3;
+        // Query reservations based on statusType ('overdue' or 'baddebt')
+        const query = `
+            SELECT user_id, 
+                   GROUP_CONCAT(reservation_id ORDER BY reservation_id SEPARATOR ', ') AS reservation_ids
+            FROM reservations
+            WHERE status = ?
+            AND is_active = TRUE
+            GROUP BY user_id;
+        `;
+        const [result] = await db.query(query, [statusType]);
 
-        // Check if any user exceeds the threshold
-        const userExceedingThreshold = result.some(row => row.overdue_reservations > threshold);
-
-        if (userExceedingThreshold) {
-            console.log("One or more users have exceeded the overdue reservation threshold.");
-        } else {
-        console.log("No users have exceeded the overdue reservation threshold.");
+        if (!result.length) {
+            console.log(`No ${statusType} reservations found.`);
+            return;
         }
 
-    // Optionally, get the list of users who exceed the threshold
-    const usersAboveThreshold = result.filter(row => row.overdue_reservations > threshold);
+        // Get the threshold from settings table
+        const thresholdQuery = `SELECT value FROM settings WHERE key_name = ?`;
+        const [thresholdResult] = await db.query(thresholdQuery, [thresholdKey]);
 
-    if (usersAboveThreshold.length > 0) {
-        console.log("Users exceeding threshold:", usersAboveThreshold);
-    }
+        if (!thresholdResult.length) {
+            console.error(`Threshold not found in settings for key: ${thresholdKey}`);
+            return;
+        }
+
+        const threshold = parseInt(thresholdResult[0].value, 10);
+
+        // Filter users who exceed the threshold
+        // const usersAboveThreshold = result.filter(row => 
+        //     row.reservation_ids && row.reservation_ids.split(', ').length > threshold
+        // );
+        const usersAboveThreshold = result
+            .filter(row => row.reservation_ids && row.reservation_ids.split(', ').length > threshold)
+            .map(row => ({
+                user_id: row.user_id,
+                reservation_ids: row.reservation_ids,
+                type: statusType // Add "overdue" or "baddebt" as type
+            }));
+
+        if (usersAboveThreshold.length > 0) {
+            //console.log(`Users exceeding ${statusType} threshold:`, usersAboveThreshold);
+            // call the controller to handle the punishment\
+            await overdueAndBadDebtController.applyPunishment(usersAboveThreshold);
+
+        } else {
+            console.log(`No users have exceeded the ${statusType} reservation threshold.`);
+        }
+
     } catch (error) {
-        console.error('Error counting overdue reservations:', error);
+        console.error(`Error checking ${statusType} reservations:`, error);
     }
+};
 
+// Run these in a cron job
+const checkOverdueReservations = async () => {
+    await checkReservations('overdue', 'overdue_threshold');
+};
+
+const checkBadDebtReservations = async () => {
+    await checkReservations('baddebt', 'bad_debt_threshold');
 };
 
 
@@ -100,12 +134,13 @@ const checkOverdueReservations = async () => {
 //notifications to be sent to user when overdue
 
 // Schedule the job to run every day at midnight
-cron.schedule('31 14 * * *', () => {
-    console.log('Running job to check for overdue reservations and resetting reservation limit');
+cron.schedule('26 13 * * *', () => {
+    console.log('Running cron job');
     updateOverdueReservations();
     cancelNotCollectedReservations();
     resetReservationCount();
     checkOverdueReservations();
+    checkBadDebtReservations();
 });
 
 

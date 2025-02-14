@@ -17,7 +17,5 @@ async function loadSettings() {
     }
 }
 
-// Call this function when the server starts
-loadSettings();
-
-module.exports = globalSettings;
+// ✅ Export both the function and the object
+module.exports = { globalSettings, loadSettings };

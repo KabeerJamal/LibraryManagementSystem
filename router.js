@@ -11,7 +11,7 @@ const userController = require('./controllers/userController');
 const bookController = require('./controllers/bookController');
 const reservationController = require('./controllers/reservationController');
 const overdueAndBadDebtController = require('./controllers/overdueAndBadDebtController');
-const globalSettings = require('./controllers/globalSettings');
+const {globalSettings, loadSettings} = require('./controllers/globalSettings');
 
 const multer = require('multer');
 const path = require('path');
@@ -136,20 +136,35 @@ router.post('/cancelReservation/:reservation_id', reservationController.cancelRe
 router.get("/showReservations", reservationController.borrowerDetails);
 
 router.post("/baddebt/:reservation_id", reservationController.badDebt);
+
 router.get("/userRecord",userController.mustBeLoggedInAdmin, reservationController.userRecord);
 
 router.post("/updateReservationLimit", reservationController.updateReservationLimit, reservationController.userRecord);
 
-router.get("/overdueManagmentPage", overdueAndBadDebtController.overdueManagementPage);
+router.get("/overdueManagementPage", overdueAndBadDebtController.overdueManagementPage);
 
+router.post("/punishment", overdueAndBadDebtController.punishment);
+
+router.post("/reservations-with-books", reservationController.reservationsWithBooks);
+
+router.post("/punishmentCompletedFine", overdueAndBadDebtController.punishmentCompletedFine);
+
+router.post("/punishmentCancelled", overdueAndBadDebtController.punishmentCancelled);
+
+router.post("/updateDeadline", reservationController.updateReturnAndCollectDeadline);
 // API to get settings
-router.get('/api/settings', (req, res) => {
+router.get('/api/settings', async (req, res) => {
     try {
-        res.json(globalSettings);
+        await loadSettings(); // ✅ Call this to refresh globalSettings
+        res.json(globalSettings); // ✅ Send updated globalSettings
     } catch (error) {
+        console.error('Error fetching settings:', error);
         res.status(500).json({ error: 'Failed to fetch settings' });
     }
 });
+
+//send a request to reservation controller to update the return and collect deadline,in reservationController.updateReturnAndCollectDeadline
+//then we go to Global settings, which updates in global settings and then also updates date in Reservation
 
 module.exports = router;
 

@@ -1,4 +1,5 @@
 const Reservation = require('../../models/Reservation');
+const GlobalSettings = require('../../models/GlobalSettings');
 
 exports.getReservationDataAdmin = async () => {
     let reservations = await Reservation.borrowerDetails();
@@ -15,7 +16,7 @@ exports.getUserRecordData = async () => {
     //console.log("Reservations: ", reservations); // Debug log
     reservations = userRecordTable(reservations);
     //console.log(reservations);
-    let reservationLimit = await Reservation.getReservationLimit();
+    let reservationLimit = await GlobalSettings.getReservationLimit();
     let bookLimit = reservationLimit[0].value;
     let copyLimit = reservationLimit[1].value;
     let reservationLimitDay = reservationLimit[2].value;
@@ -28,9 +29,27 @@ exports.getUserRecordData = async () => {
     };
 };
 
+//console.log("Reservations: ", reservations); // Debug log
+//one element in array of reservations:
+// {
+//     reservation_id: 167,
+//     book_id: 6,
+//     user_id: 6,
+//     borrower_name: 'usama',
+//     number_of_copies: 1,
+//     status: 'reserved',
+//     reserve_date: 2025-02-04T17:14:19.000Z,
+//     collect_date: null,
+//     collect_date_deadline: 2025-02-10T23:00:00.000Z,
+//     return_date: null,
+//     returned_at: null,
+//     book_title: 'tiktokrizz',
+//     author: 'party'
+//   }
 function getReservationDataHelper(reservations) {
-    //console.log("Reservations: ", reservations); // Debug log
+
     reservations = modifyReservationsTable(reservations);
+    //console.log(reservations);
     reservations.forEach(reservation => {
         //console.log(reservation.books);
         reservation.reserve_date = formatDate(reservation.reserve_date);
@@ -42,6 +61,7 @@ function getReservationDataHelper(reservations) {
         }
     });
     return reservations;
+
 }
 
 

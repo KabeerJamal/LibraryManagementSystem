@@ -18,7 +18,6 @@ export default class ReservationDisplay {
 
 
     openModal(number) {
-        console.log('open modal');
         const reservation = reservations.find(reservation => reservation.reservation_id == number);//get the reservation id consistent with the button clicked
         this.modal.style.display = 'block';
 
