@@ -166,27 +166,7 @@ ALTER TABLE punishment_active
 ADD CONSTRAINT unique_context UNIQUE (context);
 
 
-SET FOREIGN_KEY_CHECKS = 0;
-TRUNCATE TABLE user_punishments;
-TRUNCATE TABLE punishment_reservations;
-SET FOREIGN_KEY_CHECKS = 1;
 
-
-
-
-
-
-
-
-
-ALTER TABLE user_punishments
-ADD COLUMN context ENUM('baddebt', 'overdue') DEFAULT NULL;
-
-
-
-
-
-SELECT * FROM punishments WHERE punishment_id = 1;
 
 select * from user_punishments;
 select * from punishment_reservations;
@@ -197,6 +177,7 @@ select * from reservations;
 select * from reservation_items;
 select * from users;
 select * from books;
+select * from sessions;
 
 
 

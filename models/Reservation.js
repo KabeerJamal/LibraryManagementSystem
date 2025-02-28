@@ -294,7 +294,7 @@ class Reservation{
     static badDebt(reservationId) {
         return new Promise(async (resolve, reject) => {
             try {
-                const query = 'UPDATE reservations SET status = "baddebt" WHERE reservation_id = ?';
+                const query = 'UPDATE reservations SET status = "baddebt", is_active = CASE WHEN is_active = 0 THEN 1 ELSE is_active END WHERE reservation_id = ?';
                 const values = [reservationId];
                 await db.query(query, values);
                 resolve();

@@ -423,6 +423,39 @@ class Punishment {
             }
         });
     }
+
+    
+    static async checkUserPunishments(userName) {
+        try {
+            const [rows] = await db.query(
+                `SELECT p.punishment_type
+                 FROM user_punishments up
+                 JOIN users u ON up.user_id = u.id
+                 JOIN punishments p ON up.punishment_id = p.punishment_id
+                 WHERE u.username = ?
+                 AND up.status = 'active'`, 
+                [userName]
+            );
+    
+            // Create a punishment object with all types set to false by default
+            const allPunishments = {
+                noReservations: false,
+                fine: false,
+                deactivation: false
+            };
+    
+            // Update the object for the active punishments
+            rows.forEach(row => {
+                allPunishments[row.punishment_type] = true;
+            });
+    
+            return allPunishments;
+        } catch (error) {
+            console.error("Database error:", error);
+            return { noReservations: false, fine: false, deactivation: false }; // Default if error
+        }
+    }
+    
 }
 
 module.exports = Punishment;

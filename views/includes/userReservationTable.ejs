@@ -1,0 +1,48 @@
+<table class="user-reservation-table">
+    <thead>
+        <tr>
+            <th>S/N</th>
+            <th>Reservation Number</th>
+            <th>Books Reserved</th>
+            <th>Status</th>
+            <th>Reservation Date</th>
+            <th>Collection Date</th>
+            <th>Return Date</th>
+            <th>Collection Date Deadline</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody class="user-reservation-table-body">
+        <% let i = 0 %>
+        <% reservations.forEach(function(reservation) { %>
+        
+        <% if (reservation.status != 'completed') { %>
+        <% i = i + 1 %>
+        <tr class="reservation-row" data-number="<%= reservation.reservation_id %>">
+            <td><%= i %></td>
+            <td class="reservation-number" data-number="<%= reservation.reservation_id %>"><%= reservation.reservation_id %></td>
+            <td class="title-copies" data-number="<%= reservation.book_id %>">
+                <!-- <% if (reservation.books.length == 1) { %>
+                <%= reservation.books[0].book_title %> <%= reservation.books[0].number_of_copies %>
+                <% } else {%>
+                    <button class="show-books" data-number="<%= reservation.reservation_id %>">Show Books</button>
+                    <% }%> -->
+                <button class="show-books" data-number="<%= reservation.reservation_id %>">Show Books</button>
+            </td>
+            <td class="status" data-number="<%= reservation.reservation_id %>"><%= reservation.status %></td>
+            <td><%= reservation.reserve_date %></td>
+            <td><%= reservation.collect_date %></td>
+            <td><%= reservation.return_date %></td>
+            <td><%= reservation.collect_date_deadline %></td>
+            <!-- <td><a href="/book/<%= reservation.book_id %>"><%= reservation.book_title %></a></td> -->
+            <td><%= reservation.author %></td>
+            <td>
+                <% if (reservation.status === 'reserved') { %>
+                <button class="cancel-reservation" data-number="<%= reservation.reservation_id %>">Cancel Reservation</button>
+                <% } %>
+            </td>
+        </tr>
+        <% } %>
+        <% }); %>
+    </tbody>
+</table>

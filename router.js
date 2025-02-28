@@ -152,6 +152,8 @@ router.post("/punishmentCompletedFine", overdueAndBadDebtController.punishmentCo
 router.post("/punishmentCancelled", overdueAndBadDebtController.punishmentCancelled);
 
 router.post("/updateDeadline", reservationController.updateReturnAndCollectDeadline);
+
+router.get("/userPunishmentDetails", overdueAndBadDebtController.userPunishmentDetails);
 // API to get settings
 router.get('/api/settings', async (req, res) => {
     try {
@@ -162,6 +164,8 @@ router.get('/api/settings', async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch settings' });
     }
 });
+
+router.get('/api/check-punishment/:userName',overdueAndBadDebtController.checkPunishment);
 
 //send a request to reservation controller to update the return and collect deadline,in reservationController.updateReturnAndCollectDeadline
 //then we go to Global settings, which updates in global settings and then also updates date in Reservation

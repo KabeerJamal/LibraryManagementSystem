@@ -9,7 +9,11 @@
             <th>Starting date</th>
             <th>Type of Punishment</th>
             <th>Punishment Status</th>
+            <th>Ending date</th>
+            <% if (!isUser) { %>}
             <th>Manage</th>
+            <% } %>
+
         </tr>
     </thead>
     <tbody class="all-punishments-table-body">
@@ -43,11 +47,18 @@
                 <td class="punishment-status">
                     <%= punishment.status %>
                 </td>
+                <% if (punishment.punishment_type != 'fine') { %>
+                    <td class="ending-date">
+                        <%= punishment.punishmentEndDate %>
+                    </td>
+                <% } %>
+                <% if (!isUser) { %>}
                 <td class="manage" data-number="<%= punishment.userPunishmentid %>">
                     <% if (punishment.status !== 'completed') { %>
                         <button class="manage" data-number="<%= punishment.duration ? punishment.duration : '' %>">Manage</button>
                     <% } %>
                 </td>
+                <% } %>
             </tr>
         <% }); %>
     </tbody>

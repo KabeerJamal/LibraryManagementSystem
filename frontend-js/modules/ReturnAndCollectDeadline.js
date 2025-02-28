@@ -33,7 +33,7 @@ export default class ReturnAndCollectDeadline{
             return;
         }
 
-        console.log(`Updating ${deadlineType} to:`, deadlineValue);
+        //console.log(`Updating ${deadlineType} to:`, deadlineValue);
 
         // Send an axios post request to update deadline
         axios.post(`/updateDeadline`, {

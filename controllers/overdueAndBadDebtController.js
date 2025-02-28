@@ -11,23 +11,24 @@ exports.overdueManagementPage = async (req, res) => {
 
     //call a function which gets data about the punishment selected by the admin 
     let punishmentData = await Punishment.getPunishmentData();
-    console.log(punishmentData);
+    //console.log(punishmentData);
     const transformedPunishmentData = transformPunishmentData(punishmentData);
-    console.log(transformedPunishmentData);
+    //console.log(transformedPunishmentData);
 
     //create a function which gets all punishment information from the database
     let getAllPunishments = await punishmentHelper.getAllPunishments();
-    //console.log(getAllPunishments);
+    console.log(getAllPunishments);
+
 
     
-            
     res.render('overdueAndBadDebt.ejs', { 
         reservationsUser: userRecordData.reservations,
         reservations: reservations,
         AvailableCopiesText: false,
         partialSearchFilter: true,
         punishmentData: transformedPunishmentData,
-        punishments: getAllPunishments
+        punishments: getAllPunishments,
+        isUser: false
     });
 }
     
@@ -104,6 +105,28 @@ exports.punishmentCancelled = async (req, res) => {
     }
 }
 
+exports.userPunishmentDetails = async (req, res) => {
+
+    let allPunishmentData = await punishmentHelper.getAllPunishments();
+
+    let userPunishmentData = filterUserPunishmentData(allPunishmentData, req.session.user.username);
+
+    //console.log(userPunishmentData);
+    res.render('userPunishmentDetails.ejs', { punishments: userPunishmentData, isUser: true });
+}
+
+exports.checkPunishment = async (req, res) => {
+    let userName = req.params.userName;
+    try {
+        let userActivePunishments = await Punishment.checkUserPunishments(userName);//this should return true or false
+        res.json(userActivePunishments);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to check punishment' });
+    }
+
+}
+
 
 function onlyOverdueAndBadDebt(reservations) {
     return reservations.filter(reservation => {
@@ -142,4 +165,12 @@ function transformPunishmentData(punishmentData) {
         }
         return acc;
     }, {});
+
 }
+
+
+function filterUserPunishmentData (allPunishmentData, username)  {
+    return allPunishmentData.filter(punishment => punishment.username === username);
+}
+
+

@@ -12,7 +12,7 @@ export default class UserRecordSearch {
 
     events() {
         this.searchField.addEventListener('keyup', () => this.keyPressHandler());
-        console.log('UserRecordSearch module loaded');
+        //console.log('UserRecordSearch module loaded');
     }
 
 

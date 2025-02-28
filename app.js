@@ -1,6 +1,8 @@
+
 const express = require('express');
 const app = express();
 const dotenv = require('dotenv');
+const axios = require('axios'); 
 
 
 const cron = require('node-cron');
@@ -129,13 +131,30 @@ const checkBadDebtReservations = async () => {
     await checkReservations('baddebt', 'bad_debt_threshold');
 };
 
+async function checkPunishmentExpiry() {
+    try {
+      // The single UPDATE query:
+      const [result] = await db.query(`
+        UPDATE user_punishments
+        SET status = 'completed'
+        WHERE status = 'active'
+          AND duration_in_days IS NOT NULL
+          AND DATE_ADD(applied_at, INTERVAL duration_in_days DAY) <= CURDATE()
+      `);
+  
+      console.log(`Punishments updated to completed: ${result.affectedRows}`);
+    } catch (error) {
+      console.error('Error updating punishment statuses:', error);
+    }
+  }
 
 //pms to run website locallt forever
 //notifications to be sent to user when overdue
 
 // Schedule the job to run every day at midnight
-cron.schedule('26 13 * * *', () => {
+cron.schedule('37 10 * * *', () => {
     console.log('Running cron job');
+    checkPunishmentExpiry();
     updateOverdueReservations();
     cancelNotCollectedReservations();
     resetReservationCount();
@@ -188,11 +207,44 @@ const router = require('./router');
 // Set the public folder as static
 app.use(express.static('public'));
 
-app.use(function(req, res, next) {
+app.use(async function(req, res, next) {
     res.locals.errors = req.flash('errors');
     res.locals.success = req.flash('success');
     //make user session data available from within view templates
     res.locals.user = req.session.user;//ejs can access the user object which has username and avatar
+
+    
+    if (req.session.user) {
+        try {
+            // Check punishment only if not checked recently (to prevent unnecessary API calls)
+            if (!req.session.lastPunishmentCheck || Date.now() - req.session.lastPunishmentCheck > 5 * 60 * 1000) {
+                const response = await axios.get(`http://localhost:3000/api/check-punishment/${req.session.user.username}`);
+                req.session.hasDeactivationPunishment = response.data.deactivation;
+                console.log("Punishment check response:", response.data.deactivation);
+                req.session.lastPunishmentCheck = Date.now(); // Store timestamp
+            }
+
+            // If user has an active punishment (e.g., 'deactivation'), log them out immediately
+            if (req.session.hasDeactivationPunishment) {
+                req.flash('errors', 'Your account has been deactivated due to overdue/bad debt reservations.');
+                // Remove only user-related properties so that the flash message remains
+                delete req.session.user;
+                delete req.session.hasDeactivationPunishment;
+                req.session.save(() => {
+                    return res.redirect('/');
+                });
+                return;
+            }
+            
+        } catch (error) {
+            console.error("Error checking user punishment:", error);
+            req.session.hasPunishment = false; // Default to false in case of error
+        }
+    }
+
+
+
+
     next();
 })
 

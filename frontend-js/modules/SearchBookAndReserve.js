@@ -235,13 +235,22 @@ export default class SearchAndReserve{
       Reservation controller then sends this information to the model.
       Model then stores this information in the database.
     */
-    sendRequestToReserve(data) {     
+    async sendRequestToReserve(data) {     
         //console.log(data);
 
         if(!this.checkNumberOfCopies(data)) {
             this.showFlashMessage(`You can only reserve up to ${this.settings.copy_limit} copies in total`, true);
             return;
         }
+
+        
+        // Check if the user has an active "No Reservations" punishment
+        const hasNoReservationsPunishment = await this.checkUserPunishment(data.customer.userName);
+        if (hasNoReservationsPunishment.noReservations) {
+            this.showFlashMessage("You cannot make a reservation due to an active punishment.", true);
+            return;
+        }
+
 
         axios.post('/reserve', {userName: data.customer.userName,
             books: data.customer.books}).then((response) => {
@@ -619,11 +628,22 @@ export default class SearchAndReserve{
             //console.log(book);
             totalCopiesToReserve += book.numberOfCopiesToReserve;
         });
-        console.log(totalCopiesToReserve);
+        //console.log(totalCopiesToReserve);
         if (totalCopiesToReserve > this.settings.copy_limit) { 
             return false
         }
         return true;
+    }
+
+    async checkUserPunishment(userName) {
+        try {
+            const response = await axios.get(`/api/check-punishment/${userName}`);
+            const result = response.data;
+            return result; // true or false
+        } catch (error) {
+            console.error("Error checking punishment:", error);
+            return false; // Assume no punishment in case of an error
+        }
     }
 }
 
@@ -647,7 +667,10 @@ export default class SearchAndReserve{
 
 //(tomm) need to show if punishment is "deactivation" then clicking manage hides the fine button.
 // git push + flash front end
-//then work on search and make it robust.
+//Reservation search line 205.
+//look int refactoring reservation display.
+//could improve search feature
+//2 people cannot have same user name
 
 //To test overdue or baddebt reservations, create new reservations, make sure return date is -1, collect a book and run cron job to check and apply for punishment
 

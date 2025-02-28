@@ -15,7 +15,7 @@ export default class CollectAndReturn {
                 this.sendRequestToReturn(number);
             }
             if(e.target.classList.contains('bad-debt')) {
-                console.log("bad debt button clicked"); 
+                //console.log("bad debt button clicked"); 
                 const number = e.target.getAttribute('data-number');
                 
                 this.sendRequestToBadDebt(number);
@@ -31,6 +31,7 @@ export default class CollectAndReturn {
         let date = new Date();
         let collectDate = date.toISOString().slice(0,10);
         //return date needs to be consistent with what admin selects********
+        //use fetchSettings to get return date and add that
         let returnDate = new Date(date.getTime() + 14 * 24 * 60 * 60 * 1000).toISOString().slice(0,10);
 
         const collectButton = document.querySelector('.collect[data-number="' + number + '"]');
@@ -73,7 +74,7 @@ export default class CollectAndReturn {
        
         axios.post('/return/' + number).then((response) => {
             let status = document.querySelector('.status[data-number="' + number + '"]');
-            console.log(status.textContent);
+            //console.log(status.textContent);
             this.showFlashMessage('Book returned');
             //generate current date and add it with collect button
             let date = new Date();

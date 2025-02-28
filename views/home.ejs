@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>U.K Library</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <%- include('includes/commonCss') %>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <%- include('includes/fontAwesome') %>
     <link rel="stylesheet" href="/navbar.css">
     <link rel="stylesheet" href="/card.css">
@@ -16,6 +16,21 @@
     <!-- Navbar -->
     <%- include('includes/navbar') %>
 
-    <%- include('includes/bookCards') %>
+    <!-- Flash Messages -->
+    <div class="flash-messages">
+        <% errors.forEach(function(message) { %>
+            <p class="flash-message">
+                <%= message %>. This is a flash message, needs to be modified with CSS
+            </p>
+            <% }) %>
+    </div>
+
+    <!-- Book Showcase Section -->
+    <%- include('includes/bookShowcase') %>
+
+    <!-- About Us Section -->
+    <%- include('includes/aboutUs') %>
+
+    <%-include('includes/Homefooter') %>
     
     <%- include('includes/footer') %>

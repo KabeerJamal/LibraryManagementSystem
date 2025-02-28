@@ -4,8 +4,10 @@ const Punishment = require('../../models/Punishment');
 exports.getAllPunishments = async () => {
     try{
         let punishments = await Punishment.getAllPunishments();
+        punishments = addEndingDate(punishments);
         punishments.forEach(punishment => {
             punishment.punishmentActivationDate = formatDate(punishment.punishmentActivationDate);
+            punishment.punishmentEndDate = formatDate(punishment.punishmentEndDate);
         });
         return punishments;
     } catch (error) {
@@ -14,6 +16,18 @@ exports.getAllPunishments = async () => {
    
 };
 
+
+
+function addEndingDate(punishments) {
+    return punishments.map(punishment => {
+        if (punishment.duration) {
+            let endDate = new Date(punishment.punishmentActivationDate);
+            endDate.setDate(endDate.getDate() + punishment.duration);
+            punishment.punishmentEndDate = endDate;
+        }
+        return punishment;
+    });
+}
 
 
 //Helper function

@@ -157,7 +157,6 @@ exports.userRecord = async (req, res) => {
 exports.updateReservationLimit = async (req, res,next) => {
     try {
         const { bookLimit, copyLimit, reservationLimitDay } = req.body; // Extract limits from the request body
-
         // Call the function to update the reservation limits
         const globalSettings = new GlobalSettings(bookLimit, copyLimit, reservationLimitDay);
         await globalSettings.updateReservationLimit();

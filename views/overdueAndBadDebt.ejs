@@ -8,11 +8,13 @@
     <link rel="stylesheet" href="/flashMessagesFrontEnd.css">
     <link rel="stylesheet" href="/modal.css">
     <link rel="stylesheet" href="/punishmentForm.css">
+    <link rel="stylesheet" href="/navbar.css">
 </head>
 
 <body>
 <h1>Overdue Managment</h1>
 
+    <%- include('includes/navbar') %>
 
 <!-- We used axios, so couldnt do res.render from front end so thats why manually creating
      a flash message-->
@@ -20,7 +22,7 @@
 
     <div class="search-icon-reservation">
         <i class="fas fa-search"></i>
-        <input type="text" placeholder="Search" id="live-search-field">
+        <input type="text" placeholder="Search" id="live-search-field-everyone">
     </div>
 
     <%- include('includes/flashMessage') %>

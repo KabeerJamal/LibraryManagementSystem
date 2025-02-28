@@ -7,12 +7,13 @@
     <%- include('includes/fontAwesome') %>
     <link rel="stylesheet" href="adminportal.css">
     <link rel="stylesheet" href="/searchBook.css">
+    <link rel="stylesheet" href="/navbar.css">
     <link rel="stylesheet" href="/flashMessagesFrontEnd.css">
     
 </head>
 
 <body>
-    <h1>Welcome to the Admin Portal</h1>
+    <%- include('includes/navbar') %>
           <!-- We used axios, so couldnt do res.render from front end so thats why manually creating
     a flash message-->
     <div id="flash-message" class="flash-messages"> </div>

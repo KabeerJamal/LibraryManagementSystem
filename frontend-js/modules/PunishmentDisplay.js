@@ -144,7 +144,7 @@ export default class PunishmentDisplay {
                 number_of_copies: reservation.number_of_copies
             });
         });
-        console.log(groupedReservations);
+        //console.log(groupedReservations);
     
         // Generate HTML for each reservation and its books
         Object.entries(groupedReservations).forEach(([reservation_id, books]) => {

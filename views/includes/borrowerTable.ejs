@@ -2,6 +2,7 @@
 <table class="everyone-reservation-table">
     <thead>
         <tr>
+            <th>S/N</th>
             <th>Reservation Number</th>
             <th>Borrower Name</th>
             <th>Books Reserved</th>
@@ -23,7 +24,9 @@
                 <td class="reservation-frontend-number"   data-number="reservation.reservation_id">
                     <%= i %>
                 </td>
-                
+                <td class="reservation-number" data-number="<%= reservation.reservation_id %>">
+                    <%= reservation.reservation_id %>
+                </td>
                 <td class="name" data-number="<%= reservation.user_id %>">
                     <%= reservation.borrower_name %>
                 </td>
@@ -66,6 +69,9 @@
                     <tr>
                         <td class="reservation-frontend-number"   data-number="reservation.reservation_id">
                             <%= i %>
+                        </td>
+                        <td class="reservation-number" data-number="<%= reservation.reservation_id %>">
+                            <%= reservation.reservation_id %>
                         </td>
                        
                         <td class="name" data-number="<%= reservation.user_id %>">
