@@ -6,7 +6,7 @@ exports.borrowerDetails = async (req, res) => {
   try {
     let reservations = await reservationHelper.getReservationDataAdmin();
 
-    
+    console.log("Reservations: ", reservations); // Debug log
     res.render('borrowerDetails.ejs', { reservations, AvailableCopiesText: false , partialSearchFilter: false});
   } catch (error) {
     console.error("Error loading reservation details:", error); // Log error to console
@@ -29,6 +29,7 @@ exports.borrowerDetails = async (req, res) => {
 exports.reserveBook = async (req, res) => {
     //over here you create object of reservation model, where you pass in hte information
     try {
+        console.log("Reservation request body:", req.body); // Debug log
         const reservation = new Reservation(req.body);
         
         let reservationCount = await reservation.reserveBook();

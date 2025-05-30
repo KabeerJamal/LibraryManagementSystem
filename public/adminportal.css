@@ -1,224 +1,255 @@
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Roboto+Slab:wght@700&display=swap');
-
-/* Global Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Arial', sans-serif;
-}
-
-
-
-h1 {
-    font-family: 'Merriweather', serif;
-    /* or 'Roboto Slab' for a different look */
-    font-size: 3rem;
-    color: #ffffff;
+/* Container & Global Styles */
+.container {
+    display: grid;
+    grid-template-rows: 2.6fr 2fr minmax(10rem, auto) 2fr;
+    grid-template-columns: 90%;
+    justify-content: center;
+    background-color: white;
+    min-height: 270vh;
+    height: auto;
+  }
+  
+  .container > *:not(:nth-last-child(2)) {
+    margin-bottom: 10rem; /* Adds spacing between elements except the last two */
+  }
+  
+  /* Admin Portal Header Section */
+  .admin-portal-wrapper {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+  
+  .admin-portal-image {
+    background: url("library2.avif") center/cover no-repeat;
+    height: 100%;
+    width: 50%;
+  }
+  
+  .admin-portal-content {
+    position: relative;
+    white-space: normal;
+    background: #D1B9BA;
+    box-shadow: 0rem 0.6rem 1.4rem rgba(0, 0, 0, 0.1);
+    z-index: 2;
     text-align: center;
-    margin-bottom: 30px;
-    text-shadow: 2px 2px 15px rgba(0, 0, 0, 0.7);
-    /* stronger shadow for a bolder effect */
-    letter-spacing: 1px;
-    /* Adds spacing between letters */
-    line-height: 1.2;
-    /* Slightly reduces the line height for a compact look */
-    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
-    /* Adds an elegant underline */
-    padding-bottom: 10px;
-}
-/* Body Styling */
-body {
-    background-image: url('lms.jpg');
-    /* Keep the same library background */
-    background-size: cover;
-    background-position: center;
-    height: 100vh;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    position: relative;
-}
-
-body::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
-    /* Dark overlay for contrast */
-    z-index: -1;
-}
-
-
-
-/* Container for the Admin Portal */
-.admin-container {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(10px);
-    width: 400px;
-    animation: fadeIn 1.5s ease-in-out;
-    text-align: center;
-}
-
-/* Form Heading */
-.admin-container h1 {
-    font-size: 2.5rem;
-    color: #fff;
-    margin-bottom: 30px;
-    text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
-}
-
-/* Link Styles */
-a {
+  }
+  
+  .admin-portal-content h2 {
+    font-size: 4.8rem;
+    margin-bottom: 3rem;
+    color: #431A20;
+    font-family: var(--secondary-font);
+    font-weight: 300;
+  }
+  
+  .admin-portal-content p {
+    font-family: var(--primary-font);
+    font-size: 1.6rem;
+    max-width: 800px;
+    margin: 0 auto;
+    color: #431A20;
+    padding: 0 3rem;
+  }
+  
+  .admin-portal-content .btn {
+    background: var(--button-color);
+    color: white;
+    padding: 1rem 3rem;
     text-decoration: none;
-    color: #4CAF50;
-    font-weight: bold;
-    margin: 15px;
-    display: inline-block;
-    padding: 10px 20px;
-    border: 2px solid #4CAF50;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
+    font-size: 1.4rem;
+    transition: 0.3s ease;
+    margin-top: 3rem;
+  }
+  
+  .admin-portal-content .btn:hover {
+    opacity: 0.8;
+  }
+  
+  /* Main Portal Content for Admin Actions */
+  /* .portal-content {
+    background-color: #FCF9F8;
+    color: #431A20;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+  } */
+  
+/* 
+  .portal-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem; 
+    justify-content: center; 
+    align-items: stretch; 
+    background-color: #FCF9F8;
+    color: #431A20;
+    padding: 2rem;
+  }
+  
+  .admin-actions {
+    flex: 1 1 300px;
+    max-width: 300px; 
+    background-color: white;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+   */
 
-a:hover {
-    background-color: #4CAF50;
-    color: white;
-}
 
-/* Button Style */
-.btn {
-    background-color: #007BFF;
-    color: white;
-    padding: 10px 15px;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    display: inline-block;
-    margin-top: 20px;
-    transition: background-color 0.3s ease;
-}
 
-.btn:hover {
-    background-color: #0056b3;
-}
 
-/* Success and Error Messages */
-.success {
-    background-color: rgba(76, 175, 80, 0.9);
-    color: white;
-    padding: 15px;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
-    animation: fadeIn 1s ease-in-out;
-}
+   .portal-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem; /* space between items */
+    background-color: #FCF9F8;
+    color: #431A20;
+    padding: 2rem;
+  }
+  
+  .admin-actions {
+    background-color: #D1B9BA;
+    /* border: 1px solid black; */
+    display: flex; /* If you still want internal flex behavior for alignment */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    /* max-height: 60%; */
+  }
+  
 
-.error {
-    background-color: rgba(244, 67, 54, 0.9);
-    color: white;
-    padding: 15px;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    box-shadow: 0 5px 15px rgba(244, 67, 54, 0.4);
-    animation: fadeIn 1s ease-in-out;
-}
+  .portal-content h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Admin Actions Cards */
+  /* .admin-actions {
+    background-color: white;
+    width: 30%;
+    height: 70%;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  } */
 
-/* Form Group */
-.form-group {
-    margin-bottom: 20px;
-}
-
-/* Label Styling */
-label {
-    display: block;
-    font-size: 1.2rem;
-    color: #ffffff;
-    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
-    margin-bottom: 10px;
-}
-
-/* Input Fields */
-input[type="text"],
-input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.2);
-    color: #fff;
+  
+  .admin-actions h2 {
+    font-family: var(--secondary-font);
+    font-size: 2rem;
+    margin-bottom: 1.2rem;
+    font-weight: 300;
+    color: #431A20;
+  }
+  
+  .admin-actions p {
+    font-family: var(--secondary-font);
     font-size: 1rem;
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(5px);
-    transition: all 0.3s ease;
-}
+    margin-bottom: 1.5rem;
+    font-weight: 300;
+    color: #431A20;
+    max-width: 50%;
+  }
+  
+  .admin-actions .btn {
+    font-family: var(--secondary-font);
+    font-weight: 300;
+    background-color: white;
+    border: 1px solid black;
+    color: #431A20;
+    padding: 1rem 2rem;
+    border-radius: 0.5rem;
+    transition: background 0.3s ease;
+    text-decoration: none;
+  }
 
-input[type="text"]:focus,
-input[type="password"]:focus {
-    outline: none;
-    background: rgba(255, 255, 255, 0.3);
-    box-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
-}
-
-/* Submit Button */
-input[type="submit"] {
+  
+  .admin-actions .btn:hover {
+    background-color: #431A20;
+    color: white;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .navbar {
+      padding: 10px;
+    }
+  
+    .navbar .logo {
+      font-size: 1.5rem;
+    }
+  
+    .navbar .nav-links a {
+      font-size: 0.9rem;
+    }
+  
+    .portal-content h1 {
+      font-size: 1.8rem;
+    }
+  
+    .modal-content {
+      width: 90%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .navbar .logo {
+      font-size: 1.2rem;
+    }
+  
+    .navbar .nav-links a {
+      font-size: 0.8rem;
+    }
+  
+    .portal-content h1 {
+      font-size: 1.5rem;
+    }
+  
+    .modal-content {
+      width: 95%;
+    }
+  }
+  
+  /* Icon Styling */
+  .icon-container {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .icon-books {
     width: 100%;
-    padding: 12px;
-    font-size: 1.2rem;
-    text-transform: uppercase;
-    border: none;
-    background: rgba(0, 217, 255, 0.7);
-    color: #fff;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(0, 217, 255, 0.4);
-}
+    height: 100%;
+  }
+  
 
-input[type="submit"]:hover {
-    background: rgba(0, 217, 255, 1);
-    box-shadow: 0 10px 30px rgba(0, 217, 255, 0.6);
-}
 
-/* Fade-in animation */
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Mobile Responsive Styling */
-@media (max-width: 768px) {
-    .admin-container {
-        width: 90%;
-        padding: 20px;
-    }
-
-    .admin-container h1 {
-        font-size: 2rem;
-    }
-
-    label {
-        font-size: 1rem;
-    }
-
-    input[type="text"],
-    input[type="password"] {
-        font-size: 0.9rem;
-    }
-
-    input[type="submit"] {
-        font-size: 1rem;
-    }
+  .result-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow-y: auto; 
+    background-color: #FCF9F8;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border-radius: 6px;
+    padding: 1rem;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    min-height: 100%;
 }

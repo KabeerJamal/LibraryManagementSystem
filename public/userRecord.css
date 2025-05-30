@@ -1,9 +1,108 @@
 body {
-    width: 100%;
-    position: relative;
-    top: 100px; /* Adjust this value as needed to position below the navigation bar */
-}
+    background-color: #fdfbfa;
+    font-family: var(--primary-font);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+  }
+  
+  .user-record-table {
+    border-collapse: collapse;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+  }
 
-.user-record-table {
-    margin-bottom: 10px;
-}
+  .user-record-table th, .user-record-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid black; 
+    font-weight: 300;
+    font-size: 1.3rem;
+  }
+
+  .user-record-table th {
+    background-color: var(--navbar-color);
+    color: black;
+    font-size: 1.6rem;
+  }
+
+
+  .user-record-table-body th, .user-record-table-body td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid black;
+    font-weight: 300;
+    font-size: 1.3rem;
+  }
+  
+  .user-record-table-body th {
+    background-color: var(--navbar-color);
+    color: black;
+  }
+  
+  .user-record-wrapper {
+    justify-content: center;
+    background-color: white;
+    min-height: 100vh;
+    height: auto;
+    margin-bottom: 3rem;
+  }
+  
+  /* Table Header */
+  h1 {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 300;
+    margin: 2rem 0;
+    font-family: var(--secondary-font);
+    color: var(--text-color);
+  }
+  
+  /* Buttons */
+  button {
+    font-family: var(--secondary-font);
+    font-weight: 300;
+    background-color: white;
+    border: 1px solid black;
+    color: #431A20;
+    padding: 0.5rem 2rem;
+    border-radius: 0.5rem;
+    transition: background 0.3s ease;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #431A20;
+    color: white;
+  }
+  
+  .back-to-admin-btn {
+    text-decoration: none;
+    font-weight: 300;
+    background-color: white;
+    border: 1px solid black;
+    color: #431A20;
+    padding: 0.5rem 2rem;
+    border-radius: 0.5rem;
+    transition: background 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .back-to-admin-btn:hover {
+    background-color: #431A20;
+    color: white;
+  }
+
+
+  .limit-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    background-color: white;
+    height: auto;
+    margin-bottom: 3rem;
+  }
+  

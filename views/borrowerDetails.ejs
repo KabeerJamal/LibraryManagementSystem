@@ -8,28 +8,38 @@
     <link rel="stylesheet" href="/flashMessagesFrontEnd.css">
     <link rel="stylesheet" href="/modal.css">
     <link rel="stylesheet" href="/navbar.css">
+    <link rel="stylesheet" href="/filter.css">
 </head>
 
 <body>
-<h1>Reservation Details</h1>
+
 
 <%- include('includes/navbar') %>
+<h1>Reservation Details</h1>
 <!-- We used axios, so couldnt do res.render from front end so thats why manually creating
      a flash message-->
      <div id="flash-message" class="flash-message"></div>
 
-     <div class="search-icon-reservation">
-        <i class="fas fa-search"></i>
-        <input type="text" placeholder="Search" id="live-search-field-everyone">
+<div class="borrower-details-wrapper">
+
+    <div class="search-wrapper">
+        <div class="search-icon-reservation">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Enter Reservation number" id="live-search-field-everyone">
+        </div>
+        <%- include('includes/filterSearchReservation') %>
     </div>
-    <%- include('includes/filterSearchReservation') %>
 
 
     <%- include('includes/modal') %>
 
     <%- include('includes/borrowerTable') %>
 
-    <a href="/adminPortal" class="btn">Back to Admin Portal</a>
+
+    <a href="/adminPortal" class="back-to-admin-btn">Back to Admin Portal</a>
+
+
+</div>
     <script>
         // Pass `reservations` to the frontend by embedding it in the page
         const reservations = <%- JSON.stringify(reservations) %>;

@@ -1,0 +1,81 @@
+/* Overall page settings */
+body {
+    background-color:#fcf9f8;
+    font-family: var(--primary-font);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+  }
+  
+  .punishments-table {
+    border-spacing: 0rem 2rem;
+    width: 100%;
+  }
+  
+  .punishments-table th, .punishments-table td {
+    padding: 0.75rem;
+    text-align: center;
+    border-bottom: 1px solid black;
+    font-weight: 300;
+    font-size: 1.3rem;
+  }
+  
+  .punishments-table th {
+    background-color: var(--navbar-color);
+    color: black;
+    font-size: 1.6rem;
+  }
+  
+  .user-punishment-wrapper {
+    justify-content: center;
+    background-color:  #fcf9f8;
+    min-height: 100vh;
+    height: auto;
+    margin-bottom: 3rem;
+  }
+  
+  /* Punishment Details Header */
+  h1 {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 300;
+    margin: 2rem 0;
+    font-family: var(--secondary-font);
+    color: var(--text-color);
+  }
+  
+  button {
+    font-family: var(--secondary-font);
+    font-weight: 300;
+    background-color: white;
+    border: 1px solid black;
+    color: #431A20;
+    padding: 0.5rem 2rem;
+    border-radius: 0.5rem;
+    transition: background 0.3s ease;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #431A20;
+    color: white;
+  }
+  
+  .back-to-admin-btn {
+    text-decoration: none;
+    font-weight: 300;
+    background-color: white;
+    border: 1px solid black;
+    color: #431A20;
+    padding: 0.5rem 2rem;
+    border-radius: 0.5rem;
+    transition: background 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .back-to-admin-btn:hover {
+    background-color: #431A20;
+    color: white;
+  }
+  

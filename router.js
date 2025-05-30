@@ -40,7 +40,8 @@ router.get('/', userController.home);
 
 /**
  * Route for the login customer page.
- * @name GET /loginCustomerPage
+ * @name GET /log
+ * inCustomerPage
  * @function
  */
 router.get('/loginCustomerPage', userController.loginCustomerPage);
@@ -94,24 +95,24 @@ router.post('/registerCustomer', userController.registerCustomer);
  */
 router.get('/adminPortal', userController.mustBeLoggedInAdmin, userController.adminPortal);
 
-router.get('/userPortal', userController.userPortal);   
+router.get('/userPortal',  userController.mustBeLoggedInUser, userController.userPortal);   
 
 /**
  * Route for adding books.
  * @name GET /addBooks
  * @function
  */
-router.get('/addBooks', bookController.addBooks);
+router.get('/addBooks', userController.mustBeLoggedInAdmin,bookController.addBooks);
 
 /**
  * Route for adding books to the database.
  * @name POST /addBooksToDatabase
  * @function
  */
-router.post('/addBookToDatabase',upload.single('cover_image'), bookController.addBooksToDatabase);
-router.post('/increaseCopies/:bookId', bookController.increaseCopies);
-router.post('/decreaseCopies/:bookId', bookController.decreaseCopies);
-router.get('/removeBook/:bookId', bookController.removeBook);
+router.post('/addBookToDatabase',  userController.mustBeLoggedInAdmin, upload.single('cover_image'), bookController.addBooksToDatabase);
+router.post('/increaseCopies/:bookId',  userController.mustBeLoggedInAdmin, bookController.increaseCopies);
+router.post('/decreaseCopies/:bookId',  userController.mustBeLoggedInAdmin, bookController.decreaseCopies);
+router.get('/removeBook/:bookId',  userController.mustBeLoggedInAdmin, bookController.removeBook);
 
 //receives a post search request with input field, which we then direct to bookController.searchBooks
 router.post('/search', bookController.searchBooks);
@@ -122,38 +123,38 @@ router.get('/book/:bookId', bookController.bookDetails);//this is to render book
 router.post('/book/:bookId', bookController.bookDetails);//this is for the modal in search.js
 
 //receives a post request with the bookId and copyId, which we then direct to reservationController.reserveBook
-router.post('/reserve', reservationController.reserveBook);
+router.post('/reserve',userController.mustBeLoggedInUser, reservationController.reserveBook);
 
-router.get('/userReservationDetails', reservationController.userReservationDetails);
+router.get('/userReservationDetails',userController.mustBeLoggedInUser, reservationController.userReservationDetails);
 
 //Admin can collect and return books:
 router.post('/collect/:reservation_id', reservationController.collectBook);
 router.post('/return/:reservation_id', reservationController.returnBook);
 
 //User can cancel a reservation:
-router.post('/cancelReservation/:reservation_id', reservationController.cancelReservation);
+router.post('/cancelReservation/:reservation_id',userController.mustBeLoggedInUser, reservationController.cancelReservation);
 
-router.get("/showReservations", reservationController.borrowerDetails);
+router.get("/showReservations",  userController.mustBeLoggedInAdmin, reservationController.borrowerDetails);
 
-router.post("/baddebt/:reservation_id", reservationController.badDebt);
+router.post("/baddebt/:reservation_id",  userController.mustBeLoggedInAdmin, reservationController.badDebt);
 
 router.get("/userRecord",userController.mustBeLoggedInAdmin, reservationController.userRecord);
 
-router.post("/updateReservationLimit", reservationController.updateReservationLimit, reservationController.userRecord);
+router.post("/updateReservationLimit",  userController.mustBeLoggedInAdmin, reservationController.updateReservationLimit, reservationController.userRecord);
 
 router.get("/overdueManagementPage", overdueAndBadDebtController.overdueManagementPage);
 
-router.post("/punishment", overdueAndBadDebtController.punishment);
+router.post("/punishment",   userController.mustBeLoggedInAdmin,overdueAndBadDebtController.punishment);
 
 router.post("/reservations-with-books", reservationController.reservationsWithBooks);
 
-router.post("/punishmentCompletedFine", overdueAndBadDebtController.punishmentCompletedFine);
+router.post("/punishmentCompletedFine",   userController.mustBeLoggedInAdmin,overdueAndBadDebtController.punishmentCompletedFine);
 
-router.post("/punishmentCancelled", overdueAndBadDebtController.punishmentCancelled);
+router.post("/punishmentCancelled",  userController.mustBeLoggedInAdmin, overdueAndBadDebtController.punishmentCancelled);
 
-router.post("/updateDeadline", reservationController.updateReturnAndCollectDeadline);
+router.post("/updateDeadline",  userController.mustBeLoggedInAdmin, reservationController.updateReturnAndCollectDeadline);
 
-router.get("/userPunishmentDetails", overdueAndBadDebtController.userPunishmentDetails);
+router.get("/userPunishmentDetails",userController.mustBeLoggedInUser, overdueAndBadDebtController.userPunishmentDetails);
 // API to get settings
 router.get('/api/settings', async (req, res) => {
     try {

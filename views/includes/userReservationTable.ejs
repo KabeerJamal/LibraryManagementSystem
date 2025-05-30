@@ -35,7 +35,6 @@
             <td><%= reservation.return_date %></td>
             <td><%= reservation.collect_date_deadline %></td>
             <!-- <td><a href="/book/<%= reservation.book_id %>"><%= reservation.book_title %></a></td> -->
-            <td><%= reservation.author %></td>
             <td>
                 <% if (reservation.status === 'reserved') { %>
                 <button class="cancel-reservation" data-number="<%= reservation.reservation_id %>">Cancel Reservation</button>

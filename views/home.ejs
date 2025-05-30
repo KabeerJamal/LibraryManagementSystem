@@ -6,10 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>U.K Library</title>
     <%- include('includes/commonCss') %>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <%- include('includes/fontAwesome') %>
     <link rel="stylesheet" href="/navbar.css">
     <link rel="stylesheet" href="/card.css">
+    <link rel="stylesheet" href="/home.css">
+    <link rel="stylesheet" href="/bookShowcase.css">
+    <link rel="stylesheet" href="/aboutUs.css">
+    <link rel="stylesheet" href="/homeFooter.css">
 </head>
 
 <body>
@@ -25,12 +28,25 @@
             <% }) %>
     </div>
 
+   <!-- Hero Section -->
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background"></div> <!-- Background image container -->
+        <div class="hero-content">
+            <h1>Welcome to Sample Library</h1>
+            <p>Explore a vast collection of books, resources, and knowledge.</p>
+            <a href="#about" class="btn">Learn More</a>
+        </div>
+    </section>
+
+
+
     <!-- Book Showcase Section -->
     <%- include('includes/bookShowcase') %>
 
     <!-- About Us Section -->
     <%- include('includes/aboutUs') %>
 
-    <%-include('includes/Homefooter') %>
+    <%-include('includes/homefooter') %>
     
     <%- include('includes/footer') %>

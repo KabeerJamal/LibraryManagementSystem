@@ -1,0 +1,113 @@
+
+html, body {
+    display: grid;
+    grid-template-rows: auto 1fr; /* Navbar takes auto height, content takes remaining space */
+    grid-template-columns: 1fr; /* Single column layout */
+}
+
+
+
+
+/* Hero Section */
+.hero {
+    position: relative;
+    width: 100%;
+    height: 400px; /* Adjust based on preference */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+    padding: 18rem 3rem 28rem 3rem;
+    margin: 2rem auto 0; /* Added margin-top for spacing from navbar */
+}
+
+/* Background Image */
+.hero-background {
+    position: absolute;
+    width: 40%; /* Covers 80% of screen width */
+    height: 100%;
+    background: url('library.avif') center/cover no-repeat; /* Adjust image path */
+    border-radius: 1.3rem;
+    z-index: 1;
+    /*left: 18%;*/ /* Shift image slightly to the left */
+    left: -100%; 
+    animation: slideIn 2s ease-out forwards; 
+}
+
+
+/* Keyframes for Animation */
+@keyframes slideIn {
+from {
+    left: -100%; /* Start off-screen */
+    opacity: 0; /* Start invisible */
+}
+to {
+    left: 18%; /* End position */
+    opacity: 1; /* Fade in */
+}
+}
+
+/* Content Block */
+.hero-content {
+    position: relative;
+    max-width: 35rem;
+    white-space: normal;
+    padding: 3rem 7rem 4rem 7rem;
+    background: #431A20; /* Slight opacity */
+    /* border-radius: 1.2rem; */
+    box-shadow: 0rem 0.6rem 1.4rem rgba(0, 0, 0, 0.1);
+    z-index: 2;
+    text-align: left;
+    margin-left: auto;
+    margin-right: 20%;  
+
+    transform: translateX(100%); /* Start off-screen to the right */
+    opacity: 0; /* Initially hidden */
+    animation: slideInContent 2s ease-out forwards 0.3s; /* Delay to sync with background */
+}
+
+/* Keyframes for Hero Content */
+@keyframes slideInContent {
+    from {
+        transform: translateX(100%); /* Start off-screen */
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0); /* Move to final position */
+        opacity: 1;
+    }
+}
+
+
+
+/* Title Styling */
+.hero h1 {
+    font: var(--secondary-font);
+    font-size: 4.8rem;
+    font-weight: normal;
+    color: white;
+}
+
+/* Description */
+.hero p {
+    font-size: 1.6rem;
+    color: white;
+    margin-bottom: 2rem;
+}
+
+/* CTA Button */
+.hero .btn {
+    background: var(--button-color);
+    color: white;
+    padding: 1rem 3rem;
+    /* border-radius: 0.8rem; */
+    text-decoration: none;
+    font-size: 1.4rem;
+    transition: 0.3s ease;
+}
+
+.hero .btn:hover {
+    opacity: 0.8;
+}
+

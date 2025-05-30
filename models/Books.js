@@ -56,9 +56,9 @@ class Books {
 
     //get rid of any bogus properties
     this.data = {
-      title: this.data.title.trim().toLowerCase(),
-      author: this.data.author.trim().toLowerCase(),
-      year: this.data.year.trim().toLowerCase(),
+      title: this.data.title.trim(),
+      author: this.data.author.trim(),
+      year: this.data.year.trim(),
       copies: parseInt(this.data.copies),
       coverImagePath: this.data.coverImagePath,
     };
@@ -185,6 +185,16 @@ class Books {
 
   static removeBook(bookId) {
     return new Promise(async (resolve, reject) => {
+      //if we want to remove a book, we need to check if it has any reservations of status reserved or collected, if it does, we cannot remove it
+      const checkQuery =
+        "SELECT COUNT(*) AS count FROM reservation_items ri JOIN reservations r ON ri.reservation_id = r.reservation_id WHERE ri.book_id = ? AND r.status IN ('reserved', 'collected');";
+      const [checkRows] = await db.query(checkQuery, [bookId]);
+      console.log(checkRows[0].count);
+      if (checkRows[0].count > 0) {
+        reject("Cannot remove book with active reservations");
+        return;
+      }
+
       const query = "DELETE FROM books WHERE book_id = ?";
       const values = [bookId];
       await db.query(query, values);

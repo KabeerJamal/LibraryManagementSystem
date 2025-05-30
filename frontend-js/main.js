@@ -7,6 +7,7 @@ import UserRecordSearch from './modules/UserRecordSearch.js';
 import Punishment from './modules/Punishment.js';
 import PunishmentDisplay from './modules/PunishmentDisplay.js';
 import ReturnAndCollectDeadline from './modules/ReturnAndCollectDeadline.js';
+import AboutUsScrolling from './modules/AboutUsScrolling.js';
 
 const tableSearchMap = { 
     '.everyone-reservation-table': 'live-search-field-everyone',
@@ -35,11 +36,13 @@ if(document.querySelector('.everyone-reservation-table') || document.querySelect
 // Filter only the tables that exist on the page
 const activeTableSearchMap = Object.fromEntries(
     Object.entries(tableSearchMap).filter(([tableSelector]) => {
+        console.log(`Checking if table exists for selector: ${tableSelector}`);
         return document.querySelector(tableSelector)
     })//if the table exists, add it to the activeTableSearchMap
     //tableSelector is the first element of the array, which is the key
     //Object.fromEntries converts the array back to an object
 );
+
 
 // If there are active tables, instantiate the class
 if (Object.keys(activeTableSearchMap).length > 0) {
@@ -61,4 +64,8 @@ if(document.querySelector('.all-punishments-table-body')) {
 
 if(document.querySelector('.return-deadline') || document.querySelector('.collect-deadline')) {
     new ReturnAndCollectDeadline();
+}
+
+if(document.getElementById('about')) {
+    new AboutUsScrolling();
 }

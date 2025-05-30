@@ -1,0 +1,26 @@
+<section class="book-showcase">
+    <h2>Featured Books</h2>
+
+    <% if (books && books.length > 0) { %>
+        <div class="card-container">
+            <% books.forEach(book => { %>
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <img src="<%= book.cover_image %>" alt="<%= book.title %>">
+                        </div>
+                        <div class="card-back">
+                            <h3 class="card-title"><%= book.title %></h3>
+                            <p class="card-author">by <%= book.author %></p>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    <% } else { %>
+        <div class="no-books">
+            <p>No books available at the moment.</p>
+        </div>
+    <% } %>
+
+</section>

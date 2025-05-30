@@ -1,0 +1,114 @@
+body {
+    font-family: var(--primary-font);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150vh;
+    margin: 0;
+    background: url('library2.avif') center/cover no-repeat; 
+}
+/* Container styling */
+.book-container {
+    background-color: #D1B9BA;  /* same color you specified */
+    color: #4A2C2A;            /* same text color */
+    max-width: 700px;          /* limit container width for a cleaner look */
+    padding: 2rem;             /* add spacing inside the container */
+    margin: 2rem auto;         /* center horizontally and add vertical spacing */
+    border-radius: 8px;        /* soften corners */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* subtle shadow for depth */
+  }
+  
+  /* Headings */
+  .book-container h1,
+  .book-container h2 {
+    font-family: var(--secondary-font); /* Playfair Display */
+    font-weight: 300;                  /* keep it light as per your code */
+    color: #4A2C2A;                    /* same text color */
+    margin-bottom: 0.75rem;            /* spacing below headings */
+  }
+  
+  .book-container h1 {
+    font-size: 2rem;
+    text-align: center; /* center main heading */
+  }
+  
+  .book-container h2 {
+    font-size: 1.6rem;
+  }
+  
+  /* Paragraphs */
+  .book-container p {
+    font-family: var(--primary-font);  /* Raleway */
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: #865c52;                    /* your subtext color */
+    margin-bottom: 1rem;              /* spacing below paragraphs */
+  }
+  
+  /* Book Cover Image */
+  .book-container img {
+    display: block;          /* ensure it respects margin auto */
+    margin: 0 auto 1rem;     /* center the image & space below */
+    border: 2px solid #4A2C2A; 
+    border-radius: 4px;      /* slightly rounded corners */
+    max-width: 100%;         /* make it responsive */
+    height: auto;
+  }
+  
+  /* Spacing for each detail section */
+  .book-container > div {
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Forms and Inputs */
+  .book-container form {
+    margin-bottom: 1rem;
+  }
+  
+  .book-container input[type="number"] {
+    padding: 0.3rem 0.5rem;
+    border: 1px solid #4A2C2A;
+    border-radius: 4px;
+    font-family: var(--primary-font);
+    color: #4A2C2A;
+    width: 60px; 
+    margin-right: 0.5rem;
+  }
+  
+  /* Buttons */
+  .book-container button {
+    background-color: rgba(203, 41, 3); /* your button color from :root */
+    color: #fff; 
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    font-family: var(--primary-font);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .book-container button:hover {
+    background-color: #4A2C2A; /* darker hover effect */
+  }
+  
+  /* Links (Remove Book) */
+  .book-container a {
+    display: inline-block;
+    margin-top: 1rem;
+    text-decoration: none;
+    color: #4A2C2A;
+    border: 1px solid #4A2C2A;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .book-container a:hover {
+    background-color: #4A2C2A;
+    color: #fff;
+  }
+  

@@ -4,16 +4,20 @@
 <head>
     <title>Borrower Details</title>
     <%- include('includes/commonCss') %>
+    <link rel="stylesheet" href="/userPunishment.css">
     <link rel="stylesheet" href="/navbar.css">
     <link rel="stylesheet" href="/flashMessagesFrontEnd.css">
+    <link rel="stylesheet" href="/filter.css">
+    <link rel="stylesheet" href="/modal.css">
 </head>
 
 <body>
     <%-include('includes/navbar')%>
-    <h1>Punishment Details</h1>
-    <%- include('includes/punishmentTable') %>
+    <div class="user-punishment-wrapper">
+        <h1>Punishment Details</h1>
+        <%- include('includes/punishmentTable') %>
+        <a href="/userPortal" class="back-to-admin-btn">Back to User Portal</a>
+    </div>
+    <%- include('includes/modalShowReservations') %>
 
-
-
-</body>
-</html>
+    <%-include('includes/footer')%>

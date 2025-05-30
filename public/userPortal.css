@@ -1,79 +1,91 @@
-/* Global Styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Arial', sans-serif;
-}
+
 
 /* Body Styling */
-body {
-  background-image: url('lms.jpg');
-  background-size: cover;
-  background-position: center;
-  color: #ffffff;
+.container {
+  display: grid;
+  grid-template-rows:  2.6fr 2fr minmax(10rem, auto) 2fr;
+  grid-template-columns: 90%;
+  justify-content: center;
+  background-color: white;
+  min-height: 270vh;
+  height: auto;
+}
+
+.container > *:not(:nth-last-child(2)) {
+  margin-bottom: 10rem; /* Adds spacing between elements except last two */
+}
+
+.user-portal-wrapper {
+  display:flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.user-portal-image {
+  background: url("userPortalBook.jpg") center/cover no-repeat;
+  height: 100%;
+  width: 50%;
+}
+
+.user-portal-content {
   position: relative;
-  overflow-y: auto;
-  height: 100vh;
-}
-
-/* Dark overlay for readability */
- body::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: -1;
-} 
-
-/* Navbar Styling */
-.navbar {
+  white-space: normal;
+  background: #D1B9BA; /* Slight opacity */
+  box-shadow: 0rem 0.6rem 1.4rem rgba(0, 0, 0, 0.1);
+  z-index: 2;
+  text-align: center;
+  width: 50%;
+  height: 100%;
   display: flex;
-  justify-content: space-between;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  padding: 20px;
-  backdrop-filter: blur(5px);
-  background: rgba(0, 0, 0, 0.4);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  z-index: 10;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.navbar .logo {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #ffffff;
+
+
+.user-portal-content h2 {
+  font-size: 4.8rem;
+  margin-bottom: 3rem;
+  color:#431A20;
+  font-family: var(--secondary-font);
+  font-weight: 300;
 }
 
-.navbar .nav-links {
-  display: flex;
-  gap: 20px;
+.user-portal-content p {
+  font-family:var(--primary-font);
+  font-size: 1.6rem;
+  max-width: 800px;
+  margin: 0 auto;
+  color: #431A20;
+  padding-left: 3rem;
+  padding-right: 3rem;
 }
 
-.navbar .nav-links a {
-  color: #ffffff;
+.user-portal-content .btn {
+  background: var(--button-color);
+  color: white;
+  padding: 1rem 3rem;
+  /* border-radius: 0.8rem; */
   text-decoration: none;
-  font-size: 1rem;
-  padding: 10px;
-  border-radius: 5px;
-  transition: background 0.3s ease;
+  font-size: 1.4rem;
+  transition: 0.3s ease;
+  margin-top: 3rem;
 }
 
-.navbar .nav-links a:hover {
-  background: rgba(255, 255, 255, 0.2);
+.user-portal-content .btn:hover {
+  opacity: 0.8;
 }
-
-
 
 /* Main Portal Content */
 .portal-content {
-  margin-top: 6rem;
-  text-align: center;
-  color: #ffffff;
+  background-color: #FCF9F8;
+  color: #431A20;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+
+ 
 }
 
 .portal-content h1 {
@@ -82,20 +94,53 @@ body {
 }
 
 .user-actions {
-  margin: 2rem 0;
+  background-color: #D1B9BA; /* Slight opacity */
+  border-radius: 2rem;
+  width:30%;
+  height:70%;
+
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.user-actions h2 {
+  font-family: var(--secondary-font);
+  font-size: 2rem;
+  margin-bottom: 1.2rem;
+  font-weight: 300;
+  color: #431A20;
+  
+}
+
+.user-actions p {
+  font-family: var(--secondary-font);
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  font-weight: 300;
+  color: #431A20;
+  max-width: 50%;
+
 }
 
 .user-actions .btn {
-  background-color: #3498db;
-  color: #ffffff;
-  padding: 10px 20px;
-  border-radius: 5px;
+  font-family: var(--secondary-font);
+  font-weight: 300;
+  background-color: white;
+  border:1px solid black;
+  color: #431A20;
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
   transition: background 0.3s ease;
   text-decoration: none;
 }
 
 .user-actions .btn:hover {
-  background-color: #2980b9;
+  background-color: #431A20;
+  color: white
 }
 
 
@@ -139,4 +184,18 @@ body {
   .modal-content {
     width: 95%;
   }
+}
+.icon-container {
+  width: 2rem;
+  height: 2rem;
+  display: flex; /* Centering if needed */
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 1.5rem;
+}
+
+.icon-books {
+  width: 100%;
+  height: 100%;
 }

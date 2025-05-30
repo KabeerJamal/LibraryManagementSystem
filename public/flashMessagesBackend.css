@@ -1,0 +1,10 @@
+.flash-message {
+  /* position: sticky; */
+  position: fixed;
+  left: 25%;
+  top: 10px;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  z-index: 1100;
+}

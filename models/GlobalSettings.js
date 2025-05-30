@@ -39,36 +39,61 @@ class GlobalSettings {
     }
 
 
-    //Now code for choosing the days for collect and return deadline.
+    // //Now code for choosing the days for collect and return deadline.
+    // static async updateDeadline(type, value) {
+    //     console.log(`Updating ${type} to:`, value);
+    //     const connection = await db.getConnection(); // Get a database connection for transactions
+    //     try {
+    //         await connection.beginTransaction(); // Start transaction
+    
+    //         // Step 1: Update the settings table
+    //         const updateSettingsQuery = `
+    //             INSERT INTO settings (key_name, value)
+    //             VALUES (?, ?)
+    //             ON DUPLICATE KEY UPDATE 
+    //                 value = VALUES(value);
+    //         `;
+    //         await connection.query(updateSettingsQuery, [type, value]);
+    
+    //         // Step 2: Modify the return_date virtual column
+    //         const alterTableQuery = `
+    //             ALTER TABLE reservations 
+    //             MODIFY COLUMN return_date DATE GENERATED ALWAYS AS (DATE_ADD(collect_date, INTERVAL ? DAY)) VIRTUAL;
+    //         `;
+    //         await connection.query(alterTableQuery, [value]); // Apply new interval
+    
+    //         await connection.commit(); // Commit transaction if both succeed
+    //         connection.release();
+    //     } catch (error) {
+    //         await connection.rollback(); // Rollback transaction on failure
+    //         connection.release();
+    //         throw error; // Re-throw error for handling
+    //     }
+    //}
+
     static async updateDeadline(type, value) {
-        const connection = await db.getConnection(); // Get a database connection for transactions
-        try {
-            await connection.beginTransaction(); // Start transaction
-    
-            // Step 1: Update the settings table
-            const updateSettingsQuery = `
-                INSERT INTO settings (key_name, value)
-                VALUES (?, ?)
-                ON DUPLICATE KEY UPDATE 
-                    value = VALUES(value);
-            `;
-            await connection.query(updateSettingsQuery, [type, value]);
-    
-            // Step 2: Modify the return_date virtual column
-            const alterTableQuery = `
-                ALTER TABLE reservations 
-                MODIFY COLUMN return_date DATE GENERATED ALWAYS AS (DATE_ADD(collect_date, INTERVAL ? DAY)) VIRTUAL;
-            `;
-            await connection.query(alterTableQuery, [value]); // Apply new interval
-    
-            await connection.commit(); // Commit transaction if both succeed
-            connection.release();
-        } catch (error) {
-            await connection.rollback(); // Rollback transaction on failure
-            connection.release();
-            throw error; // Re-throw error for handling
-        }
+    console.log(`Updating ${type} to:`, value);
+    const connection = await db.getConnection();
+    try {
+        await connection.beginTransaction();
+
+        const updateSettingsQuery = `
+            INSERT INTO settings (key_name, value)
+            VALUES (?, ?)
+            ON DUPLICATE KEY UPDATE 
+                value = VALUES(value);
+        `;
+        await connection.query(updateSettingsQuery, [type, value]);
+
+        await connection.commit();
+        connection.release();
+    } catch (error) {
+        await connection.rollback();
+        connection.release();
+        throw error;
     }
+}
+
     
 
 

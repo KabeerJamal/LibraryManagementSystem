@@ -45,7 +45,6 @@ class Reservation{
         return new Promise(async (resolve, reject) => {
             const connection = await db.getConnection();
             try {
-                //console.log(this.data);
 
                 // Retrieve the user ID based on the provided username
                 let userId = await this.getUserId(this.data.userName);
@@ -73,7 +72,7 @@ class Reservation{
                 //console.log(this.data.books);
                 // Step 2: For each book, check availability, subtract available copies, and insert into `reservation_items`
                 for (const book of this.data.books) {
-                    //console.log(book);
+                    console.log(book);
                     // Check and subtract available copies
                     await this.subtractFromAvailableCopies(connection, book.bookId, book.numberOfCopiesToReserve);
     
@@ -82,6 +81,41 @@ class Reservation{
                     const reservationItemValues = [reservationId, book.bookId, book.numberOfCopiesToReserve];
                     await connection.query(reservationItemQuery, reservationItemValues);
                 }
+
+                                // Step 2: Fetch collect_days and return_days
+                const [deadlineRows] = await connection.query(
+                    "SELECT key_name, value FROM settings WHERE key_name IN ('collect-days', 'return-days')"
+                );
+                console.log(deadlineRows);
+                let collectDays = 7;
+                //let returnDays = 14;
+                for (const row of deadlineRows) {
+                    if (row.key_name === 'collect-days') collectDays = parseInt(row.value);
+                }
+                // Step 3: Get the actual reserve_date from the DB
+                const [reserveRow] = await connection.query(
+                    "SELECT reserve_date FROM reservations WHERE reservation_id = ?",
+                    [reservationId]
+                );
+                const reserveDate = reserveRow[0].reserve_date;
+
+                // Step 4: Calculate deadlines
+                const collectDeadline = new Date(reserveDate);
+                collectDeadline.setDate(collectDeadline.getDate() + collectDays);
+
+                //const returnDeadline = new Date(collectDeadline);
+                //returnDeadline.setDate(returnDeadline.getDate() + returnDays);
+
+                // Step 5: Update the reservation row with deadline values
+                const updateReservationQuery = `
+                    UPDATE reservations 
+                    SET collect_date_deadline = ? 
+                    WHERE reservation_id = ?
+                `;
+                await connection.query(updateReservationQuery, [
+                    collectDeadline,
+                    reservationId
+                ]);
 
                 //Increment the number of reservations made by the user
                 const incrementReservationsQuery = 'UPDATE users SET reservation_count = reservation_count + 1 WHERE id = ?';
@@ -187,41 +221,135 @@ class Reservation{
         });
     }
 
+    // static async bookCollected(reservationId) {
+    //     return new Promise(async (resolve, reject) => {
+    //         try {
+    //             const query = 'UPDATE reservations SET status = "Collected", collect_date = ?  WHERE reservation_id = ?';
+    //             const values = [new Date(), reservationId];
+    //             await db.query(query, values);
+    //             resolve();
+    //         } catch(e) {
+    //             reject(e);
+    //         }
+    //     });
+    // }
+
     static async bookCollected(reservationId) {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const query = 'UPDATE reservations SET status = "Collected", collect_date = ?  WHERE reservation_id = ?';
-                const values = [new Date(), reservationId];
-                await db.query(query, values);
-                resolve();
-            } catch(e) {
-                reject(e);
-            }
-        });
+    const connection = await db.getConnection(); // assuming db is a connection pool
+
+    try {
+        await connection.beginTransaction();
+
+        // Step 1: Fetch return-days from settings
+        const [settingsRows] = await connection.query(
+            "SELECT value FROM settings WHERE key_name = 'return-days'"
+        );
+
+        let returnDays = 14; // default fallback
+        if (settingsRows.length > 0) {
+            returnDays = parseInt(settingsRows[0].value);
+        }
+
+        // Step 2: Compute dates
+        const now = new Date();
+        const returnDate = new Date(now);
+        returnDate.setDate(returnDate.getDate() + returnDays);
+
+        // Step 3: Update reservation
+        const query = `
+            UPDATE reservations 
+            SET status = 'Collected', collect_date = ?, return_date = ? 
+            WHERE reservation_id = ?`;
+        await connection.query(query, [now, returnDate, reservationId]);
+
+        await connection.commit();
+    } catch (e) {
+        await connection.rollback();
+        throw e;
+    } finally {
+        connection.release();
     }
+}
+
+
+    // static async bookReturned(reservationId) {
+    //     return new Promise(async (resolve, reject) => {
+    //         //given reservation id, fetch all book ids and number of copies reserved using for loop, and call addIntoAvailableCopies for each book,all this runs together or not at all so use transaction
+    //         try {
+    //             const statusQuery = 'SELECT status FROM reservations WHERE reservation_id = ?';
+    //             const [rows] = await db.query(statusQuery, [reservationId]);
+    //             if (rows[0].status === "overdue") {
+    //                 const overdueQuery = 'UPDATE reservations SET returned_at = ?  WHERE reservation_id = ?';
+    //                 const value = [new Date(), reservationId];
+    //                 await db.query(overdueQuery, value);
+    //                 resolve('overdue');
+    //                 return;
+    //             }
+    //             const query = 'UPDATE reservations SET status = "Completed", returned_at = ?  WHERE reservation_id = ?';
+    //             const values = [new Date(), reservationId];
+    //             await db.query(query, values);
+    //             resolve('completed');
+    //         } catch(e) {
+    //             reject(e);
+    //         }
+    //     });
+    // }
 
     static async bookReturned(reservationId) {
-        return new Promise(async (resolve, reject) => {
-            try {
-                //if status was overdue and book was returned, do nothing
-                const statusQuery = 'SELECT status FROM reservations WHERE reservation_id = ?';
-                const [rows] = await db.query(statusQuery, [reservationId]);
-                if (rows[0].status === "overdue") {
-                    const overdueQuery = 'UPDATE reservations SET returned_at = ?  WHERE reservation_id = ?';
-                    const value = [new Date(), reservationId];
-                    await db.query(overdueQuery, value);
-                    resolve('overdue');
-                    return;
-                }
-                const query = 'UPDATE reservations SET status = "Completed", returned_at = ?  WHERE reservation_id = ?';
-                const values = [new Date(), reservationId];
-                await db.query(query, values);
-                resolve('completed');
-            } catch(e) {
-                reject(e);
+        const connection = await db.getConnection(); // use connection for transaction
+        try {
+            await connection.beginTransaction();
+
+            console.log('Reservation ID:', reservationId);
+            // Step 1: Check current reservation status
+            const [statusRows] = await connection.query(
+                'SELECT status FROM reservations WHERE reservation_id = ?',
+                [reservationId]
+            );
+            console.log('Status Rows:', statusRows);
+            const status = statusRows[0]?.status;
+            if (!status) throw new Error('Reservation not found');
+            console.log('Current Status:', status);
+
+            // Step 2: Fetch books and quantities in reservation
+            const [bookRows] = await connection.query(
+                'SELECT book_id, number_of_copies FROM reservation_items WHERE reservation_id = ?',
+                [reservationId]
+            );
+            console.log('Book Rows:', bookRows);
+
+            // Step 3: Add back each book's quantity to available copies
+            for (const row of bookRows) {
+                console.log(row);
+                await this.addIntoAvailableCopies(connection, row.book_id, row.number_of_copies);
             }
-        });
+
+            console.log('All books returned to available copies');
+            // Step 4: Update reservation status and return date
+            const timestamp = new Date();
+            if (status === 'overdue') {
+                await connection.query(
+                    'UPDATE reservations SET returned_at = ? WHERE reservation_id = ?',
+                    [timestamp, reservationId]
+                );
+                await connection.commit();
+                return 'overdue';
+            } else {
+                await connection.query(
+                    'UPDATE reservations SET status = "Completed", returned_at = ? WHERE reservation_id = ?',
+                    [timestamp, reservationId]
+                );
+                await connection.commit();
+                return 'completed';
+            }
+        } catch (e) {
+            await connection.rollback();
+            throw e;
+        } finally {
+            connection.release();
+        }
     }
+
 
     static async cancelReservation(reservationId) {
         return new Promise(async (resolve, reject) => {
@@ -291,18 +419,65 @@ class Reservation{
     }
 
 
+    // static badDebt(reservationId) {
+    //     return new Promise(async (resolve, reject) => {
+    //         try {
+    //             //have a transaction here, so that if any error occurs, all rolls back, also  for the bad debt, we need to remove the total and available copies of the book from the books table
+    //             const query = 'UPDATE reservations SET status = "baddebt", is_active = CASE WHEN is_active = 0 THEN 1 ELSE is_active END WHERE reservation_id = ?';
+    //             const values = [reservationId];
+    //             await db.query(query, values);
+    //             resolve();
+    //         } catch(e) {
+    //             reject(e);
+    //         }
+    //     });
+    // }
+
     static badDebt(reservationId) {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const query = 'UPDATE reservations SET status = "baddebt", is_active = CASE WHEN is_active = 0 THEN 1 ELSE is_active END WHERE reservation_id = ?';
-                const values = [reservationId];
-                await db.query(query, values);
-                resolve();
-            } catch(e) {
-                reject(e);
+    return new Promise(async (resolve, reject) => {
+        const connection = await db.getConnection();
+        try {
+            await connection.beginTransaction();
+
+            // Step 1: Update reservation status
+            const updateReservationQuery = `
+                UPDATE reservations 
+                SET status = 'baddebt', is_active = CASE WHEN is_active = 0 THEN 1 ELSE is_active END 
+                WHERE reservation_id = ?
+            `;
+            await connection.query(updateReservationQuery, [reservationId]);
+
+            // Step 2: Get reservation items
+            const reservationItemsQuery = `
+                SELECT book_id, number_of_copies 
+                FROM reservation_items 
+                WHERE reservation_id = ?
+            `;
+            const [items] = await connection.query(reservationItemsQuery, [reservationId]);
+
+            // Step 3: Update books
+            for (const item of items) {
+                const updateBooksQuery = `
+                    UPDATE books 
+                    SET 
+                        total_copies = total_copies - ?, 
+                        available_copies = available_copies - ?
+                    WHERE book_id = ?
+                `;
+                await connection.query(updateBooksQuery, [item.number_of_copies, item.number_of_copies, item.book_id]);
             }
-        });
-    }
+
+            await connection.commit();
+            connection.release();
+            resolve();
+        } catch (e) {
+            await connection.rollback();
+            connection.release();
+            reject(e);
+        }
+    });
+}
+
 
     static async searchReservations(searchTerm) {
         return new Promise(async (resolve,reject) => {

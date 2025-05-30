@@ -1,0 +1,81 @@
+/* Container Styles */
+.reservation-limit,
+.update-reservation-limit {
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  padding: 2rem;
+  margin: 2rem auto;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Headings */
+.reservation-limit h2,
+.update-reservation-limit h2 {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 400;
+  font-family: var(--secondary-font);
+  color: var(--text-color);
+  margin-bottom: 1.5rem;
+}
+
+/* Current Limit Text */
+.reservation-limit p {
+  font-size: 1.2rem;
+  font-weight: 300;
+  margin: 0.5rem 0;
+  font-family: var(--primary-font);
+  color: var(--text-color);
+}
+
+.reservation-limit span {
+  font-weight: 400;
+  color: #431A20;
+}
+
+/* Form Styling */
+.update-reservation-limit form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.update-reservation-limit label {
+  font-family: var(--primary-font);
+  font-weight: 400;
+  color: var(--text-color);
+}
+
+.update-reservation-limit input[type="number"] {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 0.4rem;
+  font-family: var(--primary-font);
+}
+
+.update-reservation-limit button {
+  font-family: var(--secondary-font);
+  font-weight: 300;
+  background-color: white;
+  border: 1px solid black;
+  color: #431A20;
+  padding: 0.5rem 2rem;
+  border-radius: 0.5rem;
+  transition: background 0.3s ease;
+  cursor: pointer;
+  width: fit-content;
+  align-self: flex-start;
+}
+
+.update-reservation-limit button:hover {
+  background-color: #431A20;
+  color: white;
+}
+
+.reservation-limit-wrapper {
+  width:40%;
+}

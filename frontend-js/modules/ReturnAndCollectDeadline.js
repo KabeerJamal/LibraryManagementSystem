@@ -28,6 +28,40 @@ export default class ReturnAndCollectDeadline{
         const deadlineType = inputField.id; // This will be 'return-days' or 'collect-days'
         const deadlineValue = inputField.value;
 
+        if (deadlineValue < 0) {
+            console.error("Input value cannot be negative");
+            this.showFlashMessage("Deadline value cannot be negative", true);
+            return;
+        } 
+        if (deadlineValue > 365) {
+            console.error("Input value cannot be greater than 365");
+            this.showFlashMessage("Deadline value cannot be greater than 365", true);
+            return;
+        }
+
+
+        if(deadlineType === 'return-days') {
+            //the value should be greater then collect days
+            const collectDaysInput = document.getElementById('collect-days');
+            const collectDaysValue = collectDaysInput ? collectDaysInput.value : 0;
+            if (parseInt(deadlineValue, 10) <= parseInt(collectDaysValue, 10)) {
+                console.error("Return days must be greater than collect days");
+                this.showFlashMessage("Return date deadline must be after collect date deadline, so values needs to be bigger than current value for collect date", true);
+                return;
+            }
+        }
+
+        if(deadlineType === 'collect-days') {
+            //the value should be less then return days
+            const returnDaysInput = document.getElementById('return-days');
+            const returnDaysValue = returnDaysInput ? returnDaysInput.value : 0;
+            if (parseInt(deadlineValue, 10) >= parseInt(returnDaysValue, 10)) {
+                console.error("Collect days must be less than return days");
+                this.showFlashMessage("Collect date deadline must be after return date deadline, so values needs to be bigger than current value for return date", true);
+                return;
+            }
+        }
+
         if (!deadlineValue) {
             console.error("Input value is missing");
             return;
@@ -41,7 +75,7 @@ export default class ReturnAndCollectDeadline{
             value: deadlineValue
         })
         .then(response => {
-            if (response.data.success) {  // ✅ Check the success flag instead of a string
+            if (response.data.success) {  //  Check the success flag instead of a string
                 this.showFlashMessage(response.data.message);
             } else {
                 this.showFlashMessage(response.data.message, true);
@@ -59,7 +93,7 @@ export default class ReturnAndCollectDeadline{
         const returnDaysInput = document.getElementById('return-days');
         const collectDaysInput = document.getElementById('collect-days');
     
-        // ✅ Use direct property lookup instead of .find()
+        //  Use direct property lookup instead of .find()
         const returnDays = this.settings['return-days']|| ""; // Default: 14 days
         const collectDays = this.settings['collect-days'] || "" ; // Default: 7 days
 

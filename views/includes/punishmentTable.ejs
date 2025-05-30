@@ -10,7 +10,7 @@
             <th>Type of Punishment</th>
             <th>Punishment Status</th>
             <th>Ending date</th>
-            <% if (!isUser) { %>}
+            <% if (!isUser) { %>
             <th>Manage</th>
             <% } %>
 
@@ -42,17 +42,20 @@
                     <%= punishment.punishmentActivationDate %>
                 </td>
                 <td class="punishment-type" data-number="<%= punishment.punishment_type %>">
-                    <%= punishment.punishment_type %>
+                    <!-- <%= punishment.punishment_type %> -->
+                     No reservations
                 </td>
                 <td class="punishment-status">
                     <%= punishment.status %>
                 </td>
-                <% if (punishment.punishment_type != 'fine') { %>
+                
                     <td class="ending-date">
+                        <% if (punishment.punishment_type != 'fine') { %>
                         <%= punishment.punishmentEndDate %>
+                        <% } %>
                     </td>
-                <% } %>
-                <% if (!isUser) { %>}
+               
+                <% if (!isUser) { %>
                 <td class="manage" data-number="<%= punishment.userPunishmentid %>">
                     <% if (punishment.status !== 'completed') { %>
                         <button class="manage" data-number="<%= punishment.duration ? punishment.duration : '' %>">Manage</button>

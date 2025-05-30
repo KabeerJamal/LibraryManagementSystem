@@ -1,17 +1,25 @@
 <% if (partialSearchFilter == false) { %>
-<select name="reservationStatus" id="reservation-status">
-    <option value="all">All</option>
-    <option value="reserved">Reserved</option>
-    <option value="collected">Collected</option>
-    <option value="completed">Completed</option>
-    <option value="overdue">Overdue</option>
-    <option value="cancelled">Cancelled</option>
-    <option value="baddebt">Bad Debt</option>
-</select>
+<div class="filters">
+    <div class="filter-group">
+        <select name="reservationStatus" id="reservation-status">
+            <option value="all">All</option>
+            <option value="reserved">Reserved</option>
+            <option value="collected">Collected</option>
+            <option value="completed">Completed</option>
+            <option value="overdue">Overdue</option>
+            <option value="cancelled">Cancelled</option>
+            <option value="baddebt">Bad Debt</option>
+        </select>
+    </div>
+</div>
 <% } else{%>
-    <select name="reservationStatus" id="reservation-status">
-        <option value="all">All</option>
-        <option value="overdue">Overdue</option>
-        <option value="baddebt">Bad Debt</option>
-    </select>
+    <div class="filters">
+        <div class="filter-group">
+            <select name="reservationStatus" id="reservation-status">
+                <option value="all">All</option>
+                <option value="overdue">Overdue</option>
+                <option value="baddebt">Bad Debt</option>
+            </select>
+        </div>
+    </div>
 <% } %>

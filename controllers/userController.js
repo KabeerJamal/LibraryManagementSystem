@@ -179,7 +179,7 @@ exports.mustBeLoggedInAdmin = function(req, res, next) {
 }
 
 exports.mustBeLoggedInUser = function(req, res, next) {
-    if (req.session.user && req.session.user.role == 'user') {
+    if (req.session.user && req.session.user.role == 'customer') {
         next();
     } else {
         req.flash('errors', 'You must be logged in to perform that action');

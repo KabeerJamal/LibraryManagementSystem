@@ -1,13 +1,18 @@
 /* Flash Messages */
 .flash-messages {
-  position: absolute;
+  /* position: sticky; */
+  position: fixed;
+  left: 25%;
   top: 10px;
   width: 100%;
   display: flex;
   justify-content: center;
-  z-index: 11;
+  z-index: 1100;
 }
 
+.flash-messages-login-register{
+  left: 0;
+}
 .message-error {
   background-color: rgba(255, 0, 0, 0.8);
   color: #fff;
@@ -16,8 +21,9 @@
   font-size: 1rem;
   margin-bottom: 10px;
   text-align: center;
-  box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
   animation: fadeIn 1s ease-in-out;
+  width: 50%;
+  justify-self: center;
 }
 
 .message-success {
@@ -28,15 +34,30 @@
   font-size: 1rem;
   margin-bottom: 10px;
   text-align: center;
-  box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
   animation: fadeIn 1s ease-in-out;
-
+  width: 50%;
+  justify-self: center;
 }
-/* 
-  .error-message {
-    background-color: #e74c3c;
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
   }
-  
-  .success-message {
-    background-color: #2ecc71;
-  } */
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+

@@ -1,50 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Raleway:wght@300;400;600&display=swap');
 /*Apply all colors*/
 
 /* Light mode */
-:root {
-    --bg-color: #f7f6f3;
-    --navbar-color: #ffffff;
-    --text-color: #2f2f2f;
-    --subtext-color: #666666;
+/* :root {
+    --bg-color: #fefaf5;
+    --navbar-color: #fff5e0;
+    --text-color: #4f3b2c;
+    --subtext-color: #a17b5d;
     --card-bg: #ffffff;
-    --card-border: #e0e0e0;
+    --card-border: #ddc1a2;
     --hover-color: rgba(0, 0, 0, 0.05);
-    --button-color: #121212;
-    --link-color: #0073e6;
+    --button-color: #a36a00;
+    --link-color: #c88200;
+} */
+/* 
+:root {
+    --bg-color: #faf4f0; 
+    --navbar-color: #ffffff; 
+    --text-color: #4a2c2a; 
+    --subtext-color: #865c52; 
+    --card-bg: #fff5f0;
+    --card-border: #d1a392; 
+    --hover-color: rgba(74, 44, 42, 0.1); 
+    --button-color: #6d3b2d; 
+    --link-color: #a04638; 
+} */
+
+:root {
+    --bg-color: rgb(249, 239, 236); /* Soft pinkish-beige background */
+    --navbar-color: #ffffff; /* White navbar for a clean look */
+    --text-color: #4a2c2a; /* Deep brownish-red for text */
+    --subtext-color: #865c52; /* Muted warm brown for secondary text */
+    --card-bg: #fff5f0; /* Soft warm white background for cards */
+    --card-border: #d1a392; /* Light brownish-red for subtle borders */
+    --hover-color: rgba(74, 44, 42, 0.1); /* Faint brownish hover effect */
+    --button-color: rgba(203,41,3); /* Dark warm brown for buttons */
+    --link-color: #a04638; /* Warm muted red for links */
+
+    --primary-font: "Raleway", sans-serif;
+    --secondary-font: "Playfair Display", serif;
 }
 
+
+
 /* Dark mode */
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
     :root {
-        --bg-color: #181818;
-        --navbar-color: #202020;
-        --text-color: #eeeeee;
-        --subtext-color: #b0b0b0;
-        --card-bg: #252525;
-        --card-border: #333333;
+        --bg-color: #1e1b18;
+        --navbar-color: #2a2520;
+        --text-color: #f6e4d6;
+        --subtext-color: #b8a89e;
+        --card-bg: #3a3129;
+        --card-border: #54493f;
         --hover-color: rgba(255, 255, 255, 0.1);
-        --button-color: #ffffff;
-        --link-color: #80aaff;
+        --button-color: #eac4d5;
+        --link-color: #d8a1c4;
     }
-}
+} */
+
 
 /* Apply colors */
 body {
     background: var(--bg-color);
     color: var(--text-color);
+    
 }
 
 .navbar {
     background: var(--navbar-color);
-}
-
-.card {
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-}
-
-.card a:hover {
-    background: var(--hover-color);
 }
 
 a {
@@ -73,22 +96,16 @@ Contains css for navbar, card, and background image which is common to all i thi
 /* Body styling with background image */
 body {
     /* background-image: url('lms.jpg'); */
-    background-size: cover;
-    background-position: center;
+    /* background-size: cover;
+    background-position: center; */
     /* Space for the navbar */
     position: relative;
     overflow-y: auto;
     color: #ffffff;
 
-    font-size: 10px;
 }
-
-
-html, body {
-    height: 100vh;
-    display: grid;
-    grid-template-rows: auto 1fr; /* Navbar takes auto height, content takes remaining space */
-    grid-template-columns: 1fr; /* Single column layout */
+html {
+    font-size: 10px;
 }
 
 

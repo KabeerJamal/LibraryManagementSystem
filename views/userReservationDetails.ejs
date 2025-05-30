@@ -2,48 +2,39 @@
 <html>
 
 <head>
-    <title>Borrower Details</title>
+    <title>User Reservation Details</title>
     <%- include('includes/commonCss') %>
-    <link rel="stylesheet" href="/borrowdetails.css">
+    <link rel="stylesheet" href="/userborrowdetails.css">
     <link rel="stylesheet" href="/flashMessagesFrontEnd.css">
     <link rel="stylesheet" href="/modal.css">
     <link rel="stylesheet" href="/navbar.css">
+    <link rel="stylesheet" href="/filter.css">
 </head>
 
 <body>
-<h1>Reservation Details</h1>
-
 
     <%- include('includes/navbar') %>
-<!-- We used axios, so couldnt do res.render from front end so thats why manually creating
-     a flash message-->
-     <div id="flash-message" class="flash-message"></div>
+    <h1>Reservation Details</h1>
+    <div id="flash-message" class="flash-message"></div>
 
-     <div class="search-icon-reservation">
-        <i class="fas fa-search"></i>
-        <input type="text" placeholder="Search" id="live-search-field-user">
-    </div>
-    <%- include('includes/filterSearchReservation') %>
-
-     <!-- Modal for Borrowed Copies(also used in userPortal, can put it in includes.) -->
-     <!-- <div id="modal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Books reserved by the customers</h2>
-            <ul id="bookCopies"> -->
-                <!-- Book copies will be dynamically inserted here -->
-            <!-- </ul>
+    <div class="user-details-wrapper">
+        <div class="search-icon-reservation">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Enter Reservation number" id="live-search-field-user">
         </div>
-    </div> -->
-    <%- include('includes/modal') %>
+        <%- include('includes/filterSearchReservation') %>
 
-    <%- include('includes/userReservationTable') %>
+        <%- include('includes/modal') %>
 
-<a href="/userPortal" class="btn">Back to User Portal</a>
-<script>
-    // Pass `reservations` to the frontend by embedding it in the page
-    const reservations = <%- JSON.stringify(reservations) %>;   
-    // Now you can use `reservations` in your frontend JavaScript
-</script>
+        <%- include('includes/userReservationTable') %>
 
-<%- include('includes/footer') %>
+        <a href="/userPortal" class="back-to-user-btn">Back to User Portal</a>    
+    </div>
+    
+    <script>
+        // Pass `reservations` to the frontend by embedding it in the page
+        const reservations = <%- JSON.stringify(reservations) %>;
+    </script>
+
+    <%- include('includes/footer') %>
+

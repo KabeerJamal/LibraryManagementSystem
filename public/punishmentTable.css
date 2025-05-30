@@ -1,0 +1,74 @@
+/* Punishments Table Styling */
+.punishments-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 3rem;
+  }
+
+.punishments-table th,
+.punishments-table td {
+    padding: 0.75rem;
+    text-align: center;
+    border-bottom: 1px solid black;
+    font-weight: 300;
+    font-size: 1.3rem;
+}
+
+.punishments-table th {
+    background-color: var(--navbar-color);
+    color: black;
+    font-size: 1.6rem;
+}
+  
+  .all-punishments-table-body th,
+  .all-punishments-table-body td {
+    padding: 0.75rem;
+    text-align: center;
+    border-bottom: 1px solid black;
+    font-weight: 300;
+    font-size: 1.3rem;
+  }
+  
+  .all-punishments-table-body th {
+    background-color: var(--navbar-color);
+    color: black;
+  }
+  
+  .punishments-wrapper {
+    justify-content: center;
+    background-color: white;
+    min-height: 100vh;
+    height: auto;
+    margin-bottom: 3rem;
+  }
+  
+  h2.punishment-header {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 300;
+    margin: 2rem 0 1.5rem;
+    font-family: var(--secondary-font);
+    color: var(--text-color);
+    padding-top: 3rem;
+  }
+  
+  button.show-reservations,
+  button.manage {
+    font-family: var(--secondary-font);
+    font-weight: 300;
+    background-color: white;
+    border: 1px solid black;
+    color: #431A20;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    transition: background 0.3s ease;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  button.show-reservations:hover,
+  button.manage:hover {
+    background-color: #431A20;
+    color: white;
+  }
+  

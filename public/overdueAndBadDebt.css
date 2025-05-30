@@ -1,0 +1,38 @@
+.reservation-search-wrapper{
+    padding-bottom: 5rem;
+    border-bottom: 1px solid black;
+}
+
+.reservation-search-wrapper h2 {
+    text-align: center;
+}
+
+body .user-record-h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 300;
+    margin: 2rem 0;
+    font-family: var(--secondary-font);
+    color: var(--text-color);
+}
+
+.punishment-form-wrapper{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.punishment-header, .user-record-header {
+    font-size: 2rem;
+    font-weight: 300;
+    font-family: var(--secondary-font);
+    color: var(--text-color);
+    text-align: center;
+}
+
+.punishnment-header {
+    margin-top: 5rem;
+    margin-bottom: 2rem;
+    padding-top:3rem;
+    border-top:1px solid black;
+}

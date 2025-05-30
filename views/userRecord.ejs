@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="/navbar.css">
     <link rel="stylesheet" href="/userRecord.css">
     <link rel="stylesheet" href="/flashMessagesFrontEnd.css">
+    <link rel="stylesheet" href="/borrowdetails.css">
+    <link rel="stylesheet" href="/overdueAndBadDebt.css">
+    <link rel="stylesheet" href="/setLimit.css">
+    <link rel="stylesheet" href="/returnAndCollectDeadline.css">
 </head>
 <body>
     <%- include('includes/navbar') %>
@@ -16,15 +20,20 @@
     a flash message-->
     <div id="flash-message" class="flash-messages"> </div>
 
+    <h2 class="user-record-header">User Record</h2>
     <div class="search-icon-reservation">
         <i class="fas fa-search"></i>
-        <input type="text" placeholder="Search" id="live-search-field-userRecord">
+        <input type="text" placeholder="Enter Username" id="live-search-field-userRecord">
     </div>
 
     
     <%- include('includes/userRecordTable') %>
-    <%- include('includes/setLimit') %> 
-    <%- include('includes/returnAndCollectDeadline') %>   
+
+    <div class="limit-wrapper">
+        <%- include('includes/setLimit') %> 
+        <%- include('includes/returnAndCollectDeadline') %>  
+    </div>
+ 
 
 
 <%- include('includes/footer') %>

@@ -73,7 +73,6 @@ export default class SearchAndReserve{
         document.body.addEventListener('click', (e) => {
             if (e.target.classList.contains('btn-primary')) {
                 const number = e.target.getAttribute('data-number');
-
                 this.openModal(number);
             }
 
@@ -147,6 +146,11 @@ export default class SearchAndReserve{
             }, 500);
         }
 
+        if(value == '') {
+            this.resultArea.innerHTML = '';
+        }
+            
+
         this.previousValue = value
     }
 
@@ -159,16 +163,41 @@ export default class SearchAndReserve{
                 this.hideLoaderIcon();
             } else {
                 for (let i = 0; i < response.data.books.length; i++) {
-                    this.resultArea.innerHTML += `<p>${i+1}</p>
-                    <a href="/book/${response.data.books[i].book_id}" class="search-overlay__result">
-                    <p class="search-overlay__result-title">${response.data.books[i].title}</p>
-                    <p class="search-overlay__result-author">${response.data.books[i].author}</p>
-                    </a>`;
+                    // this.resultArea.innerHTML += `<div class="result-item">
+                    // <p>${i+1}</p>
+                    // <a href="/book/${response.data.books[i].book_id}" class="search-overlay__result">
+                    // <p class="search-overlay__result-title">${response.data.books[i].title}</p>
+                    // <p class="search-overlay__result-author">${response.data.books[i].author}</p>
+                    // </a>`;
                     
-                    if(response.data.role == 'customer') {
-                        this.resultArea.innerHTML += `<button class="btn btn-primary" data-number="${response.data.books[i].book_id}">Reserve</button>`;//(line 45)
-                        this.resultArea.innerHTML += `<button class="btn btn-add-to-cart" data-number="${response.data.books[i].book_id}">Add to Cart</button>`;//(below line 45)
+                    // if(response.data.role == 'customer') {
+                    //     this.resultArea.innerHTML += `<button class="btn btn-primary" data-number="${response.data.books[i].book_id}">Reserve</button>`;//(line 45)
+                    //     this.resultArea.innerHTML += `<button class="btn btn-add-to-cart" data-number="${response.data.books[i].book_id}">Add to Cart</button>
+                    //     </div>`;//(below line 45)
+                    // } else {
+                    //     this.resultArea.innerHTML += `</div>`;  // Closing the div for non-customers
+                    // }
+
+                    // Open the div for each result item
+                    let bookHtml = `<div class="result-item">
+                    <a href="/book/${response.data.books[i].book_id}" class="search-overlay__result">
+                        <p class="search-overlay__result-title">${response.data.books[i].title}</p>
+                        <p class="search-overlay__result-author">By ${response.data.books[i].author}</p>
+                    </a>`;
+
+                    // If user is a customer, add buttons inside the same div
+                    if (response.data.role == 'customer') {
+                    bookHtml += `
+                    <button class="btn btn-primary" data-number="${response.data.books[i].book_id}">Reserve</button>
+                    <button class="btn btn-add-to-cart" data-number="${response.data.books[i].book_id}">Add to Cart</button>`;
                     }
+
+                    // Close the div regardless of role
+                    bookHtml += `</div>`;
+
+                    // Append the full HTML for the book
+                    this.resultArea.innerHTML += bookHtml;
+
                 }
                 this.hideLoaderIcon();
             }
@@ -235,10 +264,12 @@ export default class SearchAndReserve{
       Reservation controller then sends this information to the model.
       Model then stores this information in the database.
     */
-    async sendRequestToReserve(data) {     
-        //console.log(data);
+    async sendRequestToReserve(data) {
+        console.log('sendRequestToReserve called');
+        console.log(data)     
 
         if(!this.checkNumberOfCopies(data)) {
+            console.log('this code running');
             this.showFlashMessage(`You can only reserve up to ${this.settings.copy_limit} copies in total`, true);
             return;
         }
@@ -263,7 +294,6 @@ export default class SearchAndReserve{
                 this.reservationTransactionCompleted = true;
                 this.showBookId(); 
             } else {
-
                 this.showFlashMessage(response.data.message, true);
                 //CAN IMPROVE USER INTERFACE HERE
                 sessionStorage.clear();
@@ -277,19 +307,7 @@ export default class SearchAndReserve{
     }
 
     injectHTML() {
-        document.body.insertAdjacentHTML('beforeend', 
-          `<div class="search-icon-2 ">
-              <input type="text" placeholder="Search" id="live-search-field">
-              <span class="close-search"><i class="fas fa-times-circle"></i></span>
-          </div>
-         <div class="result-container ">
-             <div class="loader-container">
-                 <div class="loader"></div>
-             </div>
- 
-             <div class="result">
-             </div>
-         </div>`);
+        console.log('HTML injected');
     }
 
 
@@ -378,15 +396,23 @@ export default class SearchAndReserve{
                     this.storeResponseData.push(response.data);//store the response data,which we use later to send a request to reserve the book.
                     // Append each book's information to the front-end display
                     this.cartItems.innerHTML += `
-                        <div class="cart-item">
-                        <button data-number="${response.data.bookInformation.book_id}" class= "remove-book" >Remove from cart</button>
+                        <tr class="cart-item">
+                        <td>
                         <p>${response.data.bookInformation.title} 
                         ${response.data.bookInformation.author}</p>
+                        </td>
+                        <td>
                         <p>${response.data.bookInformation.available_copies} copies available</p>
-                        <label for="copies_${response.data.bookInformation.book_id}">Number of copies:</label>
-                        <input type="number" class="copies" 
-                               name="copies" min="1" max="${response.data.bookInformation.available_copies}" value="">
-                        </div>
+                        </td>
+                        <td>
+                            <label for="copies_${response.data.bookInformation.book_id}">Number of copies:</label>
+                            <input type="number" class="copies" 
+                                name="copies" min="1" max="${response.data.bookInformation.available_copies}" value="">
+                        </td>
+                        <td>
+                            <button data-number="${response.data.bookInformation.book_id}" class= "remove-book" >Remove from cart</button>
+                        </td>
+                        </tr>
                     `;
 
                 });
@@ -427,11 +453,15 @@ export default class SearchAndReserve{
                 // Update sessionStorage
                 sessionStorage.setItem('bookIds', bookIds.join(','));
                 sessionStorage.setItem('numberOfCopiesToReserve', JSON.stringify(numberOfCopiesToReserve));
+
+                this.storeResponseData = this.storeResponseData.filter(data => data.bookInformation.book_id != bookIdToRemove);
+
             }
-        
+            
             // Remove the book from the UI
             this.processedBookIds.delete(bookIdToRemove);
-            target.parentElement.remove();
+
+            target.parentElement.parentElement.remove();
     }
         
     formatDataOfResponseSingle(data) {
@@ -459,10 +489,13 @@ export default class SearchAndReserve{
     }
 
     formatDataOfResponse(data){
-        //console.log(this.storeResponseData);
+        console.log('formatDataOfResponse called');
+        // console.log(this.storeResponseData);
+        // console.log("should be same")
+        // console.log(data);
         //console.log(sessionStorage);
-
-       
+        //console.log('hello');
+        //console.log(data);
 
        
         this.storeResponseData2 = data;
@@ -525,9 +558,21 @@ export default class SearchAndReserve{
     }
 
     addCopiesToSessionStorage(value) {
-        let button = value.querySelector('button'); // Select the button element within the div
+        let button = value.parentElement.querySelector('button'); // Select the button element within the div
+        // console.log("button");
+        // console.log(button);
         let bookIdToUpdate = button.getAttribute('data-number'); // Get the value of the data-number attribute
+        // console.log("bookIdToUpdate");
+        // console.log(bookIdToUpdate);
+
+        // let input = value.querySelector('input'); // or value.querySelector('.copies');
+        // let bookIdToUpdate = input.value;
+        // console.log("bookIdToUpdate");
+        // console.log(bookIdToUpdate);
+
         let bookIds = sessionStorage.getItem('bookIds').split(',');
+        console.log("bookIds");
+        console.log(bookIds);
         let numberOfCopiesToReserve = JSON.parse(sessionStorage.getItem('numberOfCopiesToReserve'));
 
         const indexToUpdate = bookIds.indexOf(bookIdToUpdate);
@@ -556,11 +601,14 @@ export default class SearchAndReserve{
     }
 
     updateNumberOfCopiesPageReload() {
+       // console.log('updateNumberOfCopiesPageReload called');
         let bookIds = sessionStorage.getItem('bookIds');
         if(bookIds) {
             bookIds = bookIds.split(',');
             let numberOfCopiesToReserve = JSON.parse(sessionStorage.getItem('numberOfCopiesToReserve'));
+            //console.log(numberOfCopiesToReserve);
             let cartItems = document.querySelectorAll('.cart-item');
+            //console.log(cartItems);
             
             cartItems.forEach((item, index) => {
                 item.querySelector('input').value = numberOfCopiesToReserve[index];
@@ -585,15 +633,20 @@ export default class SearchAndReserve{
         if(isError){
 
             flashMessage.classList.add('message-error');
-
+            flashMessage.style.animation = 'fadeIn 0.5s ease-in-out';
         } else {
 
             flashMessage.classList.add('message-success');
+            flashMessage.style.animation = 'fadeIn 0.5s ease-in-out';
 
         }
 
         flashMessage.style.display = 'block';
     
+        setTimeout(() => {
+            flashMessage.style.animation = 'fadeOut 0.5s ease-in-out';
+          }, 3000);
+
         setTimeout(() => {
             flashMessage.style.display = 'none';
             if(isError){
@@ -610,8 +663,9 @@ export default class SearchAndReserve{
     async fetchSettings() {
         try {
            const response = await axios.get('/api/settings')
-
+            //console.log('Settings fetched:', response.data);
             this.settings = response.data;
+            // console.log('Settings:', this.settings);
             //console.log('Settings:', this.settings);
             // Use the settings in your front-end application
         } catch (error) {
@@ -622,13 +676,13 @@ export default class SearchAndReserve{
     checkNumberOfCopies(data) {
         
         let totalCopiesToReserve = 0;
-
+        
         data.customer.books.forEach(book => {
             book.numberOfCopiesToReserve = parseInt(book.numberOfCopiesToReserve, 10);
             //console.log(book);
             totalCopiesToReserve += book.numberOfCopiesToReserve;
         });
-        //console.log(totalCopiesToReserve);
+        console.log(totalCopiesToReserve);
         if (totalCopiesToReserve > this.settings.copy_limit) { 
             return false
         }
@@ -754,7 +808,7 @@ export default class SearchAndReserve{
 //user returns some books and not all books.(if deadline passed, put whats not returned in overdue)
 //Multiple admin
 //if some book is bad dept, decrease the number of total copies of that book
-
+//IF  a book is set to Bad debt, the number of copies of that book should decrease.
 
 
 //7)

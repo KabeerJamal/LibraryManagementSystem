@@ -5,10 +5,11 @@
     <title>Admin Portal</title>
     <%- include('includes/commonCss') %>
     <%- include('includes/fontAwesome') %>
+    <link rel="stylesheet" type="text/css" href="searchBook.css">
     <link rel="stylesheet" href="adminportal.css">
-    <link rel="stylesheet" href="/searchBook.css">
     <link rel="stylesheet" href="/navbar.css">
     <link rel="stylesheet" href="/flashMessagesFrontEnd.css">
+ 
     
 </head>
 
@@ -19,18 +20,123 @@
     <div id="flash-message" class="flash-messages"> </div>
 
    <%- include('includes/flashMessage') %>
-
-    <a href="/addBooks">Add Books</a>
-    <a href="/logout">Logout</a>
-    <div class="search-icon">
-        <i class="fas fa-search"></i>
+   
+   <div class="container">
+   <div class="admin-portal-wrapper">
+        <div class="admin-portal-image"></div> <!-- Background image container -->
+        <div class="admin-portal-content">
+            <h2>Welcome Admin</h2>
+            <p>
+                Welcome to <strong>Cloud Library</strong>, a space for learning, research, and book lovers.
+                We provide access to thousands of books, periodicals, and digital resources. Over here you can
+                search for books, make reservations, check your reservation details, and view any punishments (if any).
+                You as an admin can perform several operations, click the button to see what you can perform.
+            </p>
+            <a href="#content" class="btn">Admin Powers</a>
+        
+        </div>
     </div>
-                    <a href="/showReservations" class="btn">Show Reservations</a>
-                    <a href="/userRecord" class="btn">User Record and setting limits</a>
-                    <a href="/overdueManagementPage" class="btn">Overdue and Bad reservations management</a>
-                    <!--a button here which sends a get request to showCompleted reservation, then we go to ROUTER-->
-                    <!-- <a href="/showBadAndCompletedReservations" class="btn">Show Completed Reservations</a> -->
 
-                    <!-- Umer, over here you create a "a" tag which would send a get request to server(using href), after that go to router line 99  -->
-                    <!-- footer begins -->
-                    <%- include('includes/footer') %>
+
+    
+
+
+
+    <main id="content" class="portal-content">
+        <div class="admin-actions admin-actions-reservation-details">
+            <h2 class="admin-actions-heading">Reservation Details</h2>
+            <div class="icon-container">
+                <svg class="icon icon-books">
+                    <use xlink:href="books.svg#icon-books"></use>
+                </svg>
+            </div>
+            
+            <p class="admin-actions-paragraph">View and manage all current and past book reservations. Keep track of collection and return dates for better oversight.
+            </p>
+            <a href="/showReservations" class="btn">Show Reservations</a>
+        </div>
+
+
+        <div class="admin-actions admin-actions-add-books">
+            <h2 class="admin-actions-heading">Add Books</h2>
+            <div class="icon-container">
+                <svg class="icon icon-books">
+                    <use xlink:href="books.svg#icon-books"></use>
+                </svg>
+            </div>
+            
+            <p class="admin-actions-paragraph">Add new books to the library collection with title, author, and availability details. Keep the system up to date with new arrivals.
+            </p>
+            <a href="/addBooks" class="btn">Add Books</a>
+            
+        </div>
+
+
+        <div class="admin-actions admin-actions-view-punishments">
+            <h2 class="admin-actions-heading">Deal with punishments</h2>
+            <div class="icon-container">
+                <svg class="icon icon-books">
+                    <use xlink:href="books.svg#icon-books"></use>
+                </svg>
+            </div>
+            
+            <p class="admin-actions-paragraph">Monitor overdue returns and apply penalties or fines. Mark cases as bad debt if books are unlikely to be returned.
+            </p>
+            
+            <a href="/overdueManagementPage" class="btn">Manage overdue reservations and Punishments</a>
+
+        </div>
+
+
+        <div class="admin-actions admin-actions-user-record">
+            <h2 class="admin-actions-heading">Manage Users</h2>
+            <div class="icon-container">
+                <svg class="icon icon-books">
+                    <use xlink:href="books.svg#icon-books"></use>
+                </svg>
+            </div>
+            
+            <p class="admin-actions-paragraph">View user activity and set  reservation limit. Ensure responsible use of the library system.
+            </p>
+            <a href="/userRecord" class="btn">User Record and setting limits</a>
+        </div>
+
+    </main>
+    
+
+    <div id="search-book-section" class="search-book-section">
+        <div class="search-book-wrapper">
+            <h2>Search for a Book</h2>
+            <div class="search-icon">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="search-icon-2">
+                <input type="text" placeholder="Search" id="live-search-field">
+                <span class="close-search"><i class="fas fa-times-circle"></i></span>
+            </div>
+            <div class="loader-container">
+                <div class="loader"></div>
+            </div>
+        </div>
+        <div class="result-container ">
+          
+
+            <div class="result">
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        setTimeout(() => {
+        const flash = document.getElementsByClassName("flash-messages-login-register")[0];
+        console.log(flash); 
+        if (flash) {
+          flash.style.transition = "opacity 0.5s ease";
+          flash.style.opacity = "0";
+          setTimeout(() => flash.remove(), 500); // remove after fade
+        }
+      }, 3000);
+    </script>
+
+    <%- include('includes/footer') %>

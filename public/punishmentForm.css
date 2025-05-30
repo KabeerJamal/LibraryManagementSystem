@@ -4,3 +4,65 @@
 .visible {
     display: block;
 }
+
+
+
+/* Punishment Form Styling */
+.punishmentForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.5rem;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .punishmentForm label {
+    font-weight: 400;
+    color: var(--text-color);
+    font-family: var(--primary-font);
+  }
+  
+  .punishmentForm select,
+  .punishmentForm input[type="number"] {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid var(--card-border);
+    border-radius: 0.4rem;
+    font-family: var(--primary-font);
+    cursor: pointer;
+  }
+  
+  .punishmentForm button {
+    font-family: var(--secondary-font);
+    font-weight: 300;
+    background-color: white;
+    border: 1px solid black;
+    color: #431A20;
+    padding: 0.5rem 2rem;
+    border-radius: 0.5rem;
+    transition: background 0.3s ease;
+    cursor: pointer;
+    align-self: flex-start;
+  }
+  
+  .punishmentForm button:hover {
+    background-color: #431A20;
+    color: white;
+  }
+  
+  .duration-field.hidden {
+    display: none;
+  }
+  
+  .duration-field.visible {
+    display: block;
+  }
+
+#punishmentOverdueForm, #punishmentBadDebtForm{
+    align-self: stretch;
+}

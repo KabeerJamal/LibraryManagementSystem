@@ -1,0 +1,123 @@
+  /* Overall page settings */
+body {
+    background-color: #fcf9f8;
+    font-family: var(--primary-font);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+  }
+  
+  .user-reservation-table{
+    /* border-collapse: collapse; */
+    border-spacing: 0rem 2rem;
+  }
+  
+  .user-reservation-table {
+    width: 100%;
+  }
+
+  .user-reservation-table th, .user-reservation-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid black ; 
+    font-weight: 300;
+    font-size: 1.3rem;
+  }
+
+  .user-reservation-table th {
+    background-color: var(--navbar-color);
+    color: black;
+    font-size: 1.6rem;
+  }
+  
+  /* .user-reservation-table-body th, .user-reservation-table-body td{
+    padding: 0.75rem;
+    text-align: center;
+    border-bottom: 1px solid black ; 
+    font-weight: 300;
+    font-size: 1.3rem;
+  }
+  
+  .user-reservation-table-body th{
+    background-color: var(--navbar-color);
+    color: black;
+  } */
+  
+  .user-details-wrapper {
+    justify-content: center;
+    background-color: #fcf9f8;
+    min-height: 100vh;
+    height: auto;
+    margin-bottom: 3rem;
+  }
+  
+  /* Reservation Details Header */
+  h1 {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 300;
+    margin: 2rem 0;
+    font-family: var(--secondary-font);
+    color: var(--text-color);
+  }
+  
+  /* Search Icon and Input Field */
+  .search-icon-reservation {
+    margin: 2rem 0;
+    text-align: center;
+  }
+  
+  .search-icon-reservation i {
+    margin-right: 0.5rem;
+    font-size: 1.5rem;
+    color: var(--text-color);
+  }
+  
+  .search-icon-reservation input {
+    width: 50%;
+    padding: 0.5rem;
+    border: 0.1rem solid var(--card-border);
+    border-radius: 0.4rem;
+    font-size: 1.2rem;
+    outline: none;
+  }
+  
+  button {
+    font-family: var(--secondary-font);
+    font-weight: 300;
+    background-color: white;
+    border:1px solid black;
+    color: #431A20;
+    padding: 0.5rem 2rem;
+    border-radius: 0.5rem;
+    transition: background 0.3s ease;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  button:hover{
+    background-color: #431A20;
+    color: white;
+  }
+  
+  .back-to-user-btn {
+    text-decoration: none;
+    font-weight: 300;
+    background-color: white;
+    border:1px solid black;
+    color: #431A20;
+    padding: 0.5rem 2rem;
+    border-radius: 0.5rem;
+    transition: background 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .back-to-user-btn:hover {
+    background-color: #431A20;
+    color: white;
+  }
+  
+
+/* .user-reservation-table th {
+  text-align: center;
+} */

@@ -13,10 +13,10 @@
 <body>
 
     <!-- Flash Messages -->
-    <div class="flash-messages">
+    <div class="flash-messages flash-messages-login-register">
         <% errors.forEach(function(message) { %>
-            <p class="flash-message">
-                <%= message %>. This is a flash message, needs to be modified with CSS
+            <p class="message-error">
+                <%= message %>. Please try again.
             </p>
             <% }) %>
     </div>

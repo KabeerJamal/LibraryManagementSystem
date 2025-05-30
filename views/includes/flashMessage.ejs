@@ -1,11 +1,13 @@
+<div id="flash-message" class="flash-messages flash-messages-login-register"> 
 <% success.forEach(function(message) { %>
-    <p>
+    <p class="message-success">
         <%= message %>. 
     </p>
 <%}) %>
 
 <% errors.forEach(function(message) { %>
-    <p>
+    <p class="message-error">
                 <%= message %>. 
     </p>
 <%}) %>
+</div>

@@ -127,11 +127,18 @@ function modifyReservationsTable(reservations) {
 
 //Helper function
 // Function to format dates in YYYY-MM-DD format
+// function formatDate(dateString) {
+//     if (!dateString) {
+//         return null;
+//     }
+//     return new Date(dateString).toISOString().slice(0, 10);
+// }
+
 function formatDate(dateString) {
     if (!dateString) {
         return null;
     }
-    return new Date(dateString).toISOString().slice(0, 10);
+    return new Date(dateString).toLocaleDateString('en-CA'); // Output: YYYY-MM-DD
 }
 
 

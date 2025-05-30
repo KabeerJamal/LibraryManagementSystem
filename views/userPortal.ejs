@@ -17,31 +17,90 @@
 </head>
 
 <body>
-    <!-- Navbar -->
+
     <%- include('includes/navbar') %>
-       <!-- We used axios, so couldnt do res.render from front end so thats why manually creating
-    a flash message-->
-    <div id="flash-message" class="flash-messages"> </div>
 
-    <!-- User Portal Content -->
-    <main class="portal-content">
-        <h1>Welcome to the <%= user.username %> Portal</h1>
+    <!-- Flash Messages -->
+    <div id="flash-message" class="flash-messages"></div>
 
-        <div class="user-actions">
-            <a href="/userReservationDetails" class="btn">View Reservation Details</a>
-            <a href="/userPunishmentDetails" class="btn">Punishments(if any)</a>
-        </div>
-
-        <h2>Search for a Book</h2>
-
-        <div class="search-icon">
-            <i class="fas fa-search"></i>
-        </div>
-
-    </main>
-
-    <%- include('includes/addToCart') %>
-    
     <%- include('includes/modal') %>
+    <div class="container">
+        
 
-    <%- include('includes/footer') %>
+     
+
+        <div class="user-portal-wrapper">
+            <div class="user-portal-image"></div> <!-- Background image container -->
+            <div class="user-portal-content">
+                <h2>Welcome <%= user.username %></h2>
+                <p>
+                    Welcome to <strong>Cloud Library</strong>, a space for learning, research, and book lovers.
+                    We provide access to thousands of books, periodicals, and digital resources. Over here you can
+                    search for books, make reservations, check your reservation details, and view any punishments (if any).
+                </p>
+                <a href="#search-book-section" class="btn">Search for Books</a>
+            
+            </div>
+        </div>
+
+
+        <!-- Main Content -->
+        <main class="portal-content">
+            <div class="user-actions user-actions-reservation-details">
+                <h2 class="user-actions-heading">Reservation Details</h2>
+                <div class="icon-container">
+                    <svg class="icon icon-books">
+                        <use xlink:href="books.svg#icon-books"></use>
+                    </svg>
+                </div>
+                
+                <p class="user-actions-paragraph">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                    Assumenda omnis iste praesentium ducimus quos eum aliquam ipsa laudantium unde, 
+                    voluptatem, voluptatum culpa tempore ab dolores ullam repellendus labore debitis vitae.
+                </p>
+                <a href="/userReservationDetails" class="btn">View Reservation Details</a>
+            </div>
+            <div class="user-actions user-actions-view-punishments">
+                <h2 class="user-actions-heading">View punishments</h2>
+                <div class="icon-container">
+                    <svg class="icon icon-books">
+                        <use xlink:href="books.svg#icon-books"></use>
+                    </svg>
+                </div>
+                
+                <p class="user-actions-paragraph">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                    Assumenda omnis iste praesentium ducimus quos eum aliquam ipsa laudantium unde, 
+                    voluptatem, voluptatum culpa tempore ab dolores ullam repellendus labore debitis vitae.
+                </p>
+                <a href="/userPunishmentDetails" class="btn">Punishments (if any)</a>
+            </div>
+        </main>
+
+        <!-- Add to Cart Section -->
+        <%- include('includes/addToCart') %>
+
+        <div id="search-book-section" class="search-book-section">
+            <div class="search-book-wrapper">
+                <h2>Search for a Book</h2>
+                <div class="search-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="search-icon-2">
+                    <input type="text" placeholder="Search" id="live-search-field">
+                    <span class="close-search"><i class="fas fa-times-circle"></i></span>
+                </div>
+                <div class="loader-container">
+                    <div class="loader"></div>
+                </div>
+            </div>
+            <div class="result-container ">
+              
+    
+                <div class="result">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+<%- include('includes/footer') %>

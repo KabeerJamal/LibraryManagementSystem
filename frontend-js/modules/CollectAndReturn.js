@@ -2,6 +2,8 @@ import axios from 'axios';
 
 export default class CollectAndReturn {
     constructor() {
+        this.settings= {};
+        this.fetchSettings();
         this.events();
     }
     events() {
@@ -12,6 +14,7 @@ export default class CollectAndReturn {
             }
             if (e.target.classList.contains('return')) {
                 const number = e.target.getAttribute('data-number');
+                //get the book id
                 this.sendRequestToReturn(number);
             }
             if(e.target.classList.contains('bad-debt')) {
@@ -26,13 +29,15 @@ export default class CollectAndReturn {
     
     sendRequestToCollect(number){
         axios.post('/collect/' + number).then((response) => {
-        this.showFlashMessage('Book collected');
+        //this.showFlashMessage('Book collected');
         //generate current date and add it with collect button
         let date = new Date();
         let collectDate = date.toISOString().slice(0,10);
         //return date needs to be consistent with what admin selects********
         //use fetchSettings to get return date and add that
-        let returnDate = new Date(date.getTime() + 14 * 24 * 60 * 60 * 1000).toISOString().slice(0,10);
+        //console.log("settings", this.settings);
+        let returnDate = new Date(date.getTime() + this.settings['return-days'] * 24 * 60 * 60 * 1000).toISOString().slice(0,10);
+        //let returnDate = new Date(date.getTime() + 14 * 24 * 60 * 60 * 1000).toISOString().slice(0,10);
 
         const collectButton = document.querySelector('.collect[data-number="' + number + '"]');
         
@@ -74,8 +79,9 @@ export default class CollectAndReturn {
        
         axios.post('/return/' + number).then((response) => {
             let status = document.querySelector('.status[data-number="' + number + '"]');
+
             //console.log(status.textContent);
-            this.showFlashMessage('Book returned');
+            //this.showFlashMessage('Book returned');
             //generate current date and add it with collect button
             let date = new Date();
             let returnDate = date.toISOString().slice(0,10);
@@ -131,5 +137,18 @@ export default class CollectAndReturn {
         }).catch((error) => {
             console.log(error);
         });
+    }
+
+    async fetchSettings() {
+        try {
+           const response = await axios.get('/api/settings')
+            //console.log('Settings fetched:', response.data);
+            this.settings = response.data;
+            // console.log('Settings:', this.settings);
+            //console.log('Settings:', this.settings);
+            // Use the settings in your front-end application
+        } catch (error) {
+            console.error('Error fetching settings:', error);
+        }
     }
 }

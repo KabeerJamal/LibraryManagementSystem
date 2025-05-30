@@ -12,7 +12,6 @@ exports.addBooksToDatabase = async function(req, res) {
 
      // Add coverImagePath to req.body
     req.body.coverImagePath = coverImagePath;
-    console.log(req.body);
     const book = new Books(req.body);
 
     try {
@@ -69,9 +68,9 @@ exports.removeBook = async function(req, res) {
             res.redirect('/adminPortal');
         })
     } catch (error) {   
-        req.flash('errors', 'Book not deleted, please try again.');
+        req.flash('errors', error);
         req.session.save(function() {
-            res.redirect('/adminPortal');
+            res.redirect('/book/' + req.params.bookId);
         })
     }
 }
