@@ -86,7 +86,8 @@ export default class PunishmentDisplay {
             axios.post('/punishmentCompletedFine', {userPunishmentId}).then((response) => {
                 const row = document.querySelector(`td.punishment-number[data-number="${userPunishmentId}"]`)?.closest('tr');
                 row.querySelector('.punishment-status').textContent = 'completed';
-                row.querySelector('.manage').remove();
+                // row.querySelector('.manage').remove();
+                row.querySelector('.manage').innerHTML = '';
                 //add an option to undo?
       
                 this.modalPunishment.style.display = 'none';
@@ -103,7 +104,9 @@ export default class PunishmentDisplay {
         axios.post('/punishmentCancelled', {userPunishmentId}).then((response) => {
             const row = document.querySelector(`td.punishment-number[data-number="${userPunishmentId}"]`)?.closest('tr');
             row.querySelector('.punishment-status').textContent = 'completed';
-            row.querySelector('.manage').remove();
+            // row.querySelector('.manage').remove();
+            row.querySelector('.manage').innerHTML = '';
+
             //add an option to undo?
   
             this.modalPunishment.style.display = 'none';
@@ -177,18 +180,26 @@ export default class PunishmentDisplay {
      //Helper function to show flash message when book succesfully reserved/or not
     showFlashMessage(message, isError = false) {
         const flashMessage = document.getElementById('flash-message');
+         flashMessage.classList.remove('flash-messages-login-register');
         flashMessage.textContent = message;
         if(isError){
 
             flashMessage.classList.add('message-error');
+            flashMessage.style.animation = 'fadeIn 0.5s ease-in-out';
 
         } else {
 
             flashMessage.classList.add('message-success');
+            flashMessage.style.animation = 'fadeIn 0.5s ease-in-out';
 
         }
 
         flashMessage.style.display = 'block';
+
+          setTimeout(() => {
+            flashMessage.style.animation = 'fadeOut 0.5s ease-in-out';
+          }, 3000);
+
     
         setTimeout(() => {
             flashMessage.style.display = 'none';
@@ -197,7 +208,7 @@ export default class PunishmentDisplay {
             } else {
                 flashMessage.classList.remove('message-success');
             }
-        }, 3000); // Hide after 3 seconds
+        }, 3500); // Hide after 3 seconds
 
        
     }

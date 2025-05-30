@@ -654,7 +654,7 @@ export default class SearchAndReserve{
             } else {
                 flashMessage.classList.remove('message-success');
             }
-        }, 3000); // Hide after 3 seconds
+        }, 3500); // Hide after 3 seconds
 
        
     }

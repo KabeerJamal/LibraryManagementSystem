@@ -78,6 +78,7 @@ export default class Punishment {
     //Helper function to show flash message when book succesfully reserved/or not
     showFlashMessage(message, isError = false) {
         const flashMessage = document.getElementById('flash-message');
+        flashMessage.classList.remove('flash-messages-login-register')
         flashMessage.textContent = message;
         if(isError){
 
@@ -90,6 +91,9 @@ export default class Punishment {
         }
 
         flashMessage.style.display = 'block';
+        setTimeout(() => {
+            flashMessage.style.animation = 'fadeOut 0.5s ease-in-out';
+          }, 3000);
     
         setTimeout(() => {
             flashMessage.style.display = 'none';
@@ -98,7 +102,7 @@ export default class Punishment {
             } else {
                 flashMessage.classList.remove('message-success');
             }
-        }, 3000); // Hide after 3 seconds
+        }, 3500); // Hide after 3 seconds
 
        
     }

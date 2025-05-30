@@ -152,7 +152,7 @@ async function checkPunishmentExpiry() {
 //notifications to be sent to user when overdue
 
 // Schedule the job to run every day at midnight
-cron.schedule('15 11 * * *', () => {
+cron.schedule('35 18 * * *', () => {
     console.log('Running cron job');
     checkPunishmentExpiry();
     updateOverdueReservations();

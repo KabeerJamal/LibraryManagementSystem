@@ -371,6 +371,20 @@ class Reservation{
                             console.error("Error in addIntoAvailableCopies:", error);
                         }
                     }
+
+
+                    const [userResult] = await connection.query(
+                        'SELECT user_id FROM reservations WHERE reservation_id = ?',
+                        [reservationId]
+                    );
+                    const userId = userResult[0]?.user_id;
+
+                    if (userId) {
+                        await connection.query(
+                            'UPDATE users SET reservation_count = GREATEST(reservation_count - 1, 0) WHERE id = ?',
+                            [userId]
+                        );
+                    }
                     const query = 'DELETE FROM reservations WHERE reservation_id = ?';
                     const values = [reservationId];
                     const query2 = 'DELETE FROM reservation_items WHERE reservation_id = ?';
