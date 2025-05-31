@@ -1,4 +1,5 @@
 
+
 const express = require('express');
 const app = express();
 const dotenv = require('dotenv');
@@ -8,7 +9,8 @@ const axios = require('axios');
 const cron = require('node-cron');
 const db = require('./db');
 
-dotenv.config();
+// dotenv.config();
+dotenv.config({ override: true }); 
 
 const session = require('express-session');
 const mysqlStore = require('express-mysql-session')(session);
@@ -30,7 +32,7 @@ const updateOverdueReservations = async () => {
         //write code for reserved but not collected as well.
         
         const [result] = await db.query(query);
-        console.log(`${result.affectedRows} reservations updated to 'overdue'`);
+        //console.log(`${result.affectedRows} reservations updated to 'overdue'`);
     } catch (error) {
         console.error('Error updating overdue reservations:', error);
     }
@@ -67,7 +69,7 @@ const resetReservationCount = async () => {
 // Generic function to check overdue/baddebt reservations
 const checkReservations = async (statusType, thresholdKey) => {
     try {
-        console.log(`Checking ${statusType} reservations...`);
+        //console.log(`Checking ${statusType} reservations...`);
 
         // Query reservations based on statusType ('overdue' or 'baddebt')
         const query = `
@@ -142,7 +144,7 @@ async function checkPunishmentExpiry() {
           AND DATE_ADD(applied_at, INTERVAL duration_in_days DAY) <= CURDATE()
       `);
   
-      console.log(`Punishments updated to completed: ${result.affectedRows}`);
+      //console.log(`Punishments updated to completed: ${result.affectedRows}`);
     } catch (error) {
       console.error('Error updating punishment statuses:', error);
     }
@@ -152,8 +154,8 @@ async function checkPunishmentExpiry() {
 //notifications to be sent to user when overdue
 
 // Schedule the job to run every day at midnight
-cron.schedule('35 18 * * *', () => {
-    console.log('Running cron job');
+cron.schedule('0 0 * * *', () => {
+    //console.log('Running cron job');
     checkPunishmentExpiry();
     updateOverdueReservations();
     cancelNotCollectedReservations();
@@ -179,7 +181,7 @@ const options ={
             data: 'data'
         }
     }
-}
+};
 
 const TWO_HOURS = 1000 * 60 * 60 * 2;
 const IN_PROD = process.env.NODE_ENV  === 'production';

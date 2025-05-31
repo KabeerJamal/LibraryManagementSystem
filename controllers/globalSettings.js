@@ -11,7 +11,7 @@ async function loadSettings() {
         rows.forEach(row => {
             globalSettings[row.key_name] = row.value;
         });
-        console.log('Settings loaded:', globalSettings);
+        // console.log('Settings loaded:', globalSettings);
     } catch (error) {
         console.error('Error loading settings:', error);
     }

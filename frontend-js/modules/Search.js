@@ -2,7 +2,7 @@
 
 export default class Search {
     constructor(activeTables) {
-        console.log("Search module initialized");
+        //console.log("Search module initialized");
 
         const tableFilterMap = {
             '.everyone-reservation-table': ['reservation-status'], // Shared filter
@@ -51,7 +51,7 @@ export default class Search {
     }
 
     events() {
-        console.log("Events initialized for Search module");
+        //console.log("Events initialized for Search module");
         for (let [selector, { tableElement, searchField, filters }] of Object.entries(this.tableSearchMap)) {
            
 
@@ -68,8 +68,8 @@ export default class Search {
 
                     //change the filter value of the filter changed
                     filters[filterElement] = document.getElementById(filterElement).value;
-                    console.log(filters);
-                    console.log("before updateTableFilter");    
+                    //console.log(filters);
+                    //console.log("before updateTableFilter");    
                     this.updateTableFilter(filters,searchField, tableElement)
                 } );
             });

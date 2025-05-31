@@ -190,7 +190,7 @@ class Books {
       //   "SELECT COUNT(*) AS count FROM reservation_items ri JOIN reservations r ON ri.reservation_id = r.reservation_id WHERE ri.book_id = ? AND r.status IN ('reserved', 'collected');";
       const checkQuery = "SELECT COUNT(*) AS count FROM reservation_items WHERE book_id = ?;"
       const [checkRows] = await db.query(checkQuery, [bookId]);
-      console.log(checkRows[0].count);
+      //console.log(checkRows[0].count);
       // if (checkRows[0].count > 0) {
       //   reject("Cannot remove book with active reservations");
       //   return;

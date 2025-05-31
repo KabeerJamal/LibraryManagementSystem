@@ -17,7 +17,7 @@ export default class CancelReservation {
 
     sendRequestToCancel(number){
         axios.post('/cancelReservation/' + number).then((response) => {
-            console.log(response.data);
+            //console.log(response.data);
             this.showFlashMessage('Reservation cancelled');
             //I want to remove the entire row of the reservation
             const row = document.querySelector('.reservation-row[data-number="' + number + '"]');

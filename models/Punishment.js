@@ -29,8 +29,8 @@ class Punishment {
                 const selectedContext = Object.keys(punishmentData).find(
                     key => punishmentData[key].type
                 );
-                console.log(selectedContext);
-                console.log(punishmentData);
+                // console.log(selectedContext);
+                // console.log(punishmentData);
                 
                 
 

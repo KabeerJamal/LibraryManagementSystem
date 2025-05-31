@@ -264,10 +264,6 @@ VALUES (
 );
 
 
-INSERT INTO punishment_active (context, punishment_id, threshold, fine_amount, duration_in_days)
-VALUES 
-  ('baddebt', 1, 1, NULL, NULL),
-  ('overdue', 1, 1, NULL, NULL);
 
 
 INSERT INTO settings (key_name, value) VALUES
@@ -291,3 +287,9 @@ VALUES
 ('fine', 'Monetary penalty for overdue or bad debt reservations'),
 ('noReservations', 'Restriction on making new reservations for a specific period'),
 ('deactivation', 'Temporarily deactivate the user account for non-compliance');
+
+
+INSERT INTO punishment_active (context, punishment_id, threshold, fine_amount, duration_in_days)
+VALUES 
+  ('baddebt', 4, 1, NULL, NULL),
+  ('overdue', 4, 1, NULL, NULL);

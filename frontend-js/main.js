@@ -36,7 +36,7 @@ if(document.querySelector('.everyone-reservation-table') || document.querySelect
 // Filter only the tables that exist on the page
 const activeTableSearchMap = Object.fromEntries(
     Object.entries(tableSearchMap).filter(([tableSelector]) => {
-        console.log(`Checking if table exists for selector: ${tableSelector}`);
+        //console.log(`Checking if table exists for selector: ${tableSelector}`);
         return document.querySelector(tableSelector)
     })//if the table exists, add it to the activeTableSearchMap
     //tableSelector is the first element of the array, which is the key

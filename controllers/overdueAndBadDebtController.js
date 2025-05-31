@@ -17,7 +17,7 @@ exports.overdueManagementPage = async (req, res) => {
 
     //create a function which gets all punishment information from the database
     let getAllPunishments = await punishmentHelper.getAllPunishments();
-    console.log(getAllPunishments);
+    //console.log(getAllPunishments);
 
 
     

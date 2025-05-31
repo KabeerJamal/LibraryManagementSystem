@@ -58,7 +58,7 @@ class Reservation{
                 const values = settingsRows[0].value;
 
                 if (userReservationCount >= values) {
-                    console.log('User has reached reservation limit');
+                    //console.log('User has reached reservation limit');
                     reject('User has reached reservation limit');
                     return;
                 }
@@ -72,7 +72,7 @@ class Reservation{
                 //console.log(this.data.books);
                 // Step 2: For each book, check availability, subtract available copies, and insert into `reservation_items`
                 for (const book of this.data.books) {
-                    console.log(book);
+                    //console.log(book);
                     // Check and subtract available copies
                     await this.subtractFromAvailableCopies(connection, book.bookId, book.numberOfCopiesToReserve);
     
@@ -86,7 +86,7 @@ class Reservation{
                 const [deadlineRows] = await connection.query(
                     "SELECT key_name, value FROM settings WHERE key_name IN ('collect-days', 'return-days')"
                 );
-                console.log(deadlineRows);
+                //console.log(deadlineRows);
                 let collectDays = 7;
                 //let returnDays = 14;
                 for (const row of deadlineRows) {
@@ -300,31 +300,31 @@ class Reservation{
         try {
             await connection.beginTransaction();
 
-            console.log('Reservation ID:', reservationId);
+            //console.log('Reservation ID:', reservationId);
             // Step 1: Check current reservation status
             const [statusRows] = await connection.query(
                 'SELECT status FROM reservations WHERE reservation_id = ?',
                 [reservationId]
             );
-            console.log('Status Rows:', statusRows);
+            //console.log('Status Rows:', statusRows);
             const status = statusRows[0]?.status;
             if (!status) throw new Error('Reservation not found');
-            console.log('Current Status:', status);
+            //console.log('Current Status:', status);
 
             // Step 2: Fetch books and quantities in reservation
             const [bookRows] = await connection.query(
                 'SELECT book_id, number_of_copies FROM reservation_items WHERE reservation_id = ?',
                 [reservationId]
             );
-            console.log('Book Rows:', bookRows);
+            //console.log('Book Rows:', bookRows);
 
             // Step 3: Add back each book's quantity to available copies
             for (const row of bookRows) {
-                console.log(row);
+               // console.log(row);
                 await this.addIntoAvailableCopies(connection, row.book_id, row.number_of_copies);
             }
 
-            console.log('All books returned to available copies');
+            //console.log('All books returned to available copies');
             // Step 4: Update reservation status and return date
             const timestamp = new Date();
             if (status === 'overdue') {

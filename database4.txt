@@ -1,0 +1,149 @@
+-- MySQL Script cleaned for Railway
+-- Removes `users.` prefixes and sets schema directly for Railway usage
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- Drop and create all tables
+DROP TABLE IF EXISTS books, punishment_active, punishment_reservations, punishments, reservation_items, reservations, sessions, settings, user_punishments, users;
+
+CREATE TABLE IF NOT EXISTS books (
+  book_id INT NOT NULL AUTO_INCREMENT,
+  title VARCHAR(255) NOT NULL,
+  author VARCHAR(100) NOT NULL,
+  total_copies INT NOT NULL DEFAULT '0',
+  available_copies INT NOT NULL DEFAULT '0',
+  publication_year INT NOT NULL,
+  created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  cover_image VARCHAR(255) NULL DEFAULT NULL,
+  PRIMARY KEY (book_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS punishments (
+  punishment_id INT NOT NULL AUTO_INCREMENT,
+  punishment_type ENUM('fine', 'noReservations', 'deactivation') NOT NULL,
+  description VARCHAR(255) DEFAULT NULL,
+  PRIMARY KEY (punishment_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS users (
+  id INT NOT NULL AUTO_INCREMENT,
+  username VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  role ENUM('admin', 'customer') NOT NULL,
+  created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  reservation_count INT DEFAULT 0,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS reservations (
+  reservation_id INT NOT NULL AUTO_INCREMENT,
+  user_id INT NOT NULL,
+  status ENUM('reserved', 'completed', 'cancelled', 'collected', 'overdue', 'baddebt') NOT NULL DEFAULT 'reserved',
+  reserve_date TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  collect_date DATE DEFAULT NULL,
+  returned_at DATE DEFAULT NULL,
+  created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  is_active TINYINT(1) NOT NULL DEFAULT 1,
+  collect_date_deadline DATE DEFAULT NULL,
+  return_date DATE DEFAULT NULL,
+  PRIMARY KEY (reservation_id),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS reservation_items (
+  item_id INT NOT NULL AUTO_INCREMENT,
+  reservation_id INT NOT NULL,
+  book_id INT NOT NULL,
+  number_of_copies INT NOT NULL,
+  PRIMARY KEY (item_id),
+  FOREIGN KEY (reservation_id) REFERENCES reservations(reservation_id) ON DELETE CASCADE,
+  FOREIGN KEY (book_id) REFERENCES books(book_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS sessions (
+  id VARCHAR(255) NOT NULL,
+  expires INT UNSIGNED NOT NULL,
+  data TEXT DEFAULT NULL,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS settings (
+  id INT NOT NULL AUTO_INCREMENT,
+  key_name VARCHAR(255) NOT NULL,
+  value INT NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY (key_name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS user_punishments (
+  id INT NOT NULL AUTO_INCREMENT,
+  user_id INT NOT NULL,
+  punishment_id INT NOT NULL,
+  applied_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  status ENUM('active', 'completed') NOT NULL DEFAULT 'active',
+  fine_amount DECIMAL(10,2) DEFAULT NULL,
+  duration_in_days INT DEFAULT NULL,
+  context ENUM('baddebt', 'overdue') DEFAULT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (punishment_id) REFERENCES punishments(punishment_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS punishment_reservations (
+  id INT NOT NULL AUTO_INCREMENT,
+  user_punishment_id INT NOT NULL,
+  reservation_id INT NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (user_punishment_id) REFERENCES user_punishments(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (reservation_id) REFERENCES reservations(reservation_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS punishment_active (
+  id INT NOT NULL AUTO_INCREMENT,
+  context ENUM('baddebt', 'overdue') NOT NULL,
+  punishment_id INT NOT NULL,
+  threshold INT NOT NULL,
+  fine_amount DECIMAL(10,2) DEFAULT NULL,
+  duration_in_days INT DEFAULT NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY (context),
+  FOREIGN KEY (punishment_id) REFERENCES punishments(punishment_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Restore SQL mode
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- Inserts
+INSERT INTO users (username, email, password, role) VALUES
+('kabeerAdmin', 'kabeerAdmin@kabeerAdmin.com', '$2a$10$7NKsLtXu6T/hYYDMWhSnJO4MCaodrdyzMYV7RCcK3J8HY2idKAsiu', 'admin');
+
+INSERT INTO settings (key_name, value) VALUES
+('book_limit', 2),
+('copy_limit', 3),
+('reservation_limit_day', 2),
+('overdue_threshold', 1),
+('bad_debt_threshold', 1),
+('return-days', 5),
+('collect-days', 4);
+
+INSERT INTO books (title, author, total_copies, available_copies, publication_year, cover_image) VALUES
+('Art of War', 'Sun Tzu', 50, 50, 1910, '/uploads/cover_image-1743280185606-.jpg'),
+('Alchemist', 'Paulo Coelho', 50, 50, 1988, '/uploads/cover_image-1743280234584-.jpg'),
+('1984', 'George Orwell', 50, 50, 1949, '/uploads/cover_image-1743280270226-.jpg');
+
+INSERT INTO punishments (punishment_type, description) VALUES
+('fine', 'Monetary penalty for overdue or bad debt reservations'),
+('noReservations', 'Restriction on making new reservations for a specific period'),
+('deactivation', 'Temporarily deactivate the user account for non-compliance');
+
+INSERT INTO punishment_active (context, punishment_id, threshold, fine_amount, duration_in_days)
+VALUES 
+  ('baddebt', 1, 1, NULL, NULL),
+  ('overdue', 1, 1, NULL, NULL);
+  
+  

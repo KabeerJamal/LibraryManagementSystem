@@ -265,11 +265,11 @@ export default class SearchAndReserve{
       Model then stores this information in the database.
     */
     async sendRequestToReserve(data) {
-        console.log('sendRequestToReserve called');
-        console.log(data)     
+        //console.log('sendRequestToReserve called');
+        //console.log(data)     
 
         if(!this.checkNumberOfCopies(data)) {
-            console.log('this code running');
+            //console.log('this code running');
             this.showFlashMessage(`You can only reserve up to ${this.settings.copy_limit} copies in total`, true);
             return;
         }
@@ -307,7 +307,7 @@ export default class SearchAndReserve{
     }
 
     injectHTML() {
-        console.log('HTML injected');
+        //console.log('HTML injected');
     }
 
 
@@ -489,7 +489,7 @@ export default class SearchAndReserve{
     }
 
     formatDataOfResponse(data){
-        console.log('formatDataOfResponse called');
+        //console.log('formatDataOfResponse called');
         // console.log(this.storeResponseData);
         // console.log("should be same")
         // console.log(data);
@@ -714,137 +714,3 @@ export default class SearchAndReserve{
  * to observe changes in the body and trigger the function when the cart items were added. This approach resolved the issue.
  *  */
 
-
-//if you update a value with a form, and send data to router which does res.render, whole page refereshes. instead do axios and update only that part of the page.
-
-
-
-//(tomm) need to show if punishment is "deactivation" then clicking manage hides the fine button.
-// git push + flash front end
-//Reservation search line 205.
-//look int refactoring reservation display.
-//could improve search feature
-//2 people cannot have same user name
-
-//To test overdue or baddebt reservations, create new reservations, make sure return date is -1, collect a book and run cron job to check and apply for punishment
-
-
-
-
-
-//, then we can implement the logic of applying punishment.
-//then a user interface which can see the punishments.
-//also make sure to put userReservationDetails table in includes
-
-
-
-
-
-
-
-
-
-
-
-//Tasks
-
-//(1) So in reservation details, in overdue, i have the option of collected(option to select form paid fine/lost book).(done)
-// also can do a user search which gives record of how many bad debts, good debts.(done)
-// a option where admin can select amount of fines/penalties for a limit to overdue books automatically(like a no show option or pay money).
-// a option to set reservation limit(how many books and how many copies of each book can be reserved at a time)(done)
-//a option to deactivate\activate users at a time 
-// if user has status overdue, he cant reserve more books.
-//Deactive and activate users option/disable option(user gets logged out).
-//pressing checkouy twice can lead to error.(this.storeResponseData)(format data of response function)(NEED TO FIX)
-//userRecord-> if you press the user, see that users reservation details with his name in search field.
-//helper function in controller
-//a fine table in database, which stores the fine amount and the user id.
-//There should be active and inactive types of reservations(for bad debt and overdue), also those which are inactive, go to past reservaitons(which is implemented later). once punishment completed, current active overdue and baddebt become inactive. eventually shit becomes inactive.
-//fine paid table?
-
-//2)
-//admin can set how many days after the reservation and after collecting, the book is supposed to be collected and returned respectfully.(then need to make change in both frontend and backend. admin decides and we set those numbers in database and in frontend CollectAndReturn.js)
-//current reservations follow old deadline while new reservations follow new deadline.^ 
-//send notifications when deadline is close.
-//also automatically, if after a certain extra days, the book is not returned, marked as bad debt.(admin can select this as well)
-//both fronbt end and back end need to have same return date which admin selects(no consistency atm)
-//if admin selects new punishment, it must apply to upcoming overdue and baddebts, not current.
-
-//3)User portal should show past completed + overdue + bad debts(different ejs)(for both admin and user, show old reservations somewhere, and new somewhere else)?
-
-
-
-//4)Security aspect
-
-
-
-//csrf using sameSite is strict(done)
-//use bcrypt for password hashing(done)
-//use dotenv for environment variables(done)
-//For email check, use validator(done)
-
-//To be done:
-
-//apply mustBeLoggedInAdmin to all admin routes and similarly for user
-//deal with the fact that you cant just get the password from the database when doing a call to the database
-//For SQL injection: Use parameterized queries(? and pass value in array) or prepared statements
-//For XSS: Use Markdown and HTML sanitization libraries.(lecture 88)
-//watch lecture 88, and take care of xss and sql injection, whevever input is taken from user.
-
-//5)
-//You can further filter\sort the results based on the date of reservation
-//you can search by reservation number as well
-//extra section for reservation number in search stuff?
-
-
-//6)
-
-
-
-//if user delete his id, what happens to his reservations?
-//What hapens to reserved books if books removed.
-
-//add publication year as well in search
-//user returns some books and not all books.(if deadline passed, put whats not returned in overdue)
-//Multiple admin
-//if some book is bad dept, decrease the number of total copies of that book
-//IF  a book is set to Bad debt, the number of copies of that book should decrease.
-
-
-//7)
-
-
-//Adjustments in css + clean code:
-
-//small things, z-index of flash messages and overdue logic check.
-//Work on flash messages when increasing and decreasing copies
-//flash messages when user portal, flash shows even if sucessfully booked.
-//deal with negative copies
-//you can combine code for modal.(used in userportal and borrower details ejs)
-
-//    for below code, instead of static bnumbers, i want something more robust , error prone to future design change.(reservationsearch.js)
-//    const fieldsToSearch = !this.userDetails 
-//    ? [row.children[0].textContent.trim().toLowerCase(), row.children[2].textContent.trim().toLowerCase()] 
-//    : [row.children[7].textContent.trim().toLowerCase()];
-
-
-//8) Front end designing
-
-
-//9) //Contacting the admin?
-//Main page books and search there as well.
-//User profile page
-
-//10) error handling , .catch
-
-//11) customer can only register and create an account after he pays or something 
-
-//12) option to undo a reservation(every type of undo possible) or a punishment
-//13) right now, reservation limit is set for every day and is then reset. i should also give the admin the option to set reservation limit per day OR  depend on how many pending reservations.
-//14) on delete cascade, on update cascade database
-
-//15) when admin sets reservation limit, we do res.render(backend), maybe implement axios front end?
-//16) when selecting punishment or reservation limit, some warning if we did not complete the form(2 mins)
-//17)could use batch insert for multiple reservations in reservations.reserveBook
-//18)userRecord search need to be empty at beginning and not show all the names
-//10) testing and deployment

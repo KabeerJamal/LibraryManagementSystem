@@ -38,7 +38,7 @@ export default class AddToCartAndReserve {
         });
 
         document.body.addEventListener('click', (e) => {
-            console.log(document.body);
+            //console.log(document.body);
             if(e.target.classList.contains('btn-add-to-cart')) {
                 const number = e.target.getAttribute('data-number');
                 this.storeAndShowBookId(number); 
@@ -57,7 +57,7 @@ export default class AddToCartAndReserve {
     }
 
     sendRequestToReserve(data) {     
-        console.log(data);
+        //console.log(data);
 
         axios.post('/reserve', {userName: data.customer.userName,
             books: data.customer.books}).then((response) => {

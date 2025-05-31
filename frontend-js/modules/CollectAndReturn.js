@@ -160,7 +160,7 @@ export default class CollectAndReturn {
     sendRequestToBadDebt(number) {
         axios.post('/badDebt/' + number).then((response) => {
             //this.showFlashMessage('Bad Debt');
-            console.log("response received from server");
+            //console.log("response received from server");
             let status = document.querySelector('.status[data-number="' + number + '"]');
             status.textContent = 'baddebt';
             const badDebtButton = document.querySelector('.bad-debt[data-number="' + number + '"]');
