@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "watch": "start nodemon app --ignore frontend-js --ignore public/ && start webpack --watch",
+    "watch": "nodemon app --ignore frontend-js --ignore public/ & webpack --watch",
+
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
