@@ -97,7 +97,7 @@ Other Tools: Axios for API calls, Cron Jobs for periodic punishment evaluation
 -Automatic enforcement of rules and penalties
 
 # Demo Video and Website link
-Demo Link:[ A walkthrough video showing all the above features in action.](https://drive.google.com/file/d/1wrvPB2SYXMimq8NvTpjToE-ZgrdFkPOs/view?usp=sharing)
+Demo Link:[ A walkthrough video showing all the above features in action.](https://youtu.be/LFycbZYArR8)
 
 Website Link: https://librarymanagementsystem-qjt7.onrender.com/
 
