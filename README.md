@@ -100,19 +100,20 @@ Other Tools: Axios for API calls, Cron Jobs for periodic punishment evaluation
 Demo Link:[ A walkthrough video showing all the above features in action.](https://drive.google.com/file/d/1wrvPB2SYXMimq8NvTpjToE-ZgrdFkPOs/view?usp=sharing)
 
 Website Link: https://librarymanagementsystem-qjt7.onrender.com/
-🔐 Admin Login
+
+ Admin Login
 Default admin credentials for testing:
 
 Username: kabeerAdmin
 Password: handstand123
 
-📝 Future Improvements
+ Future Improvements
 -Email notifications for due dates and punishments
 
 -Barcode integration for physical book scanning
 
 -Dashboard analytics for admin insights
 
-👨‍💻 Author
+ Author
 Kabeer Jamal
 Computer Science Student, TU Eindhoven
