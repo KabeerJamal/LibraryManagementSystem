@@ -12,6 +12,7 @@ exports.getAllPunishments = async () => {
         return punishments;
     } catch (error) {
         console.error(error);
+        return []; // Return empty array instead of undefined
     }
    
 };

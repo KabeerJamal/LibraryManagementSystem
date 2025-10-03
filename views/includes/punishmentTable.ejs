@@ -18,6 +18,7 @@
     </thead>
     <tbody class="all-punishments-table-body">
         <% let i = 0; %>
+        <% if (punishments && punishments.length > 0) { %>
         <% punishments.forEach(punishment => { %>
             <% i = i + 1; %>
             <tr>
@@ -64,5 +65,12 @@
                 <% } %>
             </tr>
         <% }); %>
+        <% } else { %>
+            <tr>
+                <td colspan="<%= !isUser ? '10' : '9' %>" style="text-align: center; padding: 20px;">
+                    No punishments found
+                </td>
+            </tr>
+        <% } %>
     </tbody>
 </table>
