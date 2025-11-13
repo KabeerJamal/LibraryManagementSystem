@@ -2,16 +2,8 @@
 
 A smart, user-friendly web-based system for managing libraries efficiently, from book tracking and reservations to handling overdue cases and penalties.
 
-# Demo Video and Website link
+# Demo Video
 Demo Link:[ A walkthrough video showing all the above features in action.](https://youtu.be/LFycbZYArR8)
-
-Website Link: https://librarymanagementsystem-qjt7.onrender.com/
-
-Admin Login,
-Default admin credentials for testing:
-
-Username: kabeerAdmin
-Password: handstand123
 
 # Project Overview
 Managing a library can be overwhelming, books go missing, records are hard to maintain, and it’s difficult to track borrowing activity. This Library Management System solves these problems by automating the entire process, providing clarity and control for both administrators and users.
